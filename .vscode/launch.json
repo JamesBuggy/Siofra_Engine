@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch Testbed",
+        "type": "cppvsdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}\\bin\\Testbed.exe",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}\\bin",
+        "environment": [],
+        "console":"integratedTerminal"
+      }
+    ]
+  }

@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Build Engine",
+			"command": "${workspaceFolder}\\engine\\build.bat",
+			"options": {
+                "cwd": "${workspaceFolder}\\engine"
+            },
+			"group": {
+				"kind": "build"
+			}
+		},
+		{
+			"type": "shell",
+			"label": "Build Testbed",
+			"command": "${workspaceFolder}\\testbed\\build.bat",
+			"options": {
+                "cwd": "${workspaceFolder}\\testbed"
+            },
+			"group": {
+				"kind": "build"
+			}
+		}
+	]
+}

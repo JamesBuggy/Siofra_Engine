@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/engine/include",
+                "${workspaceFolder}/engine/source",
+                "${workspaceFolder}/engine/libs/SDL2-2.0.20/include"
+            ],
+            "defines": [
+                "DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "SE_EXPORT",
+                "SE_PLATFORM_WINDOWS"
+            ],
+            "windowsSdkVersion": "10.0.18362.0",
+            "compilerPath": "C:\\MyPrograms\\LLVM\\bin\\clang++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
