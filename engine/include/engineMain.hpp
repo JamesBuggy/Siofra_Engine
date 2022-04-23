@@ -1,18 +1,15 @@
-#include <iostream>
-#include <core/logging.hpp>
 #include <core/assertions.hpp>
 #include <core/application.hpp>
+#include <core/game.hpp>
 
-bool createGame();
+std::unique_ptr<engine::core::Game> createGame();
 
 int main()
 {
-    if(createGame())
-    {
-        SE_LOG_INFO("Game created");
-    }
+    auto game(createGame());
+    SE_ASSERT_TRUE(game.get() != nullptr, "Failed to create game instance");
 
-    engine::core::Application application;
-    
+    engine::core::Application application(std::move(game));
+
     application.execute();
 }

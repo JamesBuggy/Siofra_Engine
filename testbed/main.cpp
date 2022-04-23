@@ -1,6 +1,6 @@
 #include <engineMain.hpp>
 
-bool createGame()
+std::unique_ptr<engine::core::Game> createGame()
 {
-    return true;
+    return std::make_unique<engine::core::Game>("Test Title");
 }

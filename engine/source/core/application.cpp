@@ -2,8 +2,9 @@
 
 namespace engine::core
 {
-    Application::Application() :
-        window{engine::platform::Window("Test", 100, 100, 800, 600)}
+    Application::Application(std::unique_ptr<engine::core::Game> game) :
+        window{engine::platform::Window(game->getTitle(), 100, 100, 800, 600)},
+        game{std::move(game)}
     {
         SE_LOG_INFO("Application Init");
         engine::platform::initialize();
