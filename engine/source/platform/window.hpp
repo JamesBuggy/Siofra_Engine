@@ -6,7 +6,7 @@
 
 namespace engine::platform
 {
-    class SE_API Window
+    class Window
     {
     public:
         Window(char const * title, int x, int y, int width, int height);
