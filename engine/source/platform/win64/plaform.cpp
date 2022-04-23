@@ -1,4 +1,4 @@
-#ifdef SE_PLATFORM_WINDOWS
+#ifdef SE_PLATFORM_WIN64
 
 #include <SDL2/SDL.h>
 #include "platform/platform.hpp"

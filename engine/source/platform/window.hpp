@@ -16,8 +16,8 @@ namespace engine::platform
         void pollEvents();
 
     private:
-        struct WindowState;
-        std::unique_ptr<WindowState> _windowState;
+        class InternalWindow;
+        std::unique_ptr<InternalWindow> _internalWindow;
         bool _shouldClose;
     };
 }

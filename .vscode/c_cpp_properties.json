@@ -13,7 +13,7 @@
                 "UNICODE",
                 "_UNICODE",
                 "SE_EXPORT",
-                "SE_PLATFORM_WINDOWS"
+                "SE_PLATFORM_WIN64"
             ],
             "windowsSdkVersion": "10.0.18362.0",
             "compilerPath": "C:\\MyPrograms\\LLVM\\bin\\clang++.exe",
