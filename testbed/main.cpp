@@ -1,6 +1,7 @@
 #include <engineMain.hpp>
+#include "testGame.hpp"
 
 std::unique_ptr<engine::core::Game> createGame()
 {
-    return std::make_unique<engine::core::Game>("Test Title");
+    return std::make_unique<TestGame>("Test Game");
 }

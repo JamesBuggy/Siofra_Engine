@@ -10,8 +10,11 @@ namespace engine::core
     {
     public:
         Game(std::string title);
+        virtual ~Game() = default;
 
-        std::string getTitle();
+        virtual std::string getTitle() const noexcept;
+
+        virtual void update() = 0;
 
     private:
         std::string title;

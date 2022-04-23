@@ -8,7 +8,7 @@ namespace engine::core
         SE_LOG_INFO("Game Created");
     }
 
-    std::string Game::getTitle()
+    std::string Game::getTitle() const noexcept
     {
         return title;
     }
