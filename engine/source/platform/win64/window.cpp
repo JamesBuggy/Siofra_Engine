@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include "platform/window.hpp"
 
-class engine::platform::Window::InternalWindow
+class siofraEngine::platform::Window::InternalWindow
 {
 public:
     InternalWindow(std::string title, int x, int y, int width, int height) :
@@ -20,7 +20,7 @@ public:
     SDL_Window* winPtr{ nullptr };
 };
 
-namespace engine::platform
+namespace siofraEngine::platform
 {
     Window::Window(std::string title, int x, int y, int width, int height) :
         _internalWindow({std::make_unique<InternalWindow>(title, x, y, width, height)}),

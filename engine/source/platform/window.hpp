@@ -5,7 +5,7 @@
 #include "defines.hpp"
 #include "core/assertions.hpp"
 
-namespace engine::platform
+namespace siofraEngine::platform
 {
     class Window
     {

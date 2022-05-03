@@ -4,7 +4,7 @@
 #include <string>
 #include "defines.hpp"
 
-namespace engine::core
+namespace siofraEngine::core
 {
     class SE_API Logger
     {
@@ -46,22 +46,22 @@ namespace engine::core
 
 #ifdef DEBUG
     #define SE_LOG_TRACE(message) \
-        engine::core::Logger::logTrace(__FILE__, __LINE__, message)
+        siofraEngine::core::Logger::logTrace(__FILE__, __LINE__, message)
 
     #define SE_LOG_DEBUG(message) \
-        engine::core::Logger::logDebug(__FILE__, __LINE__, message)
+        siofraEngine::core::Logger::logDebug(__FILE__, __LINE__, message)
 
     #define SE_LOG_INFO(message) \
-        engine::core::Logger::logInfo(__FILE__, __LINE__, message)
+        siofraEngine::core::Logger::logInfo(__FILE__, __LINE__, message)
 
     #define SE_LOG_WARNING(message) \
-        engine::core::Logger::logWarning(__FILE__, __LINE__, message)
+        siofraEngine::core::Logger::logWarning(__FILE__, __LINE__, message)
 
     #define SE_LOG_ERROR(message) \
-        engine::core::Logger::logError(__FILE__, __LINE__, message)
+        siofraEngine::core::Logger::logError(__FILE__, __LINE__, message)
 
     #define SE_LOG_CRITICAL(message) \
-        engine::core::Logger::logCritical(__FILE__, __LINE__, message)
+        siofraEngine::core::Logger::logCritical(__FILE__, __LINE__, message)
 #else
     #define SE_LOG_TRACE(message)
     #define SE_LOG_DEBUG(message)

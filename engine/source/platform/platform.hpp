@@ -2,7 +2,7 @@
 
 #include "defines.hpp"
 
-namespace engine::platform
+namespace siofraEngine::platform
 {
     void initialize();
     void cleanUp();

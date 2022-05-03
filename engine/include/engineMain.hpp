@@ -2,14 +2,14 @@
 #include <core/application.hpp>
 #include <core/game.hpp>
 
-std::unique_ptr<engine::core::Game> createGame();
+std::unique_ptr<siofraEngine::core::Game> createGame();
 
 int main()
 {
     auto game(createGame());
     SE_ASSERT_TRUE(game.get() != nullptr, "Failed to create game instance");
 
-    engine::core::Application application(std::move(game));
+    siofraEngine::core::Application application(std::move(game));
 
     application.execute();
 }

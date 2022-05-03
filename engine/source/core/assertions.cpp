@@ -1,6 +1,6 @@
 #include "core/assertions.hpp"
 
-namespace engine::core
+namespace siofraEngine::core
 {
     void Assertions::assertTrue(bool condition, const char* file, int line, const char* message)
     {

@@ -1,6 +1,6 @@
 #include "core/game.hpp"
 
-namespace engine::core
+namespace siofraEngine::core
 {
     Game::Game(std::string title) :
         title{title}

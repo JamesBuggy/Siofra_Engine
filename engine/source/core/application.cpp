@@ -1,19 +1,19 @@
 #include "core/application.hpp"
 
-namespace engine::core
+namespace siofraEngine::core
 {
-    Application::Application(std::unique_ptr<engine::core::Game> game) :
-        window{engine::platform::Window(game->getTitle(), 100, 100, 800, 600)},
+    Application::Application(std::unique_ptr<siofraEngine::core::Game> game) :
+        window{siofraEngine::platform::Window(game->getTitle(), 100, 100, 800, 600)},
         game{std::move(game)}
     {
         SE_LOG_INFO("Application Init");
-        engine::platform::initialize();
+        siofraEngine::platform::initialize();
     }
 
     Application::~Application()
     {
         SE_LOG_INFO("Application Shutdown");
-        engine::platform::cleanUp();
+        siofraEngine::platform::cleanUp();
     }
 
     void Application::execute()
