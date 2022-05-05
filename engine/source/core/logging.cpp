@@ -1,6 +1,6 @@
 #include "core/logging.hpp"
 
-namespace engine::core
+namespace siofraEngine::core
 {
     void Logger::logTrace(const char* file, int line, const char* message)
     {

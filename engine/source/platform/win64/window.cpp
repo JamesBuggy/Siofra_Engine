@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include "platform/window.hpp"
 
-class engine::platform::Window::InternalWindow
+class siofraEngine::platform::Window::InternalWindow
 {
 public:
     InternalWindow(std::string title, int x, int y, int width, int height) :
@@ -20,11 +20,10 @@ public:
     SDL_Window* winPtr{ nullptr };
 };
 
-namespace engine::platform
+namespace siofraEngine::platform
 {
     Window::Window(std::string title, int x, int y, int width, int height) :
-        _internalWindow({std::make_unique<InternalWindow>(title, x, y, width, height)}),
-        _shouldClose{false}
+        _internalWindow({std::make_unique<InternalWindow>(title, x, y, width, height)})
     {
         
     }
@@ -32,22 +31,6 @@ namespace engine::platform
     Window::~Window()
     {
         
-    }
-
-    bool Window::shouldClose()
-    {
-        return _shouldClose;
-    }
-
-    void Window::pollEvents()
-    {
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_QUIT) {
-                _shouldClose = true;
-            }
-        }
     }
 }
 

@@ -2,23 +2,25 @@
 
 #include <memory>
 #include "defines.hpp"
-#include "core/logging.hpp"
 #include "platform/platform.hpp"
 #include "platform/window.hpp"
+#include "core/logging.hpp"
 #include "core/game.hpp"
+#include "systems/input.hpp"
 
-namespace engine::core
+namespace siofraEngine::core
 {
     class SE_API Application
     {
     public:
-        Application(std::unique_ptr<engine::core::Game> game);
+        Application(std::unique_ptr<siofraEngine::core::Game> game);
         ~Application();
 
         void execute();
 
     private:
-        engine::platform::Window window;
-        std::unique_ptr<engine::core::Game> game;
+        siofraEngine::systems::Input inputSystem;
+        siofraEngine::platform::Window window;
+        std::unique_ptr<siofraEngine::core::Game> game;
     };
 }

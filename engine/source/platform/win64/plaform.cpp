@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include "platform/platform.hpp"
 
-namespace engine::platform
+namespace siofraEngine::platform
 {
     void initialize()
     {

@@ -4,7 +4,7 @@
 #include "defines.hpp"
 #include "core/logging.hpp"
 
-namespace engine::core
+namespace siofraEngine::core
 {
     class SE_API Game
     {

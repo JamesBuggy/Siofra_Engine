@@ -4,7 +4,7 @@
 #include <assert.h>
 #include "logging.hpp"
 
-namespace engine::core
+namespace siofraEngine::core
 {
     class SE_API Assertions
     {
@@ -17,7 +17,7 @@ namespace engine::core
 
 #ifdef DEBUG
     #define SE_ASSERT_TRUE(condition, message) \
-        engine::core::Assertions::assertTrue(condition, __FILE__, __LINE__, message)
+        siofraEngine::core::Assertions::assertTrue(condition, __FILE__, __LINE__, message)
 #else
     #define SE_ASSERT_TRUE(condition, message)
 #endif
