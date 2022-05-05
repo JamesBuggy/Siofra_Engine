@@ -3,6 +3,7 @@
 namespace siofraEngine::core
 {
     Application::Application(std::unique_ptr<siofraEngine::core::Game> game) :
+        inputSystem{},
         window{siofraEngine::platform::Window(game->getTitle(), 100, 100, 800, 600)},
         game{std::move(game)}
     {
@@ -20,8 +21,9 @@ namespace siofraEngine::core
     {
         while(true)
         {
-            window.pollEvents();
-            if(window.shouldClose())
+            inputSystem.update();
+
+            if(inputSystem.keyReleased(siofraEngine::core::KeyCode::SE_ESC))
             {
                 break;
             }

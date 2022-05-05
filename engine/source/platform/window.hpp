@@ -2,7 +2,6 @@
 
 #include <string>
 #include <memory>
-#include "defines.hpp"
 #include "core/assertions.hpp"
 
 namespace siofraEngine::platform
@@ -13,12 +12,8 @@ namespace siofraEngine::platform
         Window(std::string title, int x, int y, int width, int height);
         ~Window();
 
-        bool shouldClose();
-        void pollEvents();
-
     private:
         class InternalWindow;
         std::unique_ptr<InternalWindow> _internalWindow;
-        bool _shouldClose;
     };
 }
