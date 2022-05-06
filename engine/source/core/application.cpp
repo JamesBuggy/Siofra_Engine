@@ -3,7 +3,7 @@
 namespace siofraEngine::core
 {
     Application::Application(std::unique_ptr<siofraEngine::core::Game> game) :
-        inputSystem{},
+        inputSystem{std::make_unique<siofraEngine::platform::PlatformInput>()},
         clock{},
         window{siofraEngine::platform::Window(game->getTitle(), 100, 100, 800, 600)},
         game{std::move(game)}

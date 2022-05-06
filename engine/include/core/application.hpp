@@ -4,6 +4,7 @@
 #include "defines.hpp"
 #include "platform/platform.hpp"
 #include "platform/window.hpp"
+#include "platform/platformInput.hpp"
 #include "core/logging.hpp"
 #include "core/game.hpp"
 #include "core/clock.hpp"
