@@ -9,7 +9,5 @@ namespace siofraEngine::platform
     public:
         static std::vector<bool> getKeyState();
 
-    private:
-        class InternalInput;
     };
 }

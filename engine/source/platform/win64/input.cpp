@@ -4,12 +4,10 @@
 #include <SDL2/SDL.h>
 #include "platform/input.hpp"
 #include "platform/win64/inputMapping.hpp"
-#include "core/logging.hpp"
 
-class siofraEngine::platform::Input::InternalInput
+namespace siofraEngine::platform
 {
-public:
-    static std::vector<bool> getKeyState()
+    std::vector<bool> Input::getKeyState()
     {
         SDL_PumpEvents();
         Uint8 const * sdlKeyState = SDL_GetKeyboardState(NULL);
@@ -24,17 +22,6 @@ public:
         }
 
         return keyState;
-    }
-
-private:
-
-};
-
-namespace siofraEngine::platform
-{
-    std::vector<bool> Input::getKeyState()
-    {
-        return InternalInput::getKeyState();
     }
 }
 
