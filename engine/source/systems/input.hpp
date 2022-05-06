@@ -19,7 +19,7 @@ namespace siofraEngine::systems
         bool keyDown(siofraEngine::core::KeyCode keyCode) const noexcept;
     
     private:
-        std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput;
+        std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput{ };
         std::vector<bool> previousKeyState;
         std::vector<bool> currentKeyState;
 

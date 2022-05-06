@@ -2,8 +2,9 @@
 
 namespace siofraEngine::core
 {
-    Clock::Clock() :
-        startTime{siofraEngine::platform::Clock::getAbsoluteTime()},
+    Clock::Clock(std::unique_ptr<siofraEngine::platform::IPlatformClock> platformClock) :
+        platformClock{std::move(platformClock)},
+        startTime{this->platformClock->getAbsoluteTime()},
         elapsedTime{0.0f}
     {
 
@@ -11,7 +12,7 @@ namespace siofraEngine::core
 
     void Clock::update()
     {
-        float currentTime = siofraEngine::platform::Clock::getAbsoluteTime();
+        float currentTime = platformClock->getAbsoluteTime();
         elapsedTime = currentTime - startTime;
     }
 
