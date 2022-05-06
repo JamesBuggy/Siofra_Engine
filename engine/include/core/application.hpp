@@ -6,6 +6,7 @@
 #include "platform/window.hpp"
 #include "core/logging.hpp"
 #include "core/game.hpp"
+#include "core/clock.hpp"
 #include "systems/input.hpp"
 
 namespace siofraEngine::core
@@ -21,6 +22,7 @@ namespace siofraEngine::core
     private:
         siofraEngine::systems::Input inputSystem;
         siofraEngine::platform::Window window;
+        siofraEngine::core::Clock clock;
         std::unique_ptr<siofraEngine::core::Game> game;
     };
 }
