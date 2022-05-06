@@ -1,11 +1,11 @@
 #ifdef SE_PLATFORM_WIN64
 
 #include <SDL2/SDL.h>
-#include "platform/clock.hpp"
+#include "platform/platformClock.hpp"
 
 namespace siofraEngine::platform
 {
-    float Clock::getAbsoluteTime()
+    float PlatformClock::getAbsoluteTime()
     {
         return (float)SDL_GetPerformanceCounter() / SDL_GetPerformanceFrequency();
     }

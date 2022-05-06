@@ -2,7 +2,8 @@
 
 namespace siofraEngine::systems
 {
-    Input::Input() :
+    Input::Input(std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput) :
+        platformInput{std::move(platformInput)},
         previousKeyState(static_cast<int>(siofraEngine::core::KeyCode::SE_MAX_KEYCODE), false),
         currentKeyState(static_cast<int>(siofraEngine::core::KeyCode::SE_MAX_KEYCODE), false)
     {
@@ -12,7 +13,7 @@ namespace siofraEngine::systems
     void Input::update()
     {
         previousKeyState = std::move(currentKeyState);
-        currentKeyState = siofraEngine::platform::Input::getKeyState();
+        currentKeyState = platformInput->getKeyState();
     }
 
     bool Input::keyPressed(siofraEngine::core::KeyCode keyCode) const noexcept

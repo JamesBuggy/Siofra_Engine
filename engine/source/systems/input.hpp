@@ -1,8 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "core/keyCodes.hpp"
-#include "platform/input.hpp"
+#include "platform/iplatformInput.hpp"
 
 namespace siofraEngine::systems
 {
@@ -10,7 +11,7 @@ namespace siofraEngine::systems
     {
     public:
 
-        Input();
+        Input(std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput);
 
         void update();
         bool keyPressed(siofraEngine::core::KeyCode keyCode) const noexcept;
@@ -18,6 +19,7 @@ namespace siofraEngine::systems
         bool keyDown(siofraEngine::core::KeyCode keyCode) const noexcept;
     
     private:
+        std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput{ };
         std::vector<bool> previousKeyState;
         std::vector<bool> currentKeyState;
 

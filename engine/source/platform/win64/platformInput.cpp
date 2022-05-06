@@ -2,12 +2,12 @@
 
 #include <map>
 #include <SDL2/SDL.h>
-#include "platform/input.hpp"
+#include "platform/platformInput.hpp"
 #include "platform/win64/inputMapping.hpp"
 
 namespace siofraEngine::platform
 {
-    std::vector<bool> Input::getKeyState()
+    std::vector<bool> PlatformInput::getKeyState()
     {
         SDL_PumpEvents();
         Uint8 const * sdlKeyState = SDL_GetKeyboardState(NULL);
