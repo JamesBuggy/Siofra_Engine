@@ -27,16 +27,18 @@ namespace siofraEngine::systems
         void update();
 
         /**
-         * @brief Check if a key has been pressed
+         * @brief Check if a key has been pressed this update
          * 
          * @param keyCode Key to check
+         * @returns true if the key is pressed this update, otherwise false
          */
         bool keyPressed(siofraEngine::core::KeyCode keyCode) const noexcept;
 
         /**
-         * @brief Check if a key has been released
+         * @brief Check if a key has been released this update
          * 
          * @param keyCode Key to check
+         * @returns true if the key is released this update, otherwise false
          */
         bool keyReleased(siofraEngine::core::KeyCode keyCode) const noexcept;
 
@@ -44,6 +46,7 @@ namespace siofraEngine::systems
          * @brief Check if a key is being held down
          * 
          * @param keyCode Key to check
+         * @returns true if the key is held down, otherwise false
          */
         bool keyDown(siofraEngine::core::KeyCode keyCode) const noexcept;
     

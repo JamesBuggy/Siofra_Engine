@@ -25,6 +25,8 @@ namespace siofraEngine::core
 
             /**
              * @brief Get applications elapsed time
+             * 
+             * @returns Elapsed application time in seconds
              */
             float getElapsedTime() const noexcept;
 
