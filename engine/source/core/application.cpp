@@ -30,7 +30,7 @@ namespace siofraEngine::core
 
             inputSystem.update();
 
-            if(inputSystem.keyReleased(siofraEngine::core::KeyCode::SE_ESC))
+            if(inputSystem.keyReleased(siofraEngine::core::KeyCode::KEY_ESC))
             {
                 break;
             }

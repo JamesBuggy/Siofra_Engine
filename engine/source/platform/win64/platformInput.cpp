@@ -12,7 +12,7 @@ namespace siofraEngine::platform
         SDL_PumpEvents();
         Uint8 const * sdlKeyState = SDL_GetKeyboardState(NULL);
 
-        std::vector<bool> keyState(static_cast<int>(siofraEngine::core::KeyCode::SE_MAX_KEYCODE));
+        std::vector<bool> keyState(static_cast<int>(siofraEngine::core::KeyCode::MAX_KEYS));
         for (size_t i = 0; i < keyState.size(); ++i)
         {
             auto siofraKeyCode = static_cast<siofraEngine::core::KeyCode>(i);

@@ -4,8 +4,8 @@ namespace siofraEngine::systems
 {
     Input::Input(std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput) :
         platformInput{std::move(platformInput)},
-        previousKeyState(static_cast<int>(siofraEngine::core::KeyCode::SE_MAX_KEYCODE), false),
-        currentKeyState(static_cast<int>(siofraEngine::core::KeyCode::SE_MAX_KEYCODE), false)
+        previousKeyState(static_cast<int>(siofraEngine::core::KeyCode::MAX_KEYS), false),
+        currentKeyState(static_cast<int>(siofraEngine::core::KeyCode::MAX_KEYS), false)
     {
 
     }
