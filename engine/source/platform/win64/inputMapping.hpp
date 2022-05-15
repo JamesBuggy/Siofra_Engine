@@ -2,7 +2,8 @@
 
 #include <map>
 #include <SDL2/SDL.h>
-#include "core/keyCodes.hpp"
+#include "core/input/keyCodes.hpp"
+#include "core/input/mouseCodes.hpp"
 
 /**
  * @brief Siofra Engine to SDL key code mappings
@@ -53,6 +54,15 @@ std::map<siofraEngine::core::KeyCode, SDL_KeyCode> siofraToSdlKeyCodeMappings
     { siofraEngine::core::KeyCode::KEY_RIGHT, SDL_KeyCode::SDLK_RIGHT },
 
     { siofraEngine::core::KeyCode::KEY_ESC, SDL_KeyCode::SDLK_ESCAPE }
+};
+
+/**
+ * @brief Siofra Engine to SDL mouse button mappings
+ */
+std::map<siofraEngine::core::MouseButtonCode, int> siofraToSdlmousButtonMappings
+{
+    { siofraEngine::core::MouseButtonCode::BUTTON_LEFT, SDL_BUTTON_LMASK },
+    { siofraEngine::core::MouseButtonCode::BUTTON_RIGHT, SDL_BUTTON_RMASK },
 };
 
 #endif

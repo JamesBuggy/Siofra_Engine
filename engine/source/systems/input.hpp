@@ -2,7 +2,8 @@
 
 #include <vector>
 #include <memory>
-#include "core/keyCodes.hpp"
+#include "core/input/keyCodes.hpp"
+#include "core/input/mouseCodes.hpp"
 #include "platform/iplatformInput.hpp"
 
 namespace siofraEngine::systems
@@ -32,7 +33,15 @@ namespace siofraEngine::systems
          * @param keyCode Key to check
          * @returns true if the key is pressed this update, otherwise false
          */
-        bool keyPressed(siofraEngine::core::KeyCode keyCode) const noexcept;
+        bool isPressed(siofraEngine::core::KeyCode keyCode) const noexcept;
+
+        /**
+         * @brief Check if a mouse button has been pressed this update
+         * 
+         * @param mouseButtonCode Mouse button to check
+         * @returns true if the button is pressed this update, otherwise false
+         */
+        bool isPressed(siofraEngine::core::MouseButtonCode mouseButtonCode) const noexcept;
 
         /**
          * @brief Check if a key has been released this update
@@ -40,7 +49,15 @@ namespace siofraEngine::systems
          * @param keyCode Key to check
          * @returns true if the key is released this update, otherwise false
          */
-        bool keyReleased(siofraEngine::core::KeyCode keyCode) const noexcept;
+        bool isReleased(siofraEngine::core::KeyCode keyCode) const noexcept;
+
+        /**
+         * @brief Check if a mouse button has been released this update
+         * 
+         * @param mouseButtonCode Mouse button to check
+         * @returns true if the button is released this update, otherwise false
+         */
+        bool isReleased(siofraEngine::core::MouseButtonCode mouseButtonCode) const noexcept;
 
         /**
          * @brief Check if a key is being held down
@@ -48,7 +65,29 @@ namespace siofraEngine::systems
          * @param keyCode Key to check
          * @returns true if the key is held down, otherwise false
          */
-        bool keyDown(siofraEngine::core::KeyCode keyCode) const noexcept;
+        bool isDown(siofraEngine::core::KeyCode keyCode) const noexcept;
+
+        /**
+         * @brief Check if a mouse button is being held down
+         * 
+         * @param mouseButtonCode Mouse button to check
+         * @returns true if the button is held down, otherwise false
+         */
+        bool isDown(siofraEngine::core::MouseButtonCode mouseButtonCode) const noexcept;
+
+        /**
+         * @brief Get current mouse x position
+         * 
+         * @returns current mouse x position
+         */
+        int getMouseX() const noexcept;
+
+        /**
+         * @brief Get current mouse y position
+         * 
+         * @returns current mouse y position
+         */
+        int getMouseY() const noexcept;
     
     private:
         /**
@@ -59,12 +98,22 @@ namespace siofraEngine::systems
         /**
          * @brief Keyboard state from the previous update
          */
-        std::vector<bool> previousKeyState;
+        KeyboardState previousKeyboardState;
 
         /**
          * @brief Keyboard state from the current update
          */
-        std::vector<bool> currentKeyState;
+        KeyboardState currentKeyboardState;
+
+        /**
+         * @brief Mouse state from the previous update
+         */
+        MouseState previousMouseState;
+
+        /**
+         * @brief Mouse state from the current update
+         */
+        MouseState currentMouseState;
 
     };
 }

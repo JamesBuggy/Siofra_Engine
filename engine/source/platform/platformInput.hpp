@@ -11,11 +11,26 @@ namespace siofraEngine::platform
     {
     public:
         /**
+         * @brief Pumps event loop
+         */
+        void pumpEvents() override;
+
+        /**
          * @brief Get current keyboard state
          * 
          * @returns Current keyboard state
          */
-        std::vector<bool> getKeyState() override;
+        KeyboardState getKeyboardState() override;
+
+        /**
+         * @brief Get current mouse state
+         * 
+         * @param x Populated with the current mouse x position
+         * @param y Populated with the current mouse y position
+         * 
+         * @returns Current mouse button state
+         */
+        MouseButtonState getMouseState(std::int32_t &x, std::int32_t &y) override;
 
     };
 }

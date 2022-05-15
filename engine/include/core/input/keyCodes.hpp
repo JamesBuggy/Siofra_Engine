@@ -3,7 +3,7 @@
 namespace siofraEngine::core
 {
     /**
-     * @brief Input key codes
+     * @brief Input keboard key codes
      */
     enum class KeyCode
     {
@@ -52,6 +52,6 @@ namespace siofraEngine::core
 
         KEY_ESC,
 
-        MAX_KEYS
+        MAX_CODES
     };
 }
