@@ -6,18 +6,70 @@
 
 namespace siofraEngine::core
 {
+    /**
+     * @brief Provides logging functionality
+     */
     class SE_API Logger
     {
     public:
+        /**
+         * @brief Log a trace message
+         * 
+         * @param file File name
+         * @param line Line number
+         * @param message Log message
+         */
         static void logTrace(const char* file, int line, const char* message);
+
+        /**
+         * @brief Log a debug message
+         * 
+         * @param file File name
+         * @param line Line number
+         * @param message Log message
+         */
         static void logDebug(const char* file, int line, const char* message);
+
+        /**
+         * @brief Log an informational message
+         * 
+         * @param file File name
+         * @param line Line number
+         * @param message Log message
+         */
         static void logInfo(const char* file, int line, const char* message);
+
+        /**
+         * @brief Log a warning message
+         * 
+         * @param file File name
+         * @param line Line number
+         * @param message Log message
+         */
         static void logWarning(const char* file, int line, const char* message);
+
+        /**
+         * @brief Log an error message
+         * 
+         * @param file File name
+         * @param line Line number
+         * @param message Log message
+         */
         static void logError(const char* file, int line, const char* message);
+
+        /**
+         * @brief Log a critical message
+         * 
+         * @param file File name
+         * @param line Line number
+         * @param message Log message
+         */
         static void logCritical(const char* file, int line, const char* message);
 
     private:
-
+        /**
+         * @brief Logging levels
+         */
         enum class LogLevel
         {
             trace = 0,
@@ -29,6 +81,9 @@ namespace siofraEngine::core
             none = 6
         };
 
+        /**
+         * @brief Logging level string representation
+         */
         static constexpr const char* logLevelStrings[] =
         {
             "TRACE",
@@ -40,6 +95,14 @@ namespace siofraEngine::core
             "NONE"
         };
 
+        /**
+         * @brief Log a message
+         * 
+         * @param logLevel Log level
+         * @param file File name
+         * @param line Line number
+         * @param message Log message
+         */
         static void log(LogLevel logLevel, const char* file, int line, const char* message);
     };
 }

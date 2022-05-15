@@ -7,12 +7,16 @@
 
 namespace siofraEngine::platform
 {
-    std::vector<bool> PlatformInput::getKeyState()
+    void PlatformInput::pumpEvents()
     {
         SDL_PumpEvents();
+    }
+
+    KeyboardState PlatformInput::getKeyboardState()
+    {
         Uint8 const * sdlKeyState = SDL_GetKeyboardState(NULL);
 
-        std::vector<bool> keyState(static_cast<int>(siofraEngine::core::KeyCode::SE_MAX_KEYCODE));
+        KeyboardState keyState(static_cast<int>(siofraEngine::core::KeyCode::MAX_CODES), false);
         for (size_t i = 0; i < keyState.size(); ++i)
         {
             auto siofraKeyCode = static_cast<siofraEngine::core::KeyCode>(i);
@@ -22,6 +26,21 @@ namespace siofraEngine::platform
         }
 
         return keyState;
+    }
+
+    MouseButtonState PlatformInput::getMouseState(std::int32_t &x, std::int32_t &y)
+    {
+        Uint32 sdlButtons = SDL_GetMouseState(&x, &y);
+
+        MouseButtonState mouseButtonState(static_cast<int>(siofraEngine::core::MouseButtonCode::MAX_CODES), false);
+        for (size_t i = 0; i < mouseButtonState.size(); ++i)
+        {
+            auto siofraMouseButtonCode = static_cast<siofraEngine::core::MouseButtonCode>(i);
+            auto sdlButtonMask = siofraToSdlmousButtonMappings[siofraMouseButtonCode];
+            mouseButtonState[i] = (sdlButtons & sdlButtonMask) != 0;
+        }
+
+        return mouseButtonState;
     }
 }
 

@@ -6,9 +6,15 @@
 
 namespace siofraEngine::core
 {
+    /**
+     * @brief Provides assertion functionality
+     */
     class SE_API Assertions
     {
     public:
+        /**
+         * @brief Asserts that a condition is true
+         */
         static void assertTrue(bool condition, const char* file, int line, const char* message);
 
     private:
