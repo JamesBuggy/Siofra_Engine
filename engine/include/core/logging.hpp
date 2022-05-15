@@ -19,7 +19,11 @@ namespace siofraEngine::core
          * @param line Line number
          * @param message Log message
          */
-        static void logTrace(const char* file, int line, const char* message);
+        template<typename T>
+        static void logTrace(const char* file, int line, T message)
+        {
+            log(LogLevel::trace, file, line, message);
+        }
 
         /**
          * @brief Log a debug message
@@ -28,7 +32,11 @@ namespace siofraEngine::core
          * @param line Line number
          * @param message Log message
          */
-        static void logDebug(const char* file, int line, const char* message);
+        template<typename T>
+        static void logDebug(const char* file, int line, T message)
+        {
+            log(LogLevel::debug, file, line, message);
+        }
 
         /**
          * @brief Log an informational message
@@ -37,7 +45,11 @@ namespace siofraEngine::core
          * @param line Line number
          * @param message Log message
          */
-        static void logInfo(const char* file, int line, const char* message);
+        template<typename T>
+        static void logInfo(const char* file, int line, T message)
+        {
+            log(LogLevel::info, file, line, message);
+        }
 
         /**
          * @brief Log a warning message
@@ -46,7 +58,11 @@ namespace siofraEngine::core
          * @param line Line number
          * @param message Log message
          */
-        static void logWarning(const char* file, int line, const char* message);
+        template<typename T>
+        static void logWarning(const char* file, int line, T message)
+        {
+            log(LogLevel::warning, file, line, message);
+        }
 
         /**
          * @brief Log an error message
@@ -55,7 +71,11 @@ namespace siofraEngine::core
          * @param line Line number
          * @param message Log message
          */
-        static void logError(const char* file, int line, const char* message);
+        template<typename T>
+        static void logError(const char* file, int line, T message)
+        {
+            log(LogLevel::error, file, line, message);
+        }
 
         /**
          * @brief Log a critical message
@@ -64,7 +84,11 @@ namespace siofraEngine::core
          * @param line Line number
          * @param message Log message
          */
-        static void logCritical(const char* file, int line, const char* message);
+        template<typename T>
+        static void logCritical(const char* file, int line, T message)
+        {
+            log(LogLevel::critical, file, line, message);
+        }
 
     private:
         /**
@@ -103,7 +127,12 @@ namespace siofraEngine::core
          * @param line Line number
          * @param message Log message
          */
-        static void log(LogLevel logLevel, const char* file, int line, const char* message);
+        template<typename T>
+        static void log(LogLevel logLevel, const char* file, int line, T message)
+        {
+            int logLevelIndex = static_cast<int>(logLevel);
+            std::cout << "[" << logLevelStrings[logLevelIndex] << "] "<< file << "(" << line << "): " << message << std::endl;
+        }
     };
 }
 
