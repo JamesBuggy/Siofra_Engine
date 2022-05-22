@@ -9,6 +9,7 @@
 #include "core/logging.hpp"
 #include "core/game.hpp"
 #include "core/clock.hpp"
+#include "core/applicationBase.hpp"
 #include "systems/input/input.hpp"
 #include "systems/renderer/renderer.hpp"
 
@@ -17,7 +18,7 @@ namespace siofraEngine::core
     /**
      * @brief Application layer. Controls the application update loop
      */
-    class SE_API Application
+    class SE_API Application : public ApplicationBase
     {
     public:
         /**
@@ -30,14 +31,24 @@ namespace siofraEngine::core
         /**
          * @brief Application destructor
          */ 
-        ~Application();
+        ~Application() = default;
 
         /**
          * @brief Begin the application update loop
          */
-        void execute();
+        void execute() override;
 
     private:
+        /**
+         * @brief Application closk instance
+         */
+        siofraEngine::core::Clock clock;
+
+        /**
+         * @brief Window instance
+         */
+        siofraEngine::platform::Window window;
+
         /**
          * @brief Input system instance
          */
@@ -47,16 +58,6 @@ namespace siofraEngine::core
          * @brief Renderer system instance
          */
         siofraEngine::systems::Renderer rendererSystem;
-
-        /**
-         * @brief Window instance
-         */
-        siofraEngine::platform::Window window;
-
-        /**
-         * @brief Application closk instance
-         */
-        siofraEngine::core::Clock clock;
 
         /**
          * @brief Current game instance

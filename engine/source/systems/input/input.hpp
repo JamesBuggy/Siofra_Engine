@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include "core/logging.hpp"
 #include "core/input/keyCodes.hpp"
 #include "core/input/mouseCodes.hpp"
 #include "platform/iplatformInput.hpp"

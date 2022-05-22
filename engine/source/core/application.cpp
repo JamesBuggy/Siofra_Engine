@@ -3,20 +3,14 @@
 namespace siofraEngine::core
 {
     Application::Application(std::unique_ptr<siofraEngine::core::Game> game) :
+        ApplicationBase(),
         clock{std::make_unique<siofraEngine::platform::PlatformClock>()},
-        window{siofraEngine::platform::Window(game->getTitle(), 100, 100, 800, 600)},
+        window{siofraEngine::platform::Window(game->getTitle(), 100, 100, 800, 600, siofraEngine::platform::WindowFlags::WINDOW_VULKAN)},
         inputSystem{std::make_unique<siofraEngine::platform::PlatformInput>()},
-        rendererSystem{siofraEngine::systems::RendererImpls::Vulkan},
+        rendererSystem{window},
         game{std::move(game)}
     {
-        SE_LOG_INFO("Application Init");
-        siofraEngine::platform::initialize();
-    }
-
-    Application::~Application()
-    {
-        SE_LOG_INFO("Application Shutdown");
-        siofraEngine::platform::cleanUp();
+        
     }
 
     void Application::execute()

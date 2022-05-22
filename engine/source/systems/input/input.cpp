@@ -11,6 +11,8 @@ namespace siofraEngine::systems
     {
         previousMouseState.buttonState.resize(static_cast<int>(siofraEngine::core::MouseButtonCode::MAX_CODES), false);
         currentMouseState.buttonState.resize(static_cast<int>(siofraEngine::core::MouseButtonCode::MAX_CODES), false);
+
+        SE_LOG_INFO("Initialized input system");
     }
 
     void Input::update()

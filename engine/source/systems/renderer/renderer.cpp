@@ -2,21 +2,19 @@
 
 namespace siofraEngine::systems
 {
-    Renderer::Renderer(RendererImpls rendererImpl) :
-        rendererBackend{createRendererBackend(rendererImpl)}
+    Renderer::Renderer(siofraEngine::platform::Window &window) :
+        rendererBackend{createRendererBackend(window.getFlags())}
     {
-
+        SE_LOG_INFO("Initialized renderer system");
     }
 
-    std::unique_ptr<IRendererImpl> Renderer::createRendererBackend(RendererImpls rendererImpl)
+    std::unique_ptr<IRendererImpl> Renderer::createRendererBackend(siofraEngine::platform::WindowFlags windowFlags)
     {
         std::unique_ptr<IRendererImpl> rendererBackend(nullptr);
 
-        switch (rendererImpl)
+        if((windowFlags & siofraEngine::platform::WindowFlags::WINDOW_VULKAN) == siofraEngine::platform::WindowFlags::WINDOW_VULKAN)
         {
-        case RendererImpls::Vulkan :
             rendererBackend = std::make_unique<VulkanRenderer>();
-            break;
         }
 
         SE_ASSERT_TRUE(rendererBackend != nullptr, "Unsupported renderer implementation");
