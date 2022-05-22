@@ -14,8 +14,20 @@ namespace siofraEngine::core
     public:
         /**
          * @brief Asserts that a condition is true
+         * 
+         * @param condition Condition to test
+         * @param file File name
+         * @param line Line number
+         * @param message Condition failure message
          */
-        static void assertTrue(bool condition, const char* file, int line, const char* message);
+        template<typename T>
+        static void assertTrue(bool condition, const char* file, int line, T message)
+        {
+            if(!condition) {
+                Logger::logCritical(file, line, message);
+                assert(condition);
+            }
+        }
 
     private:
     };

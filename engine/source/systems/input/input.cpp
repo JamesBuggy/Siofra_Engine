@@ -1,4 +1,4 @@
-#include "systems/input.hpp"
+#include "systems/input/input.hpp"
 
 namespace siofraEngine::systems
 {

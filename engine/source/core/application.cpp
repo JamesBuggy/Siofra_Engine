@@ -3,9 +3,10 @@
 namespace siofraEngine::core
 {
     Application::Application(std::unique_ptr<siofraEngine::core::Game> game) :
-        inputSystem{std::make_unique<siofraEngine::platform::PlatformInput>()},
         clock{std::make_unique<siofraEngine::platform::PlatformClock>()},
         window{siofraEngine::platform::Window(game->getTitle(), 100, 100, 800, 600)},
+        inputSystem{std::make_unique<siofraEngine::platform::PlatformInput>()},
+        rendererSystem{siofraEngine::systems::RendererImpls::Vulkan},
         game{std::move(game)}
     {
         SE_LOG_INFO("Application Init");

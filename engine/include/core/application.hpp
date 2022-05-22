@@ -9,7 +9,8 @@
 #include "core/logging.hpp"
 #include "core/game.hpp"
 #include "core/clock.hpp"
-#include "systems/input.hpp"
+#include "systems/input/input.hpp"
+#include "systems/renderer/renderer.hpp"
 
 namespace siofraEngine::core
 {
@@ -41,6 +42,11 @@ namespace siofraEngine::core
          * @brief Input system instance
          */
         siofraEngine::systems::Input inputSystem;
+
+        /**
+         * @brief Renderer system instance
+         */
+        siofraEngine::systems::Renderer rendererSystem;
 
         /**
          * @brief Window instance
