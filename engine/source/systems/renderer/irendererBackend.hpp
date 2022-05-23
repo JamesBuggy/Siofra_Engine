@@ -5,12 +5,12 @@ namespace siofraEngine::systems
     /**
      * @brief Renderer backend interface
      */
-    class IRendererImpl
+    class IRendererBackend
     {
     public:
         /**
          * @brief Interface destructor
          */
-        virtual ~IRendererImpl() = default;
+        virtual ~IRendererBackend() = default;
     };
 }

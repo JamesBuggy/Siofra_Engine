@@ -46,6 +46,13 @@
         "xutility": "cpp",
         "map": "cpp",
         "xtree": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "array": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "functional": "cpp",
+        "span": "cpp",
+        "sstream": "cpp",
+        "xhash": "cpp"
     }
 }

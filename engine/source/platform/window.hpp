@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <memory>
 #include <cstdint>
 #include "core/assertions.hpp"
@@ -53,6 +54,13 @@ namespace siofraEngine::platform
          * @returns Flags applied to the window
          */
         WindowFlags getFlags();
+
+        /**
+         * @brief Get the names of the Vulkan instance extensions needed to create a surface
+         * 
+         * @returns Required instance extension names
+         */
+        std::vector<const char*> getRequiredVulkanInstanceExtensions();
 
     private:
 

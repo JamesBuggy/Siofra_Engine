@@ -1,6 +1,7 @@
 #ifdef SE_PLATFORM_WIN64
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_vulkan.h>
 #include "platform/window.hpp"
 
 class siofraEngine::platform::Window::InternalWindow
@@ -33,6 +34,17 @@ public:
         return sdlFlags;
     }
 
+    std::vector<const char*> getRequiredVulkanInstanceExtensions()
+    {
+        std::uint32_t extensionCount{};
+        SDL_Vulkan_GetInstanceExtensions(winPtr, &extensionCount, nullptr);
+
+        std::vector<const char*> extensions(extensionCount);
+        SDL_Vulkan_GetInstanceExtensions(winPtr, &extensionCount, extensions.data());
+
+        return extensions;
+    }
+
     /**
      * @brief SDL window destructor
      */
@@ -56,14 +68,16 @@ namespace siofraEngine::platform
         SE_LOG_INFO("Initialized Window");
     }
 
-    Window::~Window()
-    {
-        
-    }
+    Window::~Window() = default;
 
     WindowFlags Window::getFlags()
     {
         return flags;
+    }
+
+    std::vector<const char*> Window::getRequiredVulkanInstanceExtensions()
+    {
+        return _internalWindow->getRequiredVulkanInstanceExtensions();
     }
 }
 
