@@ -19,13 +19,17 @@ namespace siofraEngine::systems
 
         /**
          * @brief Add instance extensions to the VulkanInstance
+         * 
+         * @returns Reference to the VulkanInstance builder
          */
-        VulkanInstance::Builder& withInstanceExtensions(std::vector<const char*> instanceExtensions);
+        VulkanInstance::Builder& withInstanceExtensions(std::vector<const char*> instanceExtensions) noexcept;
 
         /**
          * @brief Build the VulkanInstance
+         * 
+         * @returns The final VulkanInstance
          */
-        VulkanInstance build();
+        VulkanInstance build() const;
 
     private:
         /**
@@ -35,7 +39,10 @@ namespace siofraEngine::systems
 
         /**
          * @brief Check support for specified instance extensions
+         * 
+         * @param checkExtensions Instance extensions to check
+         * @returns True if specified extensions are supported, otherwise false
          */
-        bool checkInstanceExtensionSupport(std::vector<const char*>* checkExtensions);
+        bool checkInstanceExtensionSupport(std::vector<const char*> const &checkExtensions) const noexcept;
     };
 }

@@ -1,35 +1,17 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include <memory>
 #include <cstdint>
+#include "platform/iwindow.hpp"
 #include "core/assertions.hpp"
 
 namespace siofraEngine::platform
 {
     /**
-     * @brief Flgas to specify window properties
-     */
-    enum class WindowFlags
-    {
-        WINDOW_VULKAN = 1 << 0
-    };
-
-    inline WindowFlags operator|(WindowFlags a, WindowFlags b)
-    {
-        return static_cast<WindowFlags>(static_cast<int>(a) | static_cast<int>(b));
-    }
-
-    inline WindowFlags operator&(WindowFlags a, WindowFlags b)
-    {
-        return static_cast<WindowFlags>(static_cast<int>(a) & static_cast<int>(b));
-    }
-
-    /**
      * @brief Wraps plaftorm specific window logic
      */
-    class Window
+    class Window : public IWindow
     {
     public:
         /**
@@ -53,14 +35,14 @@ namespace siofraEngine::platform
          * 
          * @returns Flags applied to the window
          */
-        WindowFlags getFlags();
+        WindowFlags getFlags() override;
 
         /**
          * @brief Get the names of the Vulkan instance extensions needed to create a surface
          * 
          * @returns Required instance extension names
          */
-        std::vector<const char*> getRequiredVulkanInstanceExtensions();
+        std::vector<const char*> getRequiredVulkanInstanceExtensions() override;
 
     private:
 

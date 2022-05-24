@@ -1,11 +1,11 @@
 #pragma once
 
 #include "core/application.hpp"
-#include "core/applicationBase.hpp"
+#include "core/application/applicationBase.hpp"
 #include "core/logging.hpp"
 #include "core/clock.hpp"
-#include "systems/input/input.hpp"
-#include "systems/renderer/renderer.hpp"
+#include "systems/input/inputSystem.hpp"
+#include "systems/renderer/rendererSystem.hpp"
 #include "platform/window.hpp"
 #include "platform/platform.hpp"
 #include "platform/platformInput.hpp"
@@ -45,12 +45,12 @@ namespace siofraEngine::core
         /**
          * @brief Input system instance
          */
-        siofraEngine::systems::Input inputSystem;
+        siofraEngine::systems::InputSystem inputSystem;
 
         /**
          * @brief Renderer system instance
          */
-        siofraEngine::systems::Renderer rendererSystem;
+        siofraEngine::systems::RendererSystem rendererSystem;
 
         /**
          * @brief Current game instance

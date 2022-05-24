@@ -2,7 +2,7 @@
 
 #include "core/logging.hpp"
 #include "systems/renderer/irendererBackend.hpp"
-#include "platform/window.hpp"
+#include "platform/iwindow.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanInstanceBuilder.hpp"
 
 namespace siofraEngine::systems
@@ -15,8 +15,10 @@ namespace siofraEngine::systems
     public:
         /**
          * @brief VulkanRenderer constructor
+         * 
+         * @param window Window to be rendered to
          */
-        VulkanRenderer(siofraEngine::platform::Window &window);
+        VulkanRenderer(siofraEngine::platform::IWindow &window);
 
     private:
         /**

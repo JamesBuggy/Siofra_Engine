@@ -8,15 +8,15 @@ namespace siofraEngine::systems
 
     }
 
-    VulkanInstance::Builder& VulkanInstance::Builder::withInstanceExtensions(std::vector<const char*> instanceExtensions)
+    VulkanInstance::Builder& VulkanInstance::Builder::withInstanceExtensions(std::vector<const char*> instanceExtensions) noexcept
     {
         this->instanceExtensions = instanceExtensions;
         return *this;
     }
 
-    VulkanInstance VulkanInstance::Builder::build()
+    VulkanInstance VulkanInstance::Builder::build() const
     {
-        if (!checkInstanceExtensionSupport(&instanceExtensions))
+        if (!checkInstanceExtensionSupport(instanceExtensions))
         {
             throw std::runtime_error("VkInstance does not support required extensions");
         }
@@ -49,7 +49,7 @@ namespace siofraEngine::systems
         return VulkanInstance(instance);
     }
 
-    bool VulkanInstance::Builder::checkInstanceExtensionSupport(std::vector<const char*>* checkExtensions)
+    bool VulkanInstance::Builder::checkInstanceExtensionSupport(std::vector<const char*> const &checkExtensions) const noexcept
     {
         uint32_t extensionCount = 0;
         vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
@@ -57,7 +57,7 @@ namespace siofraEngine::systems
         std::vector<VkExtensionProperties> extensions(extensionCount);
         vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 
-        for (const auto& checkExtenion : *checkExtensions)
+        for (const auto& checkExtenion : checkExtensions)
         {
             bool hasExtension = false;
             for (const auto& extension : extensions)

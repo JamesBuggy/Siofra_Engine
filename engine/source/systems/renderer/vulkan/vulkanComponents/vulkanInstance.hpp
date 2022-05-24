@@ -22,6 +22,8 @@ namespace siofraEngine::systems
 
         /**
          * @brief VulkanInstance constructor
+         * 
+         * @param instance VkInstance handle
          */
         VulkanInstance(VkInstance instance);
         
@@ -40,7 +42,7 @@ namespace siofraEngine::systems
          * 
          * @returns The vulkan instance handle
          */
-        VkInstance getInstance();
+        VkInstance getInstance() const noexcept;
 
     private:
         /**

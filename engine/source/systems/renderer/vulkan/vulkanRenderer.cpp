@@ -2,7 +2,7 @@
 
 namespace siofraEngine::systems
 {
-    VulkanRenderer::VulkanRenderer(siofraEngine::platform::Window &window)
+    VulkanRenderer::VulkanRenderer(siofraEngine::platform::IWindow &window)
     {
         instance = VulkanInstance::Builder()
 			.withInstanceExtensions(window.getRequiredVulkanInstanceExtensions())

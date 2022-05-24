@@ -24,7 +24,7 @@ namespace siofraEngine::systems
         vkDestroyInstance(instance, nullptr);
     }
 
-    VkInstance VulkanInstance::getInstance()
+    VkInstance VulkanInstance::getInstance() const noexcept
     {
         return instance;
     }
