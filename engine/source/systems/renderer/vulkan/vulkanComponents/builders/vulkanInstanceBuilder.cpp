@@ -2,10 +2,25 @@
 
 namespace siofraEngine::systems
 {
-    VulkanInstance::Builder::Builder() :
-		instanceExtensions{}
+    VulkanInstance::Builder& VulkanInstance::Builder::withApiVersion(uint32_t major, uint32_t minor) noexcept
     {
+        apiMajorVersion = major;
+        apiMinorVersion = minor;
+        return *this;
+    }
 
+    VulkanInstance::Builder& VulkanInstance::Builder::withEngineVersion(uint32_t major, uint32_t minor) noexcept
+    {
+        engineMajorVersion = major;
+        engineMinorVersion = minor;
+        return *this;
+    }
+
+    VulkanInstance::Builder& VulkanInstance::Builder::withApplicationVersion(uint32_t major, uint32_t minor) noexcept
+    {
+        applicationMajorVersion = major;
+        applicationMinorVersion = minor;
+        return *this;
     }
 
     VulkanInstance::Builder& VulkanInstance::Builder::withInstanceExtensions(std::vector<const char*> instanceExtensions) noexcept
@@ -24,10 +39,10 @@ namespace siofraEngine::systems
         VkApplicationInfo appInfo = {};
         appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
         appInfo.pApplicationName = "Vulkan App";
-        appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+        appInfo.applicationVersion = VK_MAKE_API_VERSION(0, applicationMajorVersion, applicationMinorVersion, 0);
         appInfo.pEngineName = "No Engine";
-        appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-        appInfo.apiVersion = VK_API_VERSION_1_0;
+        appInfo.engineVersion = VK_MAKE_API_VERSION(0, engineMajorVersion, engineMinorVersion, 0);
+        appInfo.apiVersion = VK_MAKE_API_VERSION(0, apiMajorVersion, apiMinorVersion, 0);
 
         VkInstanceCreateInfo createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
