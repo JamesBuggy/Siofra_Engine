@@ -18,7 +18,7 @@ namespace siofraEngine::systems
         /**
          * @brief VulkanInstance default constructor
          */
-        VulkanInstance();
+        VulkanInstance() = default;
 
         /**
          * @brief VulkanInstance constructor
@@ -44,10 +44,17 @@ namespace siofraEngine::systems
          */
         VkInstance getInstance() const noexcept;
 
+        /**
+         * @brief Check if the wrapped handle is initialized
+         * 
+         * @returns True if the wrapped handle is intialized, otherwise false
+         */
+        operator bool() const noexcept;
+
     private:
         /**
          * @brief The vulkan instance handle
          */
-        VkInstance instance;
+        VkInstance instance{ VK_NULL_HANDLE };
     };
 }

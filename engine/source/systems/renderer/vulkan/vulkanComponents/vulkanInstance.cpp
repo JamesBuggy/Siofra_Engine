@@ -2,12 +2,6 @@
 
 namespace siofraEngine::systems
 {
-    VulkanInstance::VulkanInstance() :
-        instance(0)
-    {
-
-    }
-
     VulkanInstance::VulkanInstance(VkInstance instance) :
         instance(instance)
     {
@@ -22,6 +16,11 @@ namespace siofraEngine::systems
     void VulkanInstance::destroy()
     {
         vkDestroyInstance(instance, nullptr);
+    }
+
+    VulkanInstance::operator bool() const noexcept
+    {
+        return instance != VK_NULL_HANDLE;
     }
 
     VkInstance VulkanInstance::getInstance() const noexcept
