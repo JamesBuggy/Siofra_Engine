@@ -20,6 +20,11 @@ namespace siofraEngine::systems
          */
         VulkanRenderer(siofraEngine::platform::IWindow &window);
 
+        /**
+         * @brief VulkanRenderer destructor
+         */
+        ~VulkanRenderer();
+
     private:
         /**
          * @brief The vulkan instance

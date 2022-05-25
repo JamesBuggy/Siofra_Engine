@@ -7,9 +7,14 @@ namespace siofraEngine::systems
         instance = VulkanInstance::Builder()
             .withApiVersion(1, 3)
             .withInstanceExtensions(window.getRequiredVulkanInstanceExtensions())
+#ifdef DEBUG
+            .withDebugUtilities()
+#endif
             .build();
-            
-        SE_LOG_INFO("Created Vulkan renderer");
-        SE_LOG_INFO(instance.getInstance());
     }
+
+     VulkanRenderer::~VulkanRenderer()
+     {
+         instance.destroy();
+     }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vulkan/vulkan.h>
+#include "core/logging.hpp"
 
 namespace siofraEngine::systems
 {
@@ -24,13 +25,9 @@ namespace siofraEngine::systems
          * @brief VulkanInstance constructor
          * 
          * @param instance VkInstance handle
+         * @param debugMessenger Instance debug messenger
          */
-        VulkanInstance(VkInstance instance);
-        
-        /**
-         * @brief VulkanInstance destructor
-         */
-        ~VulkanInstance();
+        VulkanInstance(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger);
 
         /**
          * @brief Destroy the vulkan instance handle
@@ -51,10 +48,32 @@ namespace siofraEngine::systems
          */
         operator bool() const noexcept;
 
+        /**
+         * @brief Log validation layer messages
+         * 
+         * @param messageSeverity Message severity
+         * @param messageType MEssage type
+         * @param pCallbackData Callback data
+         * @param pUserData User data
+         */
+        static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
+        {
+            if (messageSeverity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
+            {
+                SE_LOG_WARNING(pCallbackData->pMessage);
+            }
+            return VK_FALSE;
+        }
+
     private:
         /**
          * @brief The vulkan instance handle
          */
         VkInstance instance{ VK_NULL_HANDLE };
+
+        /**
+         * @brief Instance debug messenger
+         */
+        VkDebugUtilsMessengerEXT debugMessenger{ VK_NULL_HANDLE };
     };
 }

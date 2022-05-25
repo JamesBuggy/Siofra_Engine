@@ -2,30 +2,44 @@
 
 namespace siofraEngine::systems
 {
-    VulkanInstance::Builder& VulkanInstance::Builder::withApiVersion(uint32_t major, uint32_t minor) noexcept
+    VulkanInstance::Builder &VulkanInstance::Builder::withApiVersion(uint32_t major, uint32_t minor) noexcept
     {
         apiMajorVersion = major;
         apiMinorVersion = minor;
         return *this;
     }
 
-    VulkanInstance::Builder& VulkanInstance::Builder::withEngineVersion(uint32_t major, uint32_t minor) noexcept
+    VulkanInstance::Builder &VulkanInstance::Builder::withEngineVersion(uint32_t major, uint32_t minor) noexcept
     {
         engineMajorVersion = major;
         engineMinorVersion = minor;
         return *this;
     }
 
-    VulkanInstance::Builder& VulkanInstance::Builder::withApplicationVersion(uint32_t major, uint32_t minor) noexcept
+    VulkanInstance::Builder &VulkanInstance::Builder::withApplicationVersion(uint32_t major, uint32_t minor) noexcept
     {
         applicationMajorVersion = major;
         applicationMinorVersion = minor;
         return *this;
     }
 
-    VulkanInstance::Builder& VulkanInstance::Builder::withInstanceExtensions(std::vector<const char*> instanceExtensions) noexcept
+    VulkanInstance::Builder &VulkanInstance::Builder::withInstanceExtensions(std::vector<const char *> instanceExtensions) noexcept
     {
-        this->instanceExtensions = instanceExtensions;
+        this->instanceExtensions.insert(this->instanceExtensions.end(), instanceExtensions.begin(), instanceExtensions.end());
+        return *this;
+    }
+
+    VulkanInstance::Builder &VulkanInstance::Builder::withDebugUtilities() noexcept
+    {
+        debugCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+        debugCreateInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+        debugCreateInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+        debugCreateInfo.pfnUserCallback = VulkanInstance::debugCallback;
+        debugCreateInfo.pUserData = nullptr;
+
+        instanceExtensions.insert(instanceExtensions.end(), debugExtensions.begin(), debugExtensions.end());
+        enableDebugUtilities = true;
+
         return *this;
     }
 
@@ -50,21 +64,40 @@ namespace siofraEngine::systems
         createInfo.enabledExtensionCount = static_cast<uint32_t>(instanceExtensions.size());
         createInfo.ppEnabledExtensionNames = instanceExtensions.data();
 
-        createInfo.enabledLayerCount = 0;
-        createInfo.ppEnabledLayerNames = nullptr;
-        createInfo.pNext = nullptr;
+        if (enableDebugUtilities)
+        {
+            createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+            createInfo.ppEnabledLayerNames = validationLayers.data();
+            createInfo.pNext = &debugCreateInfo;
+        }
+        else
+        {
+            createInfo.enabledLayerCount = 0;
+            createInfo.ppEnabledLayerNames = nullptr;
+            createInfo.pNext = nullptr;
+        }
 
-        VkInstance instance = 0;
+        VkInstance instance = VK_NULL_HANDLE;
         VkResult result = vkCreateInstance(&createInfo, nullptr, &instance);
         if (result != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to create a Vulkan instance");
         }
 
-        return VulkanInstance(instance);
+        VkDebugUtilsMessengerEXT debugMessenger = VK_NULL_HANDLE;
+        if (enableDebugUtilities && instance != VK_NULL_HANDLE)
+        {
+            VkResult result = createDebugUtilsMessengerEXT(instance, &debugCreateInfo, nullptr, &debugMessenger);
+            if (result != VK_SUCCESS)
+            {
+                throw std::runtime_error("Failed to create a debug messenger");
+            }
+        }
+
+        return VulkanInstance(instance, debugMessenger);
     }
 
-    bool VulkanInstance::Builder::checkInstanceExtensionSupport(std::vector<const char*> const &checkExtensions) const noexcept
+    bool VulkanInstance::Builder::checkInstanceExtensionSupport(std::vector<const char *> const &checkExtensions) const noexcept
     {
         uint32_t extensionCount = 0;
         vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
@@ -72,10 +105,10 @@ namespace siofraEngine::systems
         std::vector<VkExtensionProperties> extensions(extensionCount);
         vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 
-        for (const auto& checkExtenion : checkExtensions)
+        for (const auto &checkExtenion : checkExtensions)
         {
             bool hasExtension = false;
-            for (const auto& extension : extensions)
+            for (const auto &extension : extensions)
             {
                 if (strcmp(checkExtenion, extension.extensionName) == 0)
                 {
@@ -91,5 +124,18 @@ namespace siofraEngine::systems
         }
 
         return true;
+    }
+
+    VkResult VulkanInstance::Builder::createDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo, const VkAllocationCallbacks *pAllocator, VkDebugUtilsMessengerEXT *pDebugMessenger) const noexcept
+    {
+        auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+        if (func != nullptr)
+        {
+            return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
+        }
+        else
+        {
+            return VK_ERROR_EXTENSION_NOT_PRESENT;
+        }
     }
 }

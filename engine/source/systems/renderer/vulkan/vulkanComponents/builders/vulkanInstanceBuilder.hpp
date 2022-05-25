@@ -46,6 +46,13 @@ namespace siofraEngine::systems
         VulkanInstance::Builder& withInstanceExtensions(std::vector<const char*> instanceExtensions) noexcept;
 
         /**
+         * @brief Enable validation layers and debug callback
+         * 
+         * @returns Reference to the VulkanInstance builder
+         */
+        VulkanInstance::Builder& withDebugUtilities() noexcept;
+
+        /**
          * @brief Build the VulkanInstance
          * 
          * @returns The final VulkanInstance
@@ -53,11 +60,6 @@ namespace siofraEngine::systems
         VulkanInstance build() const;
 
     private:
-        /**
-         * @brief Extensions to include in the Vulkan instance
-         */
-        std::vector<const char*> instanceExtensions{ };
-
         /**
          * @brief Vulkan API major version number
          */
@@ -89,11 +91,47 @@ namespace siofraEngine::systems
         uint32_t applicationMinorVersion{ 0 };
 
         /**
+         * @brief Whether or not to enable validation layers and debug callback
+         */
+        bool enableDebugUtilities{ false };
+
+        /**
+         * @brief Extensions to include in the Vulkan instance
+         */
+        std::vector<const char*> instanceExtensions{ };
+
+        /**
+         * @brief Instance validation layers
+         */
+        std::vector<const char*> validationLayers{ "VK_LAYER_KHRONOS_validation" };
+
+        /**
+         * @brief Instance debug extensions
+         */
+        std::vector<const char*> debugExtensions = { VK_EXT_DEBUG_UTILS_EXTENSION_NAME };
+
+        /**
+         * @brief Debug create info
+         */
+        VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{ };
+
+        /**
          * @brief Check support for specified instance extensions
          * 
          * @param checkExtensions Instance extensions to check
          * @returns True if specified extensions are supported, otherwise false
          */
         bool checkInstanceExtensionSupport(std::vector<const char*> const &checkExtensions) const noexcept;
+
+        /**
+         * @brief Create a persistent debug messenger
+         * 
+         * @param instance Vulkan instance to create debug messenger on
+         * @param createInfo Debug messenger create info
+         * @param allocator Custom memory allocator
+         * @param debugMessenger Debug messenger handle to be populated
+         * @returns True if specified extensions are supported, otherwise false
+         */
+        VkResult createDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo, const VkAllocationCallbacks *pAllocator, VkDebugUtilsMessengerEXT *pDebugMessenger) const noexcept;
     };
 }
