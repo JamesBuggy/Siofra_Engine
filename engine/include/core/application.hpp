@@ -2,14 +2,7 @@
 
 #include <memory>
 #include "defines.hpp"
-#include "platform/window.hpp"
-#include "platform/platform.hpp"
-#include "platform/platformInput.hpp"
-#include "platform/platformClock.hpp"
-#include "core/logging.hpp"
 #include "core/game.hpp"
-#include "core/clock.hpp"
-#include "systems/input.hpp"
 
 namespace siofraEngine::core
 {
@@ -22,7 +15,7 @@ namespace siofraEngine::core
         /**
          * @brief Application constructor
          * 
-         * @param game Instanse of game to execute
+         * @param game Instance of game to execute
          */
         Application(std::unique_ptr<siofraEngine::core::Game> game);
         
@@ -37,24 +30,15 @@ namespace siofraEngine::core
         void execute();
 
     private:
-        /**
-         * @brief Input system instance
-         */
-        siofraEngine::systems::Input inputSystem;
 
         /**
-         * @brief Window instance
+         * @brief Application internal implementation
          */
-        siofraEngine::platform::Window window;
+        class Impl;
 
         /**
-         * @brief Application closk instance
+         * @brief Access to the application internal implementation
          */
-        siofraEngine::core::Clock clock;
-
-        /**
-         * @brief Current game instance
-         */
-        std::unique_ptr<siofraEngine::core::Game> game;
+        std::unique_ptr<Impl> implementation;
     };
 }

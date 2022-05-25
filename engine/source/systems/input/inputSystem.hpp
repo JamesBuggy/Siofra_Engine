@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include "core/logging.hpp"
 #include "core/input/keyCodes.hpp"
 #include "core/input/mouseCodes.hpp"
 #include "platform/iplatformInput.hpp"
@@ -11,7 +12,7 @@ namespace siofraEngine::systems
     /**
      * @brief Input system. Maintains keyboard state for the current and previous updates.
      */
-    class Input
+    class InputSystem
     {
     public:
 
@@ -20,7 +21,7 @@ namespace siofraEngine::systems
          * 
          * @param platformInput Access to platform specific input logic
          */
-        Input(std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput);
+        InputSystem(std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput);
 
         /**
          * @brief Updates the current and previous keyboard state
