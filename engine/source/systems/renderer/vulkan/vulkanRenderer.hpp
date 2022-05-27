@@ -1,9 +1,10 @@
 #pragma once
 
 #include "core/logging.hpp"
-#include "systems/renderer/irendererBackend.hpp"
 #include "platform/iwindow.hpp"
+#include "systems/renderer/irendererBackend.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanInstanceBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSurfaceBuilder.hpp"
 
 namespace siofraEngine::systems
 {
@@ -20,16 +21,16 @@ namespace siofraEngine::systems
          */
         VulkanRenderer(siofraEngine::platform::IWindow &window);
 
-        /**
-         * @brief VulkanRenderer destructor
-         */
-        ~VulkanRenderer();
-
     private:
         /**
          * @brief The vulkan instance
          */
-        VulkanInstance instance;
+        std::unique_ptr<IVulkanInstance> instance{ nullptr };
+
+        /**
+         * @brief Vulkan surface
+         */
+        std::unique_ptr<IVulkanSurface> surface;
     
     };
 }
