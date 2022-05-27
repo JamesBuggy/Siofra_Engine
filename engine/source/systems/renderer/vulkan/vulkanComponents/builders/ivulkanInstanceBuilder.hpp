@@ -15,6 +15,8 @@ namespace siofraEngine::systems
         /**
          * @brief Set Vulkan API version
          * 
+         * @param major Vulkan API major version
+         * @param minor Vulkan API minor version
          * @returns Reference to the builder
          */
         virtual IVulkanInstanceBuilder& withApiVersion(uint32_t major, uint32_t minor) noexcept = 0;
@@ -22,6 +24,8 @@ namespace siofraEngine::systems
         /**
          * @brief Set engine version
          * 
+         * @param major Engine major version
+         * @param minor Engine minor version
          * @returns Reference to the builder
          */
         virtual IVulkanInstanceBuilder& withEngineVersion(uint32_t major, uint32_t minor) noexcept = 0;
@@ -29,6 +33,8 @@ namespace siofraEngine::systems
         /**
          * @brief Set application version
          * 
+         * @param major Application major version
+         * @param minor Application minor version
          * @returns Reference to the builder
          */
         virtual IVulkanInstanceBuilder& withApplicationVersion(uint32_t major, uint32_t minor) noexcept = 0;
@@ -36,6 +42,7 @@ namespace siofraEngine::systems
         /**
          * @brief Add instance extensions to the Vulkan instance
          * 
+         * @param instanceExtensions Instance extensions
          * @returns Reference to the builder
          */
         virtual IVulkanInstanceBuilder& withInstanceExtensions(std::vector<const char*> instanceExtensions) noexcept = 0;

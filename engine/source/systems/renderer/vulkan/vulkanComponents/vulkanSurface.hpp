@@ -18,11 +18,6 @@ namespace siofraEngine::systems
         class Builder;
 
         /**
-         * @brief VulkanSurface default constructor
-         */
-        VulkanSurface() = default;
-
-        /**
          * @brief VulkanSurface constructor
          */
         VulkanSurface(VkSurfaceKHR surface, siofraEngine::systems::IVulkanInstance const *instance);
