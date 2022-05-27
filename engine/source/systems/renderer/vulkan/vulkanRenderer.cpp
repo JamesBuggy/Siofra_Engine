@@ -4,17 +4,17 @@ namespace siofraEngine::systems
 {
     VulkanRenderer::VulkanRenderer(siofraEngine::platform::IWindow &window)
     {
-        instance = VulkanInstance::Builder()
+        instance = std::make_unique<VulkanInstance>(VulkanInstance::Builder()
             .withApiVersion(1, 3)
             .withInstanceExtensions(window.getRequiredVulkanInstanceExtensions())
 #ifdef DEBUG
             .withDebugUtilities()
 #endif
-            .build();
-    }
+            .build());
 
-     VulkanRenderer::~VulkanRenderer()
-     {
-         instance.destroy();
-     }
+        surface = std::make_unique<VulkanSurface>(VulkanSurface::Builder()
+            .withInstance(instance.get())
+            .withWindow(&window)
+            .build());
+    }
 }

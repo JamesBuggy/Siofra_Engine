@@ -1,14 +1,14 @@
 #pragma once
 
-#include <vulkan/vulkan.h>
 #include "core/logging.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/ivulkanInstance.hpp"
 
 namespace siofraEngine::systems
 {
     /**
      * @brief Maintains a vulkan instance handle
      */
-    class VulkanInstance
+    class VulkanInstance : public IVulkanInstance
     {
     public:
         /**
@@ -25,28 +25,56 @@ namespace siofraEngine::systems
          * @brief VulkanInstance constructor
          * 
          * @param instance VkInstance handle
-         * @param debugMessenger Instance debug messenger
+         * @param debugMessenger Instance debug messenger handle
          */
         VulkanInstance(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger);
 
         /**
-         * @brief Destroy the vulkan instance handle
+         * @brief VulkanInstance copy constructor
+         * 
+         * @param other VulkanInstance to copy
          */
-        void destroy();
+        VulkanInstance(VulkanInstance const &other) = delete;
 
         /**
-         * @brief Get the vulkan instance handle
+         * @brief VulkanInstance move constructor
          * 
-         * @returns The vulkan instance handle
+         * @param other VulkanInstance to move
          */
-        VkInstance getInstance() const noexcept;
+        VulkanInstance(VulkanInstance &&other) noexcept;
+
+        /**
+         * @brief VulkanInstance destructor
+         */
+        ~VulkanInstance();
+
+        /**
+         * @brief VulkanInstance copy assignment
+         * 
+         * @param other VulkanInstance to copy
+         */
+        VulkanInstance& operator=(const VulkanInstance &other) = delete;
+
+        /**
+         * @brief VulkanInstance move assignment
+         * 
+         * @param other VulkanInstance to move
+         */
+        VulkanInstance& operator=(VulkanInstance &&other) noexcept;
 
         /**
          * @brief Check if the wrapped handle is initialized
          * 
          * @returns True if the wrapped handle is intialized, otherwise false
          */
-        operator bool() const noexcept;
+        operator bool() const noexcept override;
+
+        /**
+         * @brief Get the vulkan instance handle
+         * 
+         * @returns The vulkan instance handle
+         */
+        VkInstance getInstance() const noexcept override;
 
         /**
          * @brief Log validation layer messages
@@ -72,7 +100,7 @@ namespace siofraEngine::systems
         VkInstance instance{ VK_NULL_HANDLE };
 
         /**
-         * @brief Instance debug messenger
+         * @brief Instance debug messenger handle
          */
         VkDebugUtilsMessengerEXT debugMessenger{ VK_NULL_HANDLE };
     };

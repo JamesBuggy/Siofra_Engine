@@ -35,14 +35,23 @@ namespace siofraEngine::platform
          * 
          * @returns Flags applied to the window
          */
-        WindowFlags getFlags() override;
+        WindowFlags getFlags() const override;
 
         /**
          * @brief Get the names of the Vulkan instance extensions needed to create a surface
          * 
          * @returns Required instance extension names
          */
-        std::vector<const char*> getRequiredVulkanInstanceExtensions() override;
+        std::vector<const char*> getRequiredVulkanInstanceExtensions() const override;
+
+        /**
+         * @brief Creates a vulkan surface for the given vulkan instance
+         * 
+         * @param instance Vulkan instance to relate the surface to
+         * @param surface Vulkan surface handle to be populated
+         * @returns Result of the surface creation
+         */
+        bool createVulkanWindowSurface(VkInstance const instance, VkSurfaceKHR &surface) const override;
 
     private:
 

@@ -22,7 +22,7 @@ public:
         SE_ASSERT_TRUE(winPtr != NULL, "Failed to create SDL window");
     }
 
-    Uint32 mapFlags(WindowFlags flags)
+    Uint32 mapFlags(WindowFlags flags) const
     {
         Uint32 sdlFlags = 0;
 
@@ -34,7 +34,7 @@ public:
         return sdlFlags;
     }
 
-    std::vector<const char*> getRequiredVulkanInstanceExtensions()
+    std::vector<const char*> getRequiredVulkanInstanceExtensions() const
     {
         std::uint32_t extensionCount{};
         SDL_Vulkan_GetInstanceExtensions(winPtr, &extensionCount, nullptr);
@@ -43,6 +43,12 @@ public:
         SDL_Vulkan_GetInstanceExtensions(winPtr, &extensionCount, extensions.data());
 
         return extensions;
+    }
+
+    bool createVulkanWindowSurface(VkInstance const instance, VkSurfaceKHR &surface) const
+    {
+        SDL_bool result = SDL_Vulkan_CreateSurface(winPtr, instance, &surface);
+        return result == SDL_TRUE;
     }
 
     /**
@@ -70,14 +76,19 @@ namespace siofraEngine::platform
 
     Window::~Window() = default;
 
-    WindowFlags Window::getFlags()
+    WindowFlags Window::getFlags() const
     {
         return flags;
     }
 
-    std::vector<const char*> Window::getRequiredVulkanInstanceExtensions()
+    std::vector<const char*> Window::getRequiredVulkanInstanceExtensions() const
     {
         return _internalWindow->getRequiredVulkanInstanceExtensions();
+    }
+
+    bool Window::createVulkanWindowSurface(VkInstance const instance, VkSurfaceKHR &surface) const
+    {
+        return _internalWindow->createVulkanWindowSurface(instance, surface);
     }
 }
 
