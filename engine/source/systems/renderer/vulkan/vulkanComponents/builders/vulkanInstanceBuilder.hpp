@@ -1,63 +1,63 @@
 #pragma once
 
 #include <stdexcept>
-#include <vector>
 #include "systems/renderer/vulkan/vulkanComponents/vulkanInstance.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanInstanceBuilder.hpp"
 
 namespace siofraEngine::systems
 {
     /**
-     * @brief VulkanInstance builder
+     * @brief Vulkan instance builder
      */
-    class VulkanInstance::Builder
+    class VulkanInstance::Builder : public IVulkanInstanceBuilder
     {
     public:
         /**
-         * @brief VulkanInstance builder constructor
+         * @brief Vulkan instance builder constructor
          */
         Builder() = default;
 
         /**
          * @brief Set Vulkan API version
          * 
-         * @returns Reference to the VulkanInstance builder
+         * @returns Reference to the builder
          */
-        VulkanInstance::Builder& withApiVersion(uint32_t major, uint32_t minor) noexcept;
+        IVulkanInstanceBuilder& withApiVersion(uint32_t major, uint32_t minor) noexcept override;
 
         /**
          * @brief Set engine version
          * 
-         * @returns Reference to the VulkanInstance builder
+         * @returns Reference to the builder
          */
-        VulkanInstance::Builder& withEngineVersion(uint32_t major, uint32_t minor) noexcept;
+        IVulkanInstanceBuilder& withEngineVersion(uint32_t major, uint32_t minor) noexcept override;
 
         /**
          * @brief Set application version
          * 
-         * @returns Reference to the VulkanInstance builder
+         * @returns Reference to the builder
          */
-        VulkanInstance::Builder& withApplicationVersion(uint32_t major, uint32_t minor) noexcept;
+        IVulkanInstanceBuilder& withApplicationVersion(uint32_t major, uint32_t minor) noexcept override;
 
         /**
-         * @brief Add instance extensions to the VulkanInstance
+         * @brief Add instance extensions to the Vulkan instance
          * 
-         * @returns Reference to the VulkanInstance builder
+         * @returns Reference to the builder
          */
-        VulkanInstance::Builder& withInstanceExtensions(std::vector<const char*> instanceExtensions) noexcept;
+        IVulkanInstanceBuilder& withInstanceExtensions(std::vector<const char*> instanceExtensions) noexcept override;
 
         /**
          * @brief Enable validation layers and debug callback
          * 
-         * @returns Reference to the VulkanInstance builder
+         * @returns Reference to the builder
          */
-        VulkanInstance::Builder& withDebugUtilities() noexcept;
+        IVulkanInstanceBuilder& withDebugUtilities() noexcept override;
 
         /**
-         * @brief Build the VulkanInstance
+         * @brief Build the Vulkan instance
          * 
-         * @returns The final VulkanInstance
+         * @returns The final Vulkan instance
          */
-        VulkanInstance build() const;
+        std::unique_ptr<IVulkanInstance> build() const override;
 
     private:
         /**

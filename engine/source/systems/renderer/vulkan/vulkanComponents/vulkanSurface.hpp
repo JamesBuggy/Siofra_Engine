@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vulkan/vulkan.h>
 #include "core/logging.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanInstance.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanSurface.hpp"

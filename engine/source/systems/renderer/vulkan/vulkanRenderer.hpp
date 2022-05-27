@@ -30,7 +30,7 @@ namespace siofraEngine::systems
         /**
          * @brief Vulkan surface
          */
-        std::unique_ptr<IVulkanSurface> surface;
+        std::unique_ptr<IVulkanSurface> surface{ nullptr };
     
     };
 }

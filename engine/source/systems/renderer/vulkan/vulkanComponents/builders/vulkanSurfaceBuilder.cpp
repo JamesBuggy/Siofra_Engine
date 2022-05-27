@@ -2,19 +2,19 @@
 
 namespace siofraEngine::systems
 {
-    VulkanSurface::Builder& VulkanSurface::Builder::withInstance(siofraEngine::systems::IVulkanInstance const *instance) noexcept
+    IVulkanSurfaceBuilder& VulkanSurface::Builder::withInstance(siofraEngine::systems::IVulkanInstance const *instance) noexcept
     {
         this->instance = instance;
         return *this;
     }
 
-    VulkanSurface::Builder& VulkanSurface::Builder::withWindow(siofraEngine::platform::IWindow const *window) noexcept
+    IVulkanSurfaceBuilder& VulkanSurface::Builder::withWindow(siofraEngine::platform::IWindow const *window) noexcept
     {
         this->window = window;
         return *this;
     }
 
-    VulkanSurface VulkanSurface::Builder::build() const
+    std::unique_ptr<IVulkanSurface> VulkanSurface::Builder::build() const
     {
         VkSurfaceKHR surface = VK_NULL_HANDLE;
         if (!window->createVulkanWindowSurface(instance->getInstance(), surface))
@@ -22,6 +22,6 @@ namespace siofraEngine::systems
             throw std::runtime_error("Failed to create window surface");
         }
 
-        return VulkanSurface(surface, instance);
+        return std::make_unique<VulkanSurface>(surface, instance);
     }
 }

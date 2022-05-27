@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vulkan/vulkan.h>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanComponent.hpp"
 
 namespace siofraEngine::systems
