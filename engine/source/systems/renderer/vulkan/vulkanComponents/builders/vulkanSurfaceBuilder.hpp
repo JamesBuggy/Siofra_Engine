@@ -1,49 +1,52 @@
+#pragma once
+
 #include "systems/renderer/vulkan/vulkanComponents/vulkanSurface.hpp"
-#include "systems/renderer/vulkan/vulkanComponents/ivulkanInstance.hpp"
-#include "platform/iwindow.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanSurfaceBuilder.hpp"
 
 namespace siofraEngine::systems
 {
     /**
-     * @brief VulkanSurface builder
+     * @brief Vulkan surface builder
      */
-    class VulkanSurface::Builder
+    class VulkanSurface::Builder : public IVulkanSurfaceBuilder
     {
     public:
         /**
-         * @brief VulkanSurface builder constructor
+         * @brief Vulkan surface builder constructor
          */
         Builder() = default;
 
         /**
-         * @brief Specify the vulkan instance that the VulkanSurface should relate to
+         * @brief Specify the vulkan instance that the Vulkan surface should relate to
          * 
-         * @returns Reference to the VulkanSurface builder
+         * @param instance The vulkan instance that the Vulkan surface should relate to
+         * @returns Reference to the Vulkan surface builder
          */
-        VulkanSurface::Builder& withInstance(siofraEngine::systems::IVulkanInstance const *instance) noexcept;
+        IVulkanSurfaceBuilder& withInstance(IVulkanInstance const *instance) noexcept override;
         
         /**
-         * @brief Specify the window that the VulkanSurface should relate to
+         * @brief Specify the window that the Vulkan surface should relate to
          * 
-         * @returns Reference to the VulkanSurface builder
+         * @param window The window that the Vulkan surface should relate to
+         * @returns Reference to the Vulkan surface builder
          */
-        VulkanSurface::Builder& withWindow(siofraEngine::platform::IWindow const *window) noexcept;
+        IVulkanSurfaceBuilder& withWindow(siofraEngine::platform::IWindow const *window) noexcept override;
 
         /**
-         * @brief Build the VulkanSurface
+         * @brief Build the Vulkan surface
          * 
-         * @returns The final VulkanSurface
+         * @returns The final Vulkan surface
          */
-        VulkanSurface build() const;
+        std::unique_ptr<IVulkanSurface> build() const override;
 
     private:
         /**
-         * @brief The vulkan instance that the VulkanSurface should relate to
+         * @brief The vulkan instance that the Vulkan surface should relate to
          */
-        siofraEngine::systems::IVulkanInstance const *instance{ nullptr };
+        IVulkanInstance const *instance{ nullptr };
 
         /**
-         * @brief The window that the VulkanSurface should relate to
+         * @brief The window that the Vulkan surface should relate to
          */
         siofraEngine::platform::IWindow const *window{ nullptr };
     };

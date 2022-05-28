@@ -17,11 +17,6 @@ namespace siofraEngine::systems
         class Builder;
 
         /**
-         * @brief VulkanInstance default constructor
-         */
-        VulkanInstance() = default;
-
-        /**
          * @brief VulkanInstance constructor
          * 
          * @param instance VkInstance handle

@@ -5,6 +5,8 @@
 #include "systems/renderer/irendererBackend.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanInstanceBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSurfaceBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDeviceBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanQueueBuilder.hpp"
 
 namespace siofraEngine::systems
 {
@@ -30,7 +32,11 @@ namespace siofraEngine::systems
         /**
          * @brief Vulkan surface
          */
-        std::unique_ptr<IVulkanSurface> surface;
-    
+        std::unique_ptr<IVulkanSurface> surface{ nullptr };
+
+        /**
+         * @brief Vulkan device
+         */
+        std::unique_ptr<IVulkanDevice> device{ nullptr };
     };
 }

@@ -6,7 +6,7 @@
 namespace siofraEngine::platform
 {
     /**
-     * @brief Flgas to specify window properties
+     * @brief Flags to specify window properties
      */
     enum class WindowFlags
     {

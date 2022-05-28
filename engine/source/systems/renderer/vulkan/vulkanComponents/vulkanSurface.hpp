@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vulkan/vulkan.h>
 #include "core/logging.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanInstance.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanSurface.hpp"
@@ -19,14 +18,12 @@ namespace siofraEngine::systems
         class Builder;
 
         /**
-         * @brief VulkanSurface default constructor
-         */
-        VulkanSurface() = default;
-
-        /**
          * @brief VulkanSurface constructor
+         * 
+         * @param surface Vulkan surface handle
+         * @param instance Vulkan instance to which the surface relates
          */
-        VulkanSurface(VkSurfaceKHR surface, siofraEngine::systems::IVulkanInstance const *instance);
+        VulkanSurface(VkSurfaceKHR surface, IVulkanInstance const *instance);
 
         /**
          * @brief VulkanSurface copy constructor
@@ -81,6 +78,6 @@ namespace siofraEngine::systems
          */
         VkSurfaceKHR surface{ VK_NULL_HANDLE };
 
-        siofraEngine::systems::IVulkanInstance const *instance{ nullptr };
+        IVulkanInstance const *instance{ nullptr };
     };
 }

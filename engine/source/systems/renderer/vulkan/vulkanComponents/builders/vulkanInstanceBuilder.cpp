@@ -2,34 +2,40 @@
 
 namespace siofraEngine::systems
 {
-    VulkanInstance::Builder &VulkanInstance::Builder::withApiVersion(uint32_t major, uint32_t minor) noexcept
+    IVulkanInstanceBuilder& VulkanInstance::Builder::withApiVersion(uint32_t major, uint32_t minor) noexcept
     {
         apiMajorVersion = major;
         apiMinorVersion = minor;
         return *this;
     }
 
-    VulkanInstance::Builder &VulkanInstance::Builder::withEngineVersion(uint32_t major, uint32_t minor) noexcept
+    IVulkanInstanceBuilder& VulkanInstance::Builder::withEngineVersion(uint32_t major, uint32_t minor) noexcept
     {
         engineMajorVersion = major;
         engineMinorVersion = minor;
         return *this;
     }
 
-    VulkanInstance::Builder &VulkanInstance::Builder::withApplicationVersion(uint32_t major, uint32_t minor) noexcept
+    IVulkanInstanceBuilder& VulkanInstance::Builder::withApplicationVersion(uint32_t major, uint32_t minor) noexcept
     {
         applicationMajorVersion = major;
         applicationMinorVersion = minor;
         return *this;
     }
 
-    VulkanInstance::Builder &VulkanInstance::Builder::withInstanceExtensions(std::vector<const char *> instanceExtensions) noexcept
+    IVulkanInstanceBuilder& VulkanInstance::Builder::withInstanceExtensions(std::vector<const char *> instanceExtensions) noexcept
     {
         this->instanceExtensions.insert(this->instanceExtensions.end(), instanceExtensions.begin(), instanceExtensions.end());
         return *this;
     }
 
-    VulkanInstance::Builder &VulkanInstance::Builder::withDebugUtilities() noexcept
+    IVulkanInstanceBuilder& VulkanInstance::Builder::withValidationLayers(std::vector<const char*> validationLayers) noexcept
+    {
+        this->validationLayers.insert(this->validationLayers.end(), validationLayers.begin(), validationLayers.end());
+        return *this;
+    }
+
+    IVulkanInstanceBuilder& VulkanInstance::Builder::withDebugUtilities() noexcept
     {
         debugCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
         debugCreateInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
@@ -43,7 +49,7 @@ namespace siofraEngine::systems
         return *this;
     }
 
-    VulkanInstance VulkanInstance::Builder::build() const
+    std::unique_ptr<IVulkanInstance> VulkanInstance::Builder::build() const
     {
         if (!checkInstanceExtensionSupport(instanceExtensions))
         {
@@ -63,17 +69,15 @@ namespace siofraEngine::systems
         createInfo.pApplicationInfo = &appInfo;
         createInfo.enabledExtensionCount = static_cast<uint32_t>(instanceExtensions.size());
         createInfo.ppEnabledExtensionNames = instanceExtensions.data();
+        createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+        createInfo.ppEnabledLayerNames = validationLayers.data();
 
         if (enableDebugUtilities)
         {
-            createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
-            createInfo.ppEnabledLayerNames = validationLayers.data();
             createInfo.pNext = &debugCreateInfo;
         }
         else
         {
-            createInfo.enabledLayerCount = 0;
-            createInfo.ppEnabledLayerNames = nullptr;
             createInfo.pNext = nullptr;
         }
 
@@ -94,7 +98,7 @@ namespace siofraEngine::systems
             }
         }
 
-        return VulkanInstance(instance, debugMessenger);
+        return std::make_unique<VulkanInstance>(instance, debugMessenger);
     }
 
     bool VulkanInstance::Builder::checkInstanceExtensionSupport(std::vector<const char *> const &checkExtensions) const noexcept

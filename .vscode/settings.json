@@ -53,6 +53,7 @@
         "functional": "cpp",
         "span": "cpp",
         "sstream": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "set": "cpp"
     }
 }
