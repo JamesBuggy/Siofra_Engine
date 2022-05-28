@@ -2,6 +2,12 @@
 
 namespace siofraEngine::systems
 {
+    VulkanDevice::Builder::Builder(IVulkanQueueBuilder& vulkanQueueBuilder) :
+        vulkanQueueBuilder{vulkanQueueBuilder}
+    {
+
+    }
+
     IVulkanDeviceBuilder& VulkanDevice::Builder::withApiVersionSupport(uint32_t major, uint32_t minor) noexcept
     {
         apiMinimumMajorVersion = major;
@@ -45,7 +51,17 @@ namespace siofraEngine::systems
         VulkanDevice::Builder::QueueFamilyIndicies queueFamilyIndicies = findDeviceQueueFamilyIndicies(physicalDevice, surface);
         VkDevice logicalDevice = createLogicalDevice(physicalDevice, validationLayers, requiredDeviceExtensions, queueFamilyIndicies);
 
-        return std::make_unique<VulkanDevice>(physicalDevice, logicalDevice);
+        vulkanQueueBuilder
+            .withLogicalDevice(logicalDevice)
+            .withQueueIndex(0);
+
+        return std::make_unique<VulkanDevice>(
+            physicalDevice,
+            logicalDevice,
+            vulkanQueueBuilder.withQueueFamilyIndex(queueFamilyIndicies.graphics).build(),
+            vulkanQueueBuilder.withQueueFamilyIndex(queueFamilyIndicies.presentation).build(),
+            vulkanQueueBuilder.withQueueFamilyIndex(queueFamilyIndicies.transfer).build(),
+            vulkanQueueBuilder.withQueueFamilyIndex(queueFamilyIndicies.compute).build());
     }
 
     VkPhysicalDevice VulkanDevice::Builder::findPhysicalDevice(IVulkanInstance const *instance, IVulkanSurface const *surface, VulkanDeviceQueueFamilies const requiredQueueFamilies, std::vector<const char*> const requiredDeviceExtensions) const
@@ -85,7 +101,7 @@ namespace siofraEngine::systems
         if(queueFamilyIdicies.graphics >= 0) { indicies.insert(queueFamilyIdicies.graphics); }
         if(queueFamilyIdicies.presentation >= 0) { indicies.insert(queueFamilyIdicies.presentation); }
         if(queueFamilyIdicies.transfer >= 0) { indicies.insert(queueFamilyIdicies.transfer); }
-        if(queueFamilyIdicies.presentation >= 0) { indicies.insert(queueFamilyIdicies.presentation); }
+        if(queueFamilyIdicies.compute >= 0) { indicies.insert(queueFamilyIdicies.compute); }
 
         for (uint32_t const &queueFamilyIndex : indicies)
         {

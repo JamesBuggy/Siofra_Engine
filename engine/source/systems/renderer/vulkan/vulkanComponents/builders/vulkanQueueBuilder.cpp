@@ -23,7 +23,10 @@ namespace siofraEngine::systems
     std::unique_ptr<IVulkanQueue> VulkanQueue::Builder::build() const
     {
         VkQueue queue = VK_NULL_HANDLE;
-        vkGetDeviceQueue(logicalDevice, queueFamilyIndex, queueIndex, &queue);
+        if(queueFamilyIndex >= 0 && queueIndex >= 0)
+        {
+            vkGetDeviceQueue(logicalDevice, queueFamilyIndex, queueIndex, &queue);
+        }
         
         return std::make_unique<VulkanQueue>(queue);
     }

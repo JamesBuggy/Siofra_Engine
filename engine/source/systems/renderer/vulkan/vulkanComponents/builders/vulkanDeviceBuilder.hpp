@@ -5,6 +5,7 @@
 #include "core/logging.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/vulkanDevice.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanDeviceBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanQueueBuilder.hpp"
 
 namespace siofraEngine::systems
 {
@@ -14,6 +15,13 @@ namespace siofraEngine::systems
     class VulkanDevice::Builder : public IVulkanDeviceBuilder
     {
     public:
+        /**
+         * @brief Vulkan device builder constructor
+         * 
+         * @param vulkanQueueBuilder Vulkan queue builder
+         */
+        Builder(IVulkanQueueBuilder& vulkanQueueBuilder);
+        
         /**
          * @brief Specify minimum required Vulkan API version
          * 
@@ -71,6 +79,11 @@ namespace siofraEngine::systems
         std::unique_ptr<IVulkanDevice> build() const override;
         
     private:
+        /**
+         * @brief Vulkan queue builder
+         */
+        IVulkanQueueBuilder& vulkanQueueBuilder;
+
         /**
          * @brief Minimum Vulkan API major version number
          */

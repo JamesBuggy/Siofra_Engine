@@ -6,6 +6,7 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanInstanceBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSurfaceBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDeviceBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanQueueBuilder.hpp"
 
 namespace siofraEngine::systems
 {

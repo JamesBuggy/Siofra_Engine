@@ -24,7 +24,8 @@ namespace siofraEngine::systems
             .withWindow(&window)
             .build();
 
-        device = VulkanDevice::Builder()
+        VulkanQueue::Builder vulkanQueueBuilder;
+        device = VulkanDevice::Builder(vulkanQueueBuilder)
             .withApiVersionSupport(1, 3)
             .withQueueFamilySupport(VulkanDeviceQueueFamilies::GRAPHICS | VulkanDeviceQueueFamilies::PRESENTATION | VulkanDeviceQueueFamilies::TRANSFER | VulkanDeviceQueueFamilies::COMPUTE)
             .withSurfacePresentationSupport(surface.get())

@@ -1,6 +1,8 @@
 #pragma once
 
+#include <memory>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanDevice.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/ivulkanQueue.hpp"
 
 namespace siofraEngine::systems
 {
@@ -20,8 +22,18 @@ namespace siofraEngine::systems
          * 
          * @param physicalDevice Vulkan physical device handle
          * @param logicalDevice Vulkan logical device handle
+         * @param graphicsQueue Graphics queue handle
+         * @param presentationQueue presentation queue handle
+         * @param transferQueue Transfer queue handle
+         * @param computeQueue Compute queue handle
          */
-        VulkanDevice(VkPhysicalDevice physicalDevice, VkDevice logicalDevice);
+        VulkanDevice(
+            VkPhysicalDevice physicalDevice,
+            VkDevice logicalDevice,
+            std::unique_ptr<IVulkanQueue> graphicsQueue,
+            std::unique_ptr<IVulkanQueue> presentationQueue,
+            std::unique_ptr<IVulkanQueue> transferQueue,
+            std::unique_ptr<IVulkanQueue> computeQueue);
 
         /**
          * @brief VulkanDevice copy constructor
@@ -73,5 +85,25 @@ namespace siofraEngine::systems
          * @brief Vulkan logical device handle
          */
         VkDevice logicalDevice{ VK_NULL_HANDLE };
+
+        /**
+         * @brief Graphics queue handle
+         */
+        std::unique_ptr<IVulkanQueue> graphicsQueue{ nullptr };
+
+        /**
+         * @brief Presentation queue handle
+         */
+        std::unique_ptr<IVulkanQueue> presentationQueue{ nullptr };
+
+        /**
+         * @brief Transfer queue handle
+         */
+        std::unique_ptr<IVulkanQueue> transferQueue{ nullptr };
+
+        /**
+         * @brief Compute queue handle
+         */
+        std::unique_ptr<IVulkanQueue> computeQueue{ nullptr };
     };
 }

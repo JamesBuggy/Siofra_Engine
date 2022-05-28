@@ -2,16 +2,31 @@
 
 namespace siofraEngine::systems
 {
-        VulkanDevice::VulkanDevice(VkPhysicalDevice physicalDevice, VkDevice logicalDevice) :
+        VulkanDevice::VulkanDevice(
+            VkPhysicalDevice physicalDevice,
+            VkDevice logicalDevice,
+            std::unique_ptr<IVulkanQueue> graphicsQueue,
+            std::unique_ptr<IVulkanQueue> presentationQueue,
+            std::unique_ptr<IVulkanQueue> transferQueue,
+            std::unique_ptr<IVulkanQueue> computeQueue) :
+
             physicalDevice{physicalDevice},
-            logicalDevice{logicalDevice}
+            logicalDevice{logicalDevice},
+            graphicsQueue{std::move(graphicsQueue)},
+            presentationQueue{std::move(presentationQueue)},
+            transferQueue{std::move(transferQueue)},
+            computeQueue{std::move(computeQueue)}
         {
 
         }
 
         VulkanDevice::VulkanDevice(VulkanDevice &&other) noexcept :
             physicalDevice{other.physicalDevice},
-            logicalDevice{other.logicalDevice}
+            logicalDevice{other.logicalDevice},
+            graphicsQueue{std::move(other.graphicsQueue)},
+            presentationQueue{std::move(other.presentationQueue)},
+            transferQueue{std::move(other.transferQueue)},
+            computeQueue{std::move(other.computeQueue)}
         {
             other.physicalDevice = VK_NULL_HANDLE;
             other.logicalDevice = VK_NULL_HANDLE;
@@ -26,6 +41,10 @@ namespace siofraEngine::systems
         {
             physicalDevice = other.physicalDevice;
             logicalDevice = other.logicalDevice;
+            graphicsQueue = std::move(graphicsQueue);
+            presentationQueue = std::move(presentationQueue);
+            transferQueue = std::move(transferQueue);
+            computeQueue = std::move(computeQueue);
             other.physicalDevice = VK_NULL_HANDLE;
             other.logicalDevice = VK_NULL_HANDLE;
             return *this;
