@@ -2,7 +2,7 @@
 
 namespace siofraEngine::systems
 {
-    IVulkanSurfaceBuilder& VulkanSurface::Builder::withInstance(siofraEngine::systems::IVulkanInstance const *instance) noexcept
+    IVulkanSurfaceBuilder& VulkanSurface::Builder::withInstance(IVulkanInstance const *instance) noexcept
     {
         this->instance = instance;
         return *this;

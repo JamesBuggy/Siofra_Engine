@@ -22,7 +22,7 @@ namespace siofraEngine::systems
          * @param instance The vulkan instance that the Vulkan surface should relate to
          * @returns Reference to the Vulkan surface builder
          */
-        IVulkanSurfaceBuilder& withInstance(siofraEngine::systems::IVulkanInstance const *instance) noexcept override;
+        IVulkanSurfaceBuilder& withInstance(IVulkanInstance const *instance) noexcept override;
         
         /**
          * @brief Specify the window that the Vulkan surface should relate to
@@ -43,7 +43,7 @@ namespace siofraEngine::systems
         /**
          * @brief The vulkan instance that the Vulkan surface should relate to
          */
-        siofraEngine::systems::IVulkanInstance const *instance{ nullptr };
+        IVulkanInstance const *instance{ nullptr };
 
         /**
          * @brief The window that the Vulkan surface should relate to

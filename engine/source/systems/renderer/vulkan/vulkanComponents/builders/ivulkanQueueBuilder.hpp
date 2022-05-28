@@ -7,7 +7,7 @@
 namespace siofraEngine::systems
 {
     /**
-     * @brief Vulkan queue builder
+     * @brief Vulkan queue builder interface
      */
     class IVulkanQueueBuilder
     {

@@ -4,6 +4,12 @@ namespace siofraEngine::systems
 {
     VulkanRenderer::VulkanRenderer(siofraEngine::platform::IWindow &window)
     {
+#ifdef DEBUG
+        std::vector<const char*> validationLayers = { "VK_LAYER_KHRONOS_validation" };
+#else
+        std::vector<const char*> validationLayers = {};
+#endif
+
         instance = VulkanInstance::Builder()
             .withApiVersion(1, 3)
             .withInstanceExtensions(window.getRequiredVulkanInstanceExtensions())
@@ -15,6 +21,14 @@ namespace siofraEngine::systems
         surface = VulkanSurface::Builder()
             .withInstance(instance.get())
             .withWindow(&window)
+            .build();
+
+        device = VulkanDevice::Builder()
+            .withApiVersionSupport(1, 3)
+            .withQueueFamilySupport(VulkanDeviceQueueFamilies::GRAPHICS | VulkanDeviceQueueFamilies::PRESENTATION | VulkanDeviceQueueFamilies::TRANSFER | VulkanDeviceQueueFamilies::COMPUTE)
+            .withSurfacePresentationSupport(surface.get())
+            .withInstance(instance.get())
+            .withValidationLayers(validationLayers)
             .build();
     }
 }

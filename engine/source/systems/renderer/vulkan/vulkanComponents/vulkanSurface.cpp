@@ -2,7 +2,7 @@
 
 namespace siofraEngine::systems
 {
-    VulkanSurface::VulkanSurface(VkSurfaceKHR surface, siofraEngine::systems::IVulkanInstance const *instance) :
+    VulkanSurface::VulkanSurface(VkSurfaceKHR surface, IVulkanInstance const *instance) :
         surface{surface},
         instance{instance}
     {

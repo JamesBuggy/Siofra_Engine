@@ -19,8 +19,11 @@ namespace siofraEngine::systems
 
         /**
          * @brief VulkanSurface constructor
+         * 
+         * @param surface Vulkan surface handle
+         * @param instance Vulkan instance to which the surface relates
          */
-        VulkanSurface(VkSurfaceKHR surface, siofraEngine::systems::IVulkanInstance const *instance);
+        VulkanSurface(VkSurfaceKHR surface, IVulkanInstance const *instance);
 
         /**
          * @brief VulkanSurface copy constructor
@@ -75,6 +78,6 @@ namespace siofraEngine::systems
          */
         VkSurfaceKHR surface{ VK_NULL_HANDLE };
 
-        siofraEngine::systems::IVulkanInstance const *instance{ nullptr };
+        IVulkanInstance const *instance{ nullptr };
     };
 }

@@ -8,7 +8,7 @@
 namespace siofraEngine::systems
 {
     /**
-     * @brief Vulkan surface builder
+     * @brief Vulkan surface builder interface
      */
     class IVulkanSurfaceBuilder
     {
@@ -19,7 +19,7 @@ namespace siofraEngine::systems
          * @param instance The vulkan instance that the Vulkan surface should relate to
          * @returns Reference to the Vulkan surface builder
          */
-        virtual IVulkanSurfaceBuilder& withInstance(siofraEngine::systems::IVulkanInstance const *instance) noexcept = 0;
+        virtual IVulkanSurfaceBuilder& withInstance(IVulkanInstance const *instance) noexcept = 0;
         
         /**
          * @brief Specify the window that the Vulkan surface should relate to
