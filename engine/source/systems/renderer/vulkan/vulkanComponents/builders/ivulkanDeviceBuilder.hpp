@@ -63,8 +63,8 @@ namespace siofraEngine::systems
         /**
          * @brief Specify the vulkan surface to be used for presentation to ensure support
          * 
-         * @param instance The vulkan surface used for presentation
-         * @returns Reference to the Vulkan surface builder
+         * @param surface The vulkan surface used for presentation
+         * @returns Reference to the builder
          */
         virtual IVulkanDeviceBuilder& withSurfacePresentationSupport(IVulkanSurface const *surface) noexcept = 0;
 
@@ -72,15 +72,15 @@ namespace siofraEngine::systems
          * @brief Specify the vulkan instance
          * 
          * @param instance The vulkan instance
-         * @returns Reference to the Vulkan surface builder
+         * @returns Reference to the builder
          */
         virtual IVulkanDeviceBuilder& withInstance(IVulkanInstance const *instance) noexcept = 0;
 
         /**
          * @brief Specify the validation layers to enable
          * 
-         * @param instance The validation layers to enable
-         * @returns Reference to the Vulkan surface builder
+         * @param validationLayers The validation layers to enable
+         * @returns Reference to the builder
          */
         virtual IVulkanDeviceBuilder& withValidationLayers(std::vector<const char*> validationLayers) noexcept = 0;
 

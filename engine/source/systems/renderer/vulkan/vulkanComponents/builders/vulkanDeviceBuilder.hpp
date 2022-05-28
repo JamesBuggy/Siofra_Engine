@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdexcept>
+#include <set>
 #include "core/logging.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/vulkanDevice.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanDeviceBuilder.hpp"
@@ -42,7 +43,7 @@ namespace siofraEngine::systems
          * @brief Specify the vulkan surface to be used for presentation to ensure support
          * 
          * @param surface The vulkan surface used for presentation
-         * @returns Reference to the Vulkan surface builder
+         * @returns Reference to the builder
          */
         IVulkanDeviceBuilder& withSurfacePresentationSupport(IVulkanSurface const *surface) noexcept override;
 
@@ -50,7 +51,7 @@ namespace siofraEngine::systems
          * @brief Specify the vulkan instance
          * 
          * @param instance The vulkan instance
-         * @returns Reference to the Vulkan surface builder
+         * @returns Reference to the builder
          */
         IVulkanDeviceBuilder& withInstance(IVulkanInstance const *instance) noexcept override;
 
@@ -58,7 +59,7 @@ namespace siofraEngine::systems
          * @brief Specify the validation layers to enable
          * 
          * @param validationLayers The validation layers to enable
-         * @returns Reference to the Vulkan surface builder
+         * @returns Reference to the builder
          */
         IVulkanDeviceBuilder& withValidationLayers(std::vector<const char*> validationLayers) noexcept override;
 
@@ -137,6 +138,17 @@ namespace siofraEngine::systems
          * @returns A handle to the chosen physical device
          */
         VkPhysicalDevice findPhysicalDevice(IVulkanInstance const *instance, IVulkanSurface const *surface, VulkanDeviceQueueFamilies const requiredQueueFamilies, std::vector<const char*> const requiredDeviceExtensions) const;
+
+        /**
+         * @brief Create a logical device
+         * 
+         * @param physicalDevice The related physical device
+         * @param validationLayers Validation layers to enable
+         * @param requiredDeviceExtensions Required device extensions
+         * @param queueFamilyIdicies Queue family indicies
+         * @returns A handle to the create logical device
+         */
+        VkDevice createLogicalDevice(VkPhysicalDevice const physicalDevice, std::vector<const char*> const validationLayers, std::vector<const char*> requiredDeviceExtensions, QueueFamilyIndicies const queueFamilyIdicies) const;
 
         /**
          * @brief Find a physical devices queue family indicies

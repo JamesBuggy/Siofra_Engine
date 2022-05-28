@@ -29,6 +29,12 @@ namespace siofraEngine::systems
         return *this;
     }
 
+    IVulkanInstanceBuilder& VulkanInstance::Builder::withValidationLayers(std::vector<const char*> validationLayers) noexcept
+    {
+        this->validationLayers.insert(this->validationLayers.end(), validationLayers.begin(), validationLayers.end());
+        return *this;
+    }
+
     IVulkanInstanceBuilder& VulkanInstance::Builder::withDebugUtilities() noexcept
     {
         debugCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
@@ -63,17 +69,15 @@ namespace siofraEngine::systems
         createInfo.pApplicationInfo = &appInfo;
         createInfo.enabledExtensionCount = static_cast<uint32_t>(instanceExtensions.size());
         createInfo.ppEnabledExtensionNames = instanceExtensions.data();
+        createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+        createInfo.ppEnabledLayerNames = validationLayers.data();
 
         if (enableDebugUtilities)
         {
-            createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
-            createInfo.ppEnabledLayerNames = validationLayers.data();
             createInfo.pNext = &debugCreateInfo;
         }
         else
         {
-            createInfo.enabledLayerCount = 0;
-            createInfo.ppEnabledLayerNames = nullptr;
             createInfo.pNext = nullptr;
         }
 

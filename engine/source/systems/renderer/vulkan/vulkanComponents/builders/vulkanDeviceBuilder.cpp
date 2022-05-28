@@ -42,18 +42,10 @@ namespace siofraEngine::systems
     std::unique_ptr<IVulkanDevice> VulkanDevice::Builder::build() const
     {
         VkPhysicalDevice physicalDevice = findPhysicalDevice(instance, surface, requiredQueueFamilies, requiredDeviceExtensions);
-        if (physicalDevice == VK_NULL_HANDLE)
-        {
-            throw std::runtime_error("No supported physical device found");
-        }
-
         VulkanDevice::Builder::QueueFamilyIndicies queueFamilyIndicies = findDeviceQueueFamilyIndicies(physicalDevice, surface);
+        VkDevice logicalDevice = createLogicalDevice(physicalDevice, validationLayers, requiredDeviceExtensions, queueFamilyIndicies);
 
-        VkPhysicalDeviceProperties physicalDeviceProperties{ };
-        vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
-        SE_LOG_INFO(physicalDeviceProperties.deviceName);
-
-        return std::make_unique<VulkanDevice>(physicalDevice, VK_NULL_HANDLE);
+        return std::make_unique<VulkanDevice>(physicalDevice, logicalDevice);
     }
 
     VkPhysicalDevice VulkanDevice::Builder::findPhysicalDevice(IVulkanInstance const *instance, IVulkanSurface const *surface, VulkanDeviceQueueFamilies const requiredQueueFamilies, std::vector<const char*> const requiredDeviceExtensions) const
@@ -77,12 +69,69 @@ namespace siofraEngine::systems
             chosenPhysicalDevice = physicalDevice;
         }
 
+        if (chosenPhysicalDevice == VK_NULL_HANDLE)
+        {
+            throw std::runtime_error("No supported physical device found");
+        }
+
         return chosenPhysicalDevice;
+    }
+
+    VkDevice VulkanDevice::Builder::createLogicalDevice(VkPhysicalDevice const physicalDevice, std::vector<const char*> const validationLayers, std::vector<const char*> requiredDeviceExtensions, QueueFamilyIndicies const queueFamilyIdicies) const
+    {
+        std::vector<VkDeviceQueueCreateInfo> queueCreateInfos{ };
+
+        std::set<int32_t> indicies{ };
+        if(queueFamilyIdicies.graphics >= 0) { indicies.insert(queueFamilyIdicies.graphics); }
+        if(queueFamilyIdicies.presentation >= 0) { indicies.insert(queueFamilyIdicies.presentation); }
+        if(queueFamilyIdicies.transfer >= 0) { indicies.insert(queueFamilyIdicies.transfer); }
+        if(queueFamilyIdicies.presentation >= 0) { indicies.insert(queueFamilyIdicies.presentation); }
+
+        for (uint32_t const &queueFamilyIndex : indicies)
+        {
+            float priority = 1.0f;
+            VkDeviceQueueCreateInfo queueCreateInfo = {};
+            queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+            queueCreateInfo.queueFamilyIndex = queueFamilyIndex;
+            queueCreateInfo.queueCount = 1;
+            queueCreateInfo.pQueuePriorities = &priority;
+
+            queueCreateInfos.push_back(queueCreateInfo);
+        }
+
+        VkPhysicalDeviceFeatures deviceFeatures{ };
+        deviceFeatures.samplerAnisotropy = VK_TRUE;
+
+        VkDeviceCreateInfo deviceCreateInfo{ };
+        deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        deviceCreateInfo.pQueueCreateInfos = queueCreateInfos.data();
+        deviceCreateInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
+        deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(requiredDeviceExtensions.size());
+        deviceCreateInfo.ppEnabledExtensionNames = requiredDeviceExtensions.data();
+        deviceCreateInfo.pEnabledFeatures = &deviceFeatures;
+
+        if (validationLayers.size() > 0) {
+            deviceCreateInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+            deviceCreateInfo.ppEnabledLayerNames = validationLayers.data();
+        }
+        else {
+            deviceCreateInfo.enabledLayerCount = 0;
+            deviceCreateInfo.ppEnabledLayerNames = nullptr;
+        }
+
+        VkDevice logicalDevice{ VK_NULL_HANDLE };
+        VkResult result = vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &logicalDevice);
+        if (result != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to create a logical device");
+        }
+
+        return logicalDevice;
     }
 
     VulkanDevice::Builder::QueueFamilyIndicies VulkanDevice::Builder::findDeviceQueueFamilyIndicies(VkPhysicalDevice const physicalDevice, IVulkanSurface const *surface) const
     {
-        VulkanDevice::Builder::QueueFamilyIndicies queueFamilyIndicies{ };
+        QueueFamilyIndicies queueFamilyIndicies{ };
 
         uint32_t queuefamilyCount{ 0 };
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queuefamilyCount, nullptr);

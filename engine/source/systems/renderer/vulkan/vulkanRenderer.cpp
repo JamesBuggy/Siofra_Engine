@@ -13,6 +13,7 @@ namespace siofraEngine::systems
         instance = VulkanInstance::Builder()
             .withApiVersion(1, 3)
             .withInstanceExtensions(window.getRequiredVulkanInstanceExtensions())
+            .withValidationLayers(validationLayers)
 #ifdef DEBUG
             .withDebugUtilities()
 #endif

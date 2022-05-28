@@ -48,6 +48,14 @@ namespace siofraEngine::systems
         virtual IVulkanInstanceBuilder& withInstanceExtensions(std::vector<const char*> instanceExtensions) noexcept = 0;
 
         /**
+         * @brief Specify the validation layers to enable
+         * 
+         * @param validationLayers The validation layers to enable
+         * @returns Reference to the builder
+         */
+        virtual IVulkanInstanceBuilder& withValidationLayers(std::vector<const char*> validationLayers) noexcept = 0;
+
+        /**
          * @brief Enable validation layers and debug callback
          * 
          * @returns Reference to the builder

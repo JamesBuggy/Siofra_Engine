@@ -53,6 +53,14 @@ namespace siofraEngine::systems
         IVulkanInstanceBuilder& withInstanceExtensions(std::vector<const char*> instanceExtensions) noexcept override;
 
         /**
+         * @brief Specify the validation layers to enable
+         * 
+         * @param validationLayers The validation layers to enable
+         * @returns Reference to the builder
+         */
+        IVulkanInstanceBuilder& withValidationLayers(std::vector<const char*> validationLayers) noexcept override;
+
+        /**
          * @brief Enable validation layers and debug callback
          * 
          * @returns Reference to the builder
@@ -110,7 +118,7 @@ namespace siofraEngine::systems
         /**
          * @brief Instance validation layers
          */
-        std::vector<const char*> validationLayers{ "VK_LAYER_KHRONOS_validation" };
+        std::vector<const char*> validationLayers{ };
 
         /**
          * @brief Instance debug extensions
