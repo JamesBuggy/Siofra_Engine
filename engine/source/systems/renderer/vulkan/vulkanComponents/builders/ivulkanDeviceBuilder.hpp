@@ -1,6 +1,5 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanSurface.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanDevice.hpp"

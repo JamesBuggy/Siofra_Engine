@@ -1,6 +1,5 @@
 #pragma once
 
-#include <memory>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanDevice.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanQueue.hpp"
 
@@ -74,6 +73,34 @@ namespace siofraEngine::systems
          * @returns True if the wrapped handle is intialized, otherwise false
          */
         operator bool() const noexcept override;
+
+        /**
+         * @brief Get the device graphics queue handle
+         * 
+         * @returns The device graphics queue handle
+         */
+        std::unique_ptr<IVulkanQueue> const & getGraphicsQueue() const noexcept override;
+
+        /**
+         * @brief Get the device presentation queue handle
+         * 
+         * @returns The device presentation queue handle
+         */
+        std::unique_ptr<IVulkanQueue> const & getPresentationQueue() const noexcept override;
+
+        /**
+         * @brief Get the device transfer queue handle
+         * 
+         * @returns The device transfer queue handle
+         */
+        std::unique_ptr<IVulkanQueue> const & getTransferQueue() const noexcept override;
+
+        /**
+         * @brief Get the device compute queue handle
+         * 
+         * @returns The device compute queue handle
+         */
+        std::unique_ptr<IVulkanQueue> const & getComputeQueue() const noexcept override;
 
     private:
         /**
