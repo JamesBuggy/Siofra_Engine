@@ -13,6 +13,20 @@ namespace siofraEngine::systems
     {
     public:
         /**
+         * @brief Get the physical device handle
+         * 
+         * @returns The physical device handle
+         */
+        virtual VkPhysicalDevice getPhysicalDevice() const noexcept = 0;
+
+        /**
+         * @brief Get the logical device handle
+         * 
+         * @returns The logical device handle
+         */
+        virtual VkDevice getLogicalDevice() const noexcept = 0;
+
+        /**
          * @brief Get the device graphics queue handle
          * 
          * @returns The device graphics queue handle

@@ -75,6 +75,20 @@ namespace siofraEngine::systems
         operator bool() const noexcept override;
 
         /**
+         * @brief Get the physical device handle
+         * 
+         * @returns The physical device handle
+         */
+        VkPhysicalDevice getPhysicalDevice() const noexcept override;
+
+        /**
+         * @brief Get the logical device handle
+         * 
+         * @returns The logical device handle
+         */
+        VkDevice getLogicalDevice() const noexcept override;
+
+        /**
          * @brief Get the device graphics queue handle
          * 
          * @returns The device graphics queue handle
