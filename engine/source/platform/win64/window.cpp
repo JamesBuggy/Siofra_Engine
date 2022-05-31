@@ -17,9 +17,27 @@ public:
      * @param height Initial window height
      */
     InternalWindow(std::string title, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height, WindowFlags flags) :
-        winPtr{SDL_CreateWindow(title.c_str(), x, y, width, height, mapFlags(flags))}
+        winPtr{SDL_CreateWindow(title.c_str(), x, y, width, height, mapFlags(flags))},
+        flags{flags},
+        width{width},
+        height{height}
     {
         SE_ASSERT_TRUE(winPtr != NULL, "Failed to create SDL window");
+    }
+
+    WindowFlags getFlags() const
+    {
+        return flags;
+    }
+
+    std::uint32_t getWidth() const noexcept
+    {
+        return width;
+    }
+
+    std::uint32_t getHeight() const noexcept
+    {
+        return height;
     }
 
     Uint32 mapFlags(WindowFlags flags) const
@@ -63,13 +81,27 @@ public:
      * @brief SDL window pointer
      */
     SDL_Window* winPtr{ nullptr };
+
+    /**
+     * @brief Flags applied to the window
+     */
+    WindowFlags flags{ };
+
+    /**
+     * @brief The window width
+     */
+    std::uint32_t width{ };
+
+    /**
+     * @brief The window height
+     */
+    std::uint32_t height{ };
 };
 
 namespace siofraEngine::platform
 {
     Window::Window(std::string title, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height, WindowFlags flags) :
-        _internalWindow({std::make_unique<InternalWindow>(title, x, y, width, height, flags)}),
-        flags{flags}
+        _internalWindow({std::make_unique<InternalWindow>(title, x, y, width, height, flags)})
     {
         SE_LOG_INFO("Initialized Window");
     }
@@ -78,7 +110,17 @@ namespace siofraEngine::platform
 
     WindowFlags Window::getFlags() const
     {
-        return flags;
+        return _internalWindow->getFlags();
+    }
+
+    std::uint32_t Window::getWidth() const noexcept
+    {
+        return _internalWindow->getWidth();
+    }
+
+    std::uint32_t Window::getHeight() const noexcept
+    {
+        return _internalWindow->getHeight();
     }
 
     std::vector<const char*> Window::getRequiredVulkanInstanceExtensions() const

@@ -32,5 +32,12 @@ namespace siofraEngine::systems
             .withInstance(instance.get())
             .withValidationLayers(validationLayers)
             .build();
+
+        VulkanImage::Builder vulkanImageBuilder;
+        swapchain = VulkanSwapchain::Builder(vulkanImageBuilder)
+            .withDevice(device.get())
+            .withExtents(window.getWidth(), window.getHeight())
+            .withSurface(surface.get())
+            .build();
     }
 }
