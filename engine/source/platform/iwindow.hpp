@@ -37,6 +37,20 @@ namespace siofraEngine::platform
         virtual WindowFlags getFlags() const = 0;
 
         /**
+         * @brief Get the window width
+         * 
+         * @returns The window width
+         */
+        virtual std::uint32_t getWidth() const noexcept = 0;
+
+        /**
+         * @brief Get the window height
+         * 
+         * @returns The window height
+         */
+        virtual std::uint32_t getHeight() const noexcept = 0;
+
+        /**
          * @brief Get the names of the Vulkan instance extensions needed to create a surface
          * 
          * @returns Required instance extension names

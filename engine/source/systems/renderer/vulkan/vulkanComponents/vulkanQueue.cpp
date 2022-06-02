@@ -2,14 +2,16 @@
 
 namespace siofraEngine::systems
 {
-    VulkanQueue::VulkanQueue(VkQueue queue) :
-        queue(queue)
+    VulkanQueue::VulkanQueue(VkQueue queue, uint32_t familyIndex) :
+        queue(queue),
+        familyIndex(familyIndex)
     {
 
     }
 
     VulkanQueue::VulkanQueue(VulkanQueue &&other) noexcept :
-        queue(other.queue)
+        queue(other.queue),
+        familyIndex(other.familyIndex)
     {
         other.queue = VK_NULL_HANDLE;
     }
@@ -17,7 +19,9 @@ namespace siofraEngine::systems
     VulkanQueue& VulkanQueue::operator=(VulkanQueue &&other) noexcept
     {
         queue = other.queue;
+        familyIndex = other.familyIndex;
         other.queue = VK_NULL_HANDLE;
+        other.familyIndex = -1;
         return *this;
     }
 
@@ -29,5 +33,10 @@ namespace siofraEngine::systems
     VkQueue VulkanQueue::getQueue() const noexcept
     {
         return queue;
+    }
+
+    uint32_t VulkanQueue::getFamilyIndex() const noexcept
+    {
+        return familyIndex;
     }
 }

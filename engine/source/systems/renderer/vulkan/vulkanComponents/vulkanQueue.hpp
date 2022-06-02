@@ -19,8 +19,9 @@ namespace siofraEngine::systems
          * @brief VulkanQueue constructor
          * 
          * @param queue VkQueue handle
+         * @param familyIndex The queue family index
          */
-        VulkanQueue(VkQueue queue);
+        VulkanQueue(VkQueue queue, uint32_t familyIndex);
 
         /**
          * @brief VulkanQueue copy constructor
@@ -69,10 +70,22 @@ namespace siofraEngine::systems
          */
         VkQueue getQueue() const noexcept override;
 
+        /**
+         * @brief Get the vulkan queue family index
+         * 
+         * @returns The vulkan queue family index
+         */
+        uint32_t getFamilyIndex() const noexcept override;
+
     private:
         /**
          * @brief The vulkan queue handle
          */
         VkQueue queue{ VK_NULL_HANDLE };
+
+        /**
+         * @brief The vulkan queue family index
+         */
+        uint32_t familyIndex{ 0 };
     };
 }

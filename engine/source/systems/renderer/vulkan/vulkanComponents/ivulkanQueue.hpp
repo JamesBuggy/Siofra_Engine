@@ -18,6 +18,13 @@ namespace siofraEngine::systems
         virtual VkQueue getQueue() const noexcept = 0;
 
         /**
+         * @brief Get the vulkan queue family index
+         * 
+         * @returns The vulkan queue family index
+         */
+        virtual uint32_t getFamilyIndex() const noexcept = 0;
+
+        /**
          * @brief Interface destructor
          */
         virtual ~IVulkanQueue() = default;

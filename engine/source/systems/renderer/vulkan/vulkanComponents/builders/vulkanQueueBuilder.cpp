@@ -28,6 +28,6 @@ namespace siofraEngine::systems
             vkGetDeviceQueue(logicalDevice, queueFamilyIndex, queueIndex, &queue);
         }
         
-        return std::make_unique<VulkanQueue>(queue);
+        return std::make_unique<VulkanQueue>(queue, queueFamilyIndex);
     }
 }

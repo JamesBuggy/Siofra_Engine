@@ -38,6 +38,20 @@ namespace siofraEngine::platform
         WindowFlags getFlags() const override;
 
         /**
+         * @brief Get the window width
+         * 
+         * @returns The window width
+         */
+        std::uint32_t getWidth() const noexcept override;
+
+        /**
+         * @brief Get the window height
+         * 
+         * @returns The window height
+         */
+        std::uint32_t getHeight() const noexcept override;
+
+        /**
          * @brief Get the names of the Vulkan instance extensions needed to create a surface
          * 
          * @returns Required instance extension names
@@ -64,10 +78,5 @@ namespace siofraEngine::platform
          * @brief Plaftorm specific window state
          */
         std::unique_ptr<InternalWindow> _internalWindow;
-
-        /**
-         * @brief Flags applied to the window
-         */
-        WindowFlags flags;
     };
 }

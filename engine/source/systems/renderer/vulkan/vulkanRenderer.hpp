@@ -7,6 +7,8 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSurfaceBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDeviceBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanQueueBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanImageBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSwapchainBuilder.hpp"
 
 namespace siofraEngine::systems
 {
@@ -38,5 +40,10 @@ namespace siofraEngine::systems
          * @brief Vulkan device
          */
         std::unique_ptr<IVulkanDevice> device{ nullptr };
+
+        /**
+         * @brief Vulkan swapchain
+         */
+        std::unique_ptr<IVulkanSwapchain> swapchain{ nullptr };
     };
 }

@@ -54,4 +54,34 @@ namespace siofraEngine::systems
         {
             return physicalDevice != VK_NULL_HANDLE && logicalDevice != VK_NULL_HANDLE;
         }
+
+        VkPhysicalDevice VulkanDevice::getPhysicalDevice() const noexcept
+        {
+            return physicalDevice;
+        }
+
+        VkDevice VulkanDevice::getLogicalDevice() const noexcept
+        {
+            return logicalDevice;
+        }
+
+        std::unique_ptr<IVulkanQueue> const & VulkanDevice::getGraphicsQueue() const noexcept
+        {
+            return graphicsQueue;
+        }
+
+        std::unique_ptr<IVulkanQueue> const & VulkanDevice::getPresentationQueue() const noexcept
+        {
+            return presentationQueue;
+        }
+
+        std::unique_ptr<IVulkanQueue> const & VulkanDevice::getTransferQueue() const noexcept
+        {
+            return transferQueue;
+        }
+
+        std::unique_ptr<IVulkanQueue> const & VulkanDevice::getComputeQueue() const noexcept
+        {
+            return computeQueue;
+        }
 }
