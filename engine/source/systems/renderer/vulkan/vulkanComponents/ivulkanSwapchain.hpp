@@ -34,6 +34,11 @@ namespace siofraEngine::systems
         virtual std::vector<std::unique_ptr<IVulkanImage>> const & getSwapchainImages() const noexcept = 0;
 
         /**
+         * @brief Get swapchain depth attahcment
+         */
+        virtual std::unique_ptr<IVulkanImage> const & getDepthAttachment() const noexcept = 0;
+
+        /**
          * @brief Interface destructor
          */
         virtual ~IVulkanSwapchain() = default;

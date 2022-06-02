@@ -98,7 +98,27 @@ namespace siofraEngine::systems
                 .build();
         }
 
-        return std::make_unique<VulkanSwapchain>(swapchain, surfaceFormat.format, selectedExtents, std::move(swapChainImages), device);
+        VkFormat depthFormat{};
+        selectDepthFormat(
+            device,
+            { VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D32_SFLOAT, VK_FORMAT_D24_UNORM_S8_UINT },
+            VK_IMAGE_TILING_OPTIMAL,
+            VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT,
+            depthFormat
+        );
+
+        std::unique_ptr<IVulkanImage> depthAttachment = vulkanImageBuilder
+            .withExistingImageHandle(VK_NULL_HANDLE)
+            .withDevice(device)
+            .withExtents(selectedExtents.width, selectedExtents.height)
+            .withFormat(depthFormat)
+            .withTiling(VK_IMAGE_TILING_OPTIMAL)
+            .withUsageFlags(VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT)
+            .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+            .withAspectFlags(VK_IMAGE_ASPECT_DEPTH_BIT)
+            .build();
+
+        return std::make_unique<VulkanSwapchain>(swapchain, surfaceFormat.format, selectedExtents, std::move(swapChainImages), std::move(depthAttachment), device);
     }
 
     bool VulkanSwapchain::Builder::selectSurfaceFormat(IVulkanDevice const * device, IVulkanSurface const * surface, VkSurfaceFormatKHR& surfaceFormat) const
@@ -170,5 +190,27 @@ namespace siofraEngine::systems
         currentTransform = surfaceCapabilities.currentTransform;
 
         return true;
+    }
+
+    bool VulkanSwapchain::Builder::selectDepthFormat(IVulkanDevice const * device, std::vector<VkFormat> const formats, VkImageTiling const tiling, VkFormatFeatureFlags const featureFlags, VkFormat& depthFormat) const
+    {
+        for (auto const & format : formats)
+        {
+            VkFormatProperties properties{ };
+            vkGetPhysicalDeviceFormatProperties(device->getPhysicalDevice(), format, &properties);
+
+            if (tiling == VK_IMAGE_TILING_LINEAR && (properties.linearTilingFeatures & featureFlags) == featureFlags)
+            {
+                depthFormat = format;
+                return true;
+            }
+            else if (tiling == VK_IMAGE_TILING_OPTIMAL && (properties.optimalTilingFeatures & featureFlags) == featureFlags)
+            {
+                depthFormat = format;
+                return true;
+            }
+        }
+
+        return false;
     }
 }

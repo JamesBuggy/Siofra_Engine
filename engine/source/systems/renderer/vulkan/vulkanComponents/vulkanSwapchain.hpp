@@ -23,9 +23,10 @@ namespace siofraEngine::systems
          * @param swapchainImageFormat Swapchain image format
          * @param swapchainExtents Swapchain extents
          * @param swapChainImages Swapchain images
+         * @param depthAttachment Swapchain depth attachment
          * @param device Device used to create the swapchain
          */
-        VulkanSwapchain(VkSwapchainKHR swapchain, VkFormat swapchainImageFormat, VkExtent2D swapchainExtents, std::vector<std::unique_ptr<IVulkanImage>> swapChainImages, IVulkanDevice const * device);
+        VulkanSwapchain(VkSwapchainKHR swapchain, VkFormat swapchainImageFormat, VkExtent2D swapchainExtents, std::vector<std::unique_ptr<IVulkanImage>> swapChainImages, std::unique_ptr<IVulkanImage> depthAttachment, IVulkanDevice const * device);
 
         /**
          * @brief VulkanSwapchain copy constructor
@@ -87,6 +88,11 @@ namespace siofraEngine::systems
          */
         std::vector<std::unique_ptr<IVulkanImage>> const & getSwapchainImages() const noexcept override;
 
+        /**
+         * @brief Get swapchain depth attahcment
+         */
+        std::unique_ptr<IVulkanImage> const & getDepthAttachment() const noexcept override;
+
     private:
         /**
          * @brief Vulkan swapchain handle
@@ -107,6 +113,11 @@ namespace siofraEngine::systems
          * @brief Swapchain images
          */
         std::vector<std::unique_ptr<IVulkanImage>> swapChainImages{ };
+
+        /**
+         * @brief swapchain depth attachment
+         */
+        std::unique_ptr<IVulkanImage> depthAttachment{ nullptr };
 
         /**
          * @brief Device used to create the swapchain

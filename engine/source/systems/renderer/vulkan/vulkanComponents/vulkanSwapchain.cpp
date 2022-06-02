@@ -2,11 +2,12 @@
 
 namespace siofraEngine::systems
 {
-    VulkanSwapchain::VulkanSwapchain(VkSwapchainKHR swapchain, VkFormat swapchainImageFormat, VkExtent2D swapchainExtents, std::vector<std::unique_ptr<IVulkanImage>> swapChainImages, IVulkanDevice const * device) :
+    VulkanSwapchain::VulkanSwapchain(VkSwapchainKHR swapchain, VkFormat swapchainImageFormat, VkExtent2D swapchainExtents, std::vector<std::unique_ptr<IVulkanImage>> swapChainImages, std::unique_ptr<IVulkanImage> depthAttachment, IVulkanDevice const * device) :
         swapchain{swapchain},
         swapchainImageFormat{swapchainImageFormat},
         swapchainExtents{swapchainExtents},
         swapChainImages{std::move(swapChainImages)},
+        depthAttachment{std::move(depthAttachment)},
         device{device}
     {
 
@@ -17,6 +18,7 @@ namespace siofraEngine::systems
         swapchainImageFormat{other.swapchainImageFormat},
         swapchainExtents{other.swapchainExtents},
         swapChainImages{std::move(other.swapChainImages)},
+        depthAttachment{std::move(other.depthAttachment)},
         device{other.device}
     {
         other.swapchain = VK_NULL_HANDLE;
@@ -37,6 +39,7 @@ namespace siofraEngine::systems
         swapchainExtents = other.swapchainExtents;
         device = other.device;
         swapChainImages = std::move(other.swapChainImages);
+        depthAttachment = std::move(other.depthAttachment);
         other.swapchain = VK_NULL_HANDLE;
         other.swapchainImageFormat = VK_FORMAT_UNDEFINED;
         other.swapchainExtents = {0, 0};
@@ -50,7 +53,8 @@ namespace siofraEngine::systems
             swapchainImageFormat != VK_FORMAT_UNDEFINED &&
             swapchainExtents.width > 0 &&
             swapchainExtents.height > 0 &&
-            swapChainImages.size() > 0;
+            swapChainImages.size() > 0 &&
+            depthAttachment;
     }
 
     VkSwapchainKHR VulkanSwapchain::getSwapchain() const noexcept
@@ -71,5 +75,10 @@ namespace siofraEngine::systems
     std::vector<std::unique_ptr<IVulkanImage>> const & VulkanSwapchain::getSwapchainImages() const noexcept
     {
         return swapChainImages;
+    }
+
+    std::unique_ptr<IVulkanImage> const & VulkanSwapchain::getDepthAttachment() const noexcept
+    {
+        return depthAttachment;
     }
 }

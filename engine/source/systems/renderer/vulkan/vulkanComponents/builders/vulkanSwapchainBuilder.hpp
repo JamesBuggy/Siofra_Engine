@@ -104,5 +104,17 @@ namespace siofraEngine::systems
          * @returns True if capabilities are selceted, otherwise false
          */
         bool selectCapabilities(IVulkanDevice const * device, IVulkanSurface const * surface, VkExtent2D const extents, VkExtent2D& outExtents, uint32_t& imageCount, VkSurfaceTransformFlagBitsKHR& currentTransform) const;
+
+        /**
+         * @brief Query the physical device and swapchain capabilities
+         * 
+         * @param device The vulkan device to query for format support
+         * @param formats List of acceptable formats
+         * @param tiling Desired tiling
+         * @param featureFlags Desired feature flags
+         * @param depthFormat The format to populate
+         * @returns True if format was selceted, otherwise false
+         */
+        bool selectDepthFormat(IVulkanDevice const * device, std::vector<VkFormat> const formats, VkImageTiling const tiling, VkFormatFeatureFlags const featureFlags, VkFormat& depthFormat) const;
     };
 }
