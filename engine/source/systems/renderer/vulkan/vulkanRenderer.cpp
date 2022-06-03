@@ -44,7 +44,7 @@ namespace siofraEngine::systems
             .withDevice(device.get())
             .withSwapchain(swapchain.get())
             .withColourClearValue(0.0f, 0.0f, 0.0f, 1.0f)
-            .withDepthClearValue(0.0f)
+            .withDepthClearValue(1.0f)
             .build();
     }
 }
