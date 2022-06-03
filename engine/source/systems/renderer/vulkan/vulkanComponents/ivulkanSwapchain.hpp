@@ -20,8 +20,17 @@ namespace siofraEngine::systems
 
         /**
          * @brief Get swapchain image format
+         * 
+         * @returns The swapchain image format
          */
         virtual VkFormat getImageFormat() const noexcept = 0;
+        
+        /**
+         * @brief Get the depth attchment format
+         * 
+         * @returns The Vulkan depth attchment format
+         */
+        virtual VkFormat getDepthAttachmentFormat() const noexcept = 0;
 
         /**
          * @brief Get swapchain extents

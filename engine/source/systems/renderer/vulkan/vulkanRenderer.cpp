@@ -39,5 +39,12 @@ namespace siofraEngine::systems
             .withExtents(window.getWidth(), window.getHeight())
             .withSurface(surface.get())
             .build();
+
+        renderPass = VulkanRenderPass::Builder()
+            .withDevice(device.get())
+            .withSwapchain(swapchain.get())
+            .withColourClearValue(0.0f, 0.0f, 0.0f, 1.0f)
+            .withDepthClearValue(0.0f)
+            .build();
     }
 }

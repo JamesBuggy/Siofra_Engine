@@ -9,6 +9,7 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanQueueBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanImageBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSwapchainBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanRenderPassBuilder.hpp"
 
 namespace siofraEngine::systems
 {
@@ -45,5 +46,10 @@ namespace siofraEngine::systems
          * @brief Vulkan swapchain
          */
         std::unique_ptr<IVulkanSwapchain> swapchain{ nullptr };
+
+        /**
+         * @brief Vulkan render pass
+         */
+        std::unique_ptr<IVulkanRenderPass> renderPass{ nullptr };
     };
 }

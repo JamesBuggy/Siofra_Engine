@@ -2,9 +2,10 @@
 
 namespace siofraEngine::systems
 {
-    VulkanSwapchain::VulkanSwapchain(VkSwapchainKHR swapchain, VkFormat swapchainImageFormat, VkExtent2D swapchainExtents, std::vector<std::unique_ptr<IVulkanImage>> swapChainImages, std::unique_ptr<IVulkanImage> depthAttachment, IVulkanDevice const * device) :
+    VulkanSwapchain::VulkanSwapchain(VkSwapchainKHR swapchain, VkFormat swapchainImageFormat, VkFormat depthAttachmentFormat, VkExtent2D swapchainExtents, std::vector<std::unique_ptr<IVulkanImage>> swapChainImages, std::unique_ptr<IVulkanImage> depthAttachment, IVulkanDevice const * device) :
         swapchain{swapchain},
         swapchainImageFormat{swapchainImageFormat},
+        depthAttachmentFormat{depthAttachmentFormat},
         swapchainExtents{swapchainExtents},
         swapChainImages{std::move(swapChainImages)},
         depthAttachment{std::move(depthAttachment)},
@@ -16,6 +17,7 @@ namespace siofraEngine::systems
     VulkanSwapchain::VulkanSwapchain(VulkanSwapchain &&other) noexcept :
         swapchain{other.swapchain},
         swapchainImageFormat{other.swapchainImageFormat},
+        depthAttachmentFormat{other.depthAttachmentFormat},
         swapchainExtents{other.swapchainExtents},
         swapChainImages{std::move(other.swapChainImages)},
         depthAttachment{std::move(other.depthAttachment)},
@@ -23,6 +25,7 @@ namespace siofraEngine::systems
     {
         other.swapchain = VK_NULL_HANDLE;
         other.swapchainImageFormat = VK_FORMAT_UNDEFINED;
+        other.depthAttachmentFormat = VK_FORMAT_UNDEFINED;
         other.swapchainExtents = {0, 0};
         other.device = nullptr;
     }
@@ -36,12 +39,14 @@ namespace siofraEngine::systems
     {
         swapchain = other.swapchain;
         swapchainImageFormat = other.swapchainImageFormat;
+        depthAttachmentFormat = other.depthAttachmentFormat;
         swapchainExtents = other.swapchainExtents;
         device = other.device;
         swapChainImages = std::move(other.swapChainImages);
         depthAttachment = std::move(other.depthAttachment);
         other.swapchain = VK_NULL_HANDLE;
         other.swapchainImageFormat = VK_FORMAT_UNDEFINED;
+        other.depthAttachmentFormat = VK_FORMAT_UNDEFINED;
         other.swapchainExtents = {0, 0};
         other.device = nullptr;
         return *this;
@@ -51,6 +56,7 @@ namespace siofraEngine::systems
     {
         return swapchain != VK_NULL_HANDLE &&
             swapchainImageFormat != VK_FORMAT_UNDEFINED &&
+            depthAttachmentFormat != VK_FORMAT_UNDEFINED &&
             swapchainExtents.width > 0 &&
             swapchainExtents.height > 0 &&
             swapChainImages.size() > 0 &&
@@ -65,6 +71,11 @@ namespace siofraEngine::systems
     VkFormat VulkanSwapchain::getImageFormat() const noexcept
     {
         return swapchainImageFormat;
+    }
+
+    VkFormat VulkanSwapchain::getDepthAttachmentFormat() const noexcept 
+    {
+        return depthAttachmentFormat;
     }
 
     VkExtent2D VulkanSwapchain::getExtents() const noexcept
