@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanRenderPassBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanFrambufferBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/vulkanRenderPass.hpp"
 
 namespace siofraEngine::systems
@@ -12,6 +13,13 @@ namespace siofraEngine::systems
     class VulkanRenderPass::Builder : public IVulkanRenderPassBuilder
     {
     public:
+        /**
+         * @brief Vulkan render pass builder constructor
+         * 
+         * @param vulkanFramebufferBuilder Vulkan framebuffer builder
+         */
+        Builder(IVulkanFramebufferBuilder& vulkanFramebufferBuilder);
+
         /**
          * @brief Specify the vulkan device which will be used to create the render pass
          * 
@@ -55,6 +63,11 @@ namespace siofraEngine::systems
         std::unique_ptr<IVulkanRenderPass> build() const override;
 
     private:
+        /**
+         * @brief Vulkan framebuffer builder
+         */
+        IVulkanFramebufferBuilder& vulkanFramebufferBuilder;
+
         /**
          * @brief The render pass colour clear value
          */

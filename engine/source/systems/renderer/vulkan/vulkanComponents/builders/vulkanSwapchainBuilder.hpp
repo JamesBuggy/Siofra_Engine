@@ -16,7 +16,7 @@ namespace siofraEngine::systems
         /**
          * @brief Vulkan device builder constructor
          * 
-         * @param vulkanImageBuilder Vulkan iamge builder
+         * @param vulkanImageBuilder Vulkan image builder
          */
         Builder(IVulkanImageBuilder& vulkanImageBuilder);
 

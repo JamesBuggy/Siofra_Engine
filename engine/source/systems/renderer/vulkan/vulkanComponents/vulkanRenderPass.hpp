@@ -2,6 +2,7 @@
 
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanRenderPass.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanDevice.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/ivulkanFramebuffer.hpp"
 
 namespace siofraEngine::systems
 {
@@ -22,9 +23,10 @@ namespace siofraEngine::systems
          * @param renderPass Vulkan render pass handle
          * @param renderAreaOffset Vulkan render pass area offset
          * @param renderAreaExtents Vulkan render pass area extents
+         * @param framebuffers Vulkan render pass framebuffers
          * @param device Vulkan device used to create the render pass
          */
-        VulkanRenderPass(VkRenderPass renderPass, VkOffset2D renderAreaOffset, VkExtent2D renderAreaExtents, IVulkanDevice const * device);
+        VulkanRenderPass(VkRenderPass renderPass, VkOffset2D renderAreaOffset, VkExtent2D renderAreaExtents, std::vector<std::unique_ptr<IVulkanFramebuffer>> framebuffers, IVulkanDevice const * device);
 
         /**
          * @brief VulkanRenderPass copy constructor
@@ -73,6 +75,13 @@ namespace siofraEngine::systems
          */
         VkRenderPass getRenderPass() const noexcept override;
 
+        /**
+         * @brief Get the vulkan render pass framebuffers
+         * 
+         * @returns The vulkan render pass framebuffers
+         */
+        std::vector<std::unique_ptr<IVulkanFramebuffer>> const & getFramebuffers() const noexcept override;
+
     private:
         /**
          * @brief Vulkan render pass handle
@@ -88,6 +97,11 @@ namespace siofraEngine::systems
          * @brief Vulkan render pass area extents
          */
         VkExtent2D renderAreaExtents{ 0, 0 };
+
+        /**
+         * @brief Vulkan render pass framebuffers
+         */
+        std::vector<std::unique_ptr<IVulkanFramebuffer>> framebuffers;
 
         /**
          * @brief Vulkan device used to create the render pass

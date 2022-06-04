@@ -11,6 +11,13 @@ namespace siofraEngine::systems
     {
     public:
         /**
+         * @brief Get the image view handle
+         * 
+         * @returns The image view handle
+         */
+        virtual VkImageView getImageView() const noexcept = 0;
+
+        /**
          * @brief Interface destructor
          */
         virtual ~IVulkanImage() = default;

@@ -2,10 +2,11 @@
 
 namespace siofraEngine::systems
 {
-    VulkanRenderPass::VulkanRenderPass(VkRenderPass renderPass, VkOffset2D renderAreaOffset, VkExtent2D renderAreaExtents, IVulkanDevice const * device) :
+    VulkanRenderPass::VulkanRenderPass(VkRenderPass renderPass, VkOffset2D renderAreaOffset, VkExtent2D renderAreaExtents, std::vector<std::unique_ptr<IVulkanFramebuffer>> framebuffers, IVulkanDevice const * device) :
         renderPass{renderPass},
         renderAreaOffset{renderAreaOffset},
         renderAreaExtents{renderAreaExtents},
+        framebuffers{std::move(framebuffers)},
         device{device}
     {
 
@@ -15,6 +16,7 @@ namespace siofraEngine::systems
         renderPass{other.renderPass},
         renderAreaOffset{other.renderAreaOffset},
         renderAreaExtents{other.renderAreaExtents},
+        framebuffers{std::move(other.framebuffers)},
         device{other.device}
     {
         other.renderPass = VK_NULL_HANDLE;
@@ -33,6 +35,7 @@ namespace siofraEngine::systems
         renderPass = other.renderPass;
         renderAreaOffset = other.renderAreaOffset;
         renderAreaExtents = other.renderAreaExtents;
+        framebuffers = std::move(other.framebuffers);
         device = other.device;
         other.renderPass = VK_NULL_HANDLE;
         other.renderAreaOffset = { 0, 0 };
@@ -49,5 +52,10 @@ namespace siofraEngine::systems
     VkRenderPass VulkanRenderPass::getRenderPass() const noexcept
     {
         return renderPass;
+    }
+
+    std::vector<std::unique_ptr<IVulkanFramebuffer>> const & VulkanRenderPass::getFramebuffers() const noexcept
+    {
+        return framebuffers;
     }
 }

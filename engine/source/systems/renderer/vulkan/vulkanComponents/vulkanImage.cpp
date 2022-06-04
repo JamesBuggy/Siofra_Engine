@@ -58,4 +58,9 @@ namespace siofraEngine::systems
             imageView != VK_NULL_HANDLE &&
             imageMemory != VK_NULL_HANDLE;
     }
+
+    VkImageView VulkanImage::getImageView() const noexcept
+    {
+        return imageView;
+    }
 }

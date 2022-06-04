@@ -2,6 +2,12 @@
 
 namespace siofraEngine::systems
 {
+    VulkanRenderPass::Builder::Builder(IVulkanFramebufferBuilder& vulkanFramebufferBuilder) :
+        vulkanFramebufferBuilder{vulkanFramebufferBuilder}
+    {
+
+    }
+
     IVulkanRenderPassBuilder& VulkanRenderPass::Builder::withDevice(IVulkanDevice const * device) noexcept
     {
         this->device = device;
@@ -115,6 +121,19 @@ namespace siofraEngine::systems
             throw std::runtime_error("Failed to create render pass");
         }
 
-        return std::make_unique<VulkanRenderPass>(renderPass, renderAreaOffset, renderAreaExtents, device);
+        std::vector<std::unique_ptr<IVulkanImage>> const & swapchainImages = swapchain->getSwapchainImages();
+        std::vector<std::unique_ptr<IVulkanFramebuffer>> framebuffers(swapchainImages.size());
+        for(size_t i = 0; i < framebuffers.size(); i++)
+        {
+            framebuffers[i] = vulkanFramebufferBuilder
+                .withAttachment(swapchainImages[i].get(), FrameBufferAttachmentTypes::COLOUR_ATTACHMENT)
+                .withAttachment(swapchain->getDepthAttachment().get(), FrameBufferAttachmentTypes::DEPTH_ATTACHMENT)
+                .withExtents(renderAreaExtents.width, renderAreaExtents.height)
+                .withDevice(device)
+                .withRenderPassHandle(renderPass)
+                .build();
+        }
+
+        return std::make_unique<VulkanRenderPass>(renderPass, renderAreaOffset, renderAreaExtents, std::move(framebuffers), device);
     }
 }

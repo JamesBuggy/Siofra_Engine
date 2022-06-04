@@ -40,7 +40,8 @@ namespace siofraEngine::systems
             .withSurface(surface.get())
             .build();
 
-        renderPass = VulkanRenderPass::Builder()
+        VulkanFramebuffer::Builder vulkanFramebufferBuilder;
+        renderPass = VulkanRenderPass::Builder(vulkanFramebufferBuilder)
             .withDevice(device.get())
             .withSwapchain(swapchain.get())
             .withColourClearValue(0.0f, 0.0f, 0.0f, 1.0f)

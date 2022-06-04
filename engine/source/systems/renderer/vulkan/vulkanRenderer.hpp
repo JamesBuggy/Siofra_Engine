@@ -10,6 +10,7 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanImageBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSwapchainBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanRenderPassBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFrambufferBuilder.hpp"
 
 namespace siofraEngine::systems
 {
