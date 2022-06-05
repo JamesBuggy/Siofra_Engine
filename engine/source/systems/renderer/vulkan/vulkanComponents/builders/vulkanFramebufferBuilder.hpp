@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <vector>
 #include "systems/renderer/vulkan/vulkanComponents/vulkanFramebuffer.hpp"
-#include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanFrambufferBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanFramebufferBuilder.hpp"
 
 namespace siofraEngine::systems
 {

@@ -1,4 +1,4 @@
-#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFrambufferBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFramebufferBuilder.hpp"
 
 namespace siofraEngine::systems
 {
@@ -44,17 +44,17 @@ namespace siofraEngine::systems
             depthAttachment->getImageView()
         };
 
-        VkFramebufferCreateInfo frambufferCreateInfo = {};
-        frambufferCreateInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-        frambufferCreateInfo.renderPass = renderPassHandle;
-        frambufferCreateInfo.pAttachments = attachments.data();
-        frambufferCreateInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
-        frambufferCreateInfo.width = extents.width;
-        frambufferCreateInfo.height = extents.height;
-        frambufferCreateInfo.layers = 1;
+        VkFramebufferCreateInfo framebufferCreateInfo = {};
+        framebufferCreateInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+        framebufferCreateInfo.renderPass = renderPassHandle;
+        framebufferCreateInfo.pAttachments = attachments.data();
+        framebufferCreateInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
+        framebufferCreateInfo.width = extents.width;
+        framebufferCreateInfo.height = extents.height;
+        framebufferCreateInfo.layers = 1;
 
         VkFramebuffer frameBuffer{ VK_NULL_HANDLE };
-        if (vkCreateFramebuffer(device->getLogicalDevice(), &frambufferCreateInfo, nullptr, &frameBuffer) != VK_SUCCESS)
+        if (vkCreateFramebuffer(device->getLogicalDevice(), &framebufferCreateInfo, nullptr, &frameBuffer) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to create frame buffer");
         }

@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 #include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanRenderPassBuilder.hpp"
-#include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanFrambufferBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/ivulkanFramebufferBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/vulkanRenderPass.hpp"
 
 namespace siofraEngine::systems

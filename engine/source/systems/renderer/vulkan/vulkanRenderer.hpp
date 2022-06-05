@@ -10,7 +10,9 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanImageBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSwapchainBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanRenderPassBuilder.hpp"
-#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFrambufferBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFramebufferBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanCommandPoolBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanCommandBufferBuilder.hpp"
 
 namespace siofraEngine::systems
 {
@@ -52,5 +54,15 @@ namespace siofraEngine::systems
          * @brief Vulkan render pass
          */
         std::unique_ptr<IVulkanRenderPass> renderPass{ nullptr };
+
+        /**
+         * @brief Vulkan graphics command pool
+         */
+        std::unique_ptr<IVulkanCommandPool> graphicsCommandPool{ nullptr };
+
+        /**
+         * @brief Vulkan graphics command buffers
+         */
+        std::vector<std::unique_ptr<IVulkanCommandBuffer>> graphicsCommandBuffers{ };
     };
 }

@@ -47,5 +47,17 @@ namespace siofraEngine::systems
             .withColourClearValue(0.0f, 0.0f, 0.0f, 1.0f)
             .withDepthClearValue(1.0f)
             .build();
+
+        graphicsCommandPool = VulkanCommandPool::Builder()
+            .withDevice(device.get())
+            .withFlags(VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT)
+            .withQueueFamilyIndex(device->getGraphicsQueue()->getFamilyIndex())
+            .build();
+
+        graphicsCommandBuffers = VulkanCommandBuffer::Builder()
+            .withCommandPool(graphicsCommandPool.get())
+            .withDevice(device.get())
+            .withLevel(VK_COMMAND_BUFFER_LEVEL_PRIMARY)
+            .build(renderPass->getFramebuffers().size());
     }
 }
