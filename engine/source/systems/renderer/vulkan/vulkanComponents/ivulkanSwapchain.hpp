@@ -4,6 +4,7 @@
 #include <memory>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanComponent.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanImage.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/ivulkanSemaphore.hpp"
 
 namespace siofraEngine::systems
 {
@@ -59,6 +60,14 @@ namespace siofraEngine::systems
          * @returns The maximum number of frames which can be rendered to
          */
         virtual uint32_t getMaxFramesInFlight() const noexcept = 0;
+
+        /**
+         * @brief Retrieve the index of the next available presentable image
+         * 
+         * @param semaphore A semaphore to signal
+         * @returns The index of the next available presentable image
+         */
+        virtual uint32_t acquireNextImage(IVulkanSemaphore const * semaphore) const = 0;
 
         /**
          * @brief Interface destructor

@@ -72,13 +72,34 @@ namespace siofraEngine::systems
         for (size_t i = 0; i < maxFramesInFlight; i++)
         {
             imageAvailable[i] = vulkanSemaphoreBuilder.build();
-            imageAvailable[i] = vulkanSemaphoreBuilder.build();
+            renderFinished[i] = vulkanSemaphoreBuilder.build();
             drawFences[i] = vulkanFenceBuilder.build();
         }
     }
 
+    VulkanRenderer::~VulkanRenderer()
+    {
+        vkDeviceWaitIdle(device->getLogicalDevice());
+    }
+
     void VulkanRenderer::draw()
     {
-        
+        VkFence fenceHandle = drawFences[currentFrame]->getFence();
+
+        vkWaitForFences(device->getLogicalDevice(), 1, &fenceHandle, VK_TRUE, std::numeric_limits<uint64_t>::max());
+        vkResetFences(device->getLogicalDevice(), 1, &fenceHandle);
+
+        uint32_t imageIndex = swapchain->acquireNextImage(imageAvailable[currentFrame].get());
+ 
+        graphicsCommandBuffers[imageIndex]->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+        renderPass->begin(graphicsCommandBuffers[imageIndex].get(), imageIndex);
+
+        renderPass->end(graphicsCommandBuffers[imageIndex].get());
+        graphicsCommandBuffers[imageIndex].get()->end();
+
+        device->getGraphicsQueue()->submit(imageAvailable[currentFrame].get(), renderFinished[currentFrame].get(), drawFences[currentFrame].get(), graphicsCommandBuffers[imageIndex].get());
+        device->getPresentationQueue()->present(renderFinished[currentFrame].get(), swapchain.get(), imageIndex);
+
+        currentFrame = (currentFrame + 1) % swapchain->getMaxFramesInFlight();
     }
 }

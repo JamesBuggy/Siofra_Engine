@@ -32,6 +32,11 @@ namespace siofraEngine::systems
         VulkanRenderer(siofraEngine::platform::IWindow &window);
 
         /**
+         * @brief VulkanRenderer destructor
+         */
+        ~VulkanRenderer();
+
+        /**
          * @brief Draw current frame
          */
         void draw() override;
@@ -86,5 +91,10 @@ namespace siofraEngine::systems
          * @brief Draw fences. Will block rendering of an image/frame until it is available. Prevents an image from being queued for rendering/presentation while it is already queued
          */
 		std::vector<std::unique_ptr<IVulkanFence>> drawFences{ };
+
+        /**
+         * @brief The current image/frame to be rendered
+         */
+        uint32_t currentFrame{ 0 };
     };
 }

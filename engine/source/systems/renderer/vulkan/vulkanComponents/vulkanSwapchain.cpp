@@ -97,4 +97,16 @@ namespace siofraEngine::systems
     {
         return swapChainImages.size() - 1;
     }
+
+    uint32_t VulkanSwapchain::acquireNextImage(IVulkanSemaphore const * semaphore) const
+    {
+        VkSemaphore semaphoreHandle = semaphore->getSemaphore();
+
+        uint32_t imageIndex{ };
+        if(vkAcquireNextImageKHR(device->getLogicalDevice(), swapchain, std::numeric_limits<uint64_t>::max(), semaphoreHandle, VK_NULL_HANDLE, &imageIndex) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to acquire next swapchain image");
+        }
+        return imageIndex;
+    }
 }

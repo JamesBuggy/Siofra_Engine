@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanSwapchain.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanDevice.hpp"
 
@@ -109,6 +110,14 @@ namespace siofraEngine::systems
          * @returns The maximum number of frames which can be rendered to
          */
         uint32_t getMaxFramesInFlight() const noexcept override;
+
+        /**
+         * @brief Retrieve the index of the next available presentable image
+         * 
+         * @param semaphore A semaphore to signal
+         * @returns The index of the next available presentable image
+         */
+        uint32_t acquireNextImage(IVulkanSemaphore const * semaphore) const override;
 
     private:
         /**
