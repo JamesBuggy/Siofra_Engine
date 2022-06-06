@@ -88,6 +88,15 @@ namespace siofraEngine::systems
          */
         void submit(IVulkanSemaphore const * waitSemaphore, IVulkanSemaphore const * signalSemaphore, IVulkanFence const * fence, IVulkanCommandBuffer const * commandBuffer) const override;
 
+        /**
+         * @brief Queue an image for presentation
+         * 
+         * @param waitSemaphore Semaphore to wait for before issuing the present request
+         * @param swapchain The swapchain
+         * @param imageIndex Index of the swapchain image to present
+         */
+        void present(IVulkanSemaphore const * waitSemaphore, IVulkanSwapchain const * swapchain, uint32_t imageIndex) const override;
+
     private:
         /**
          * @brief The vulkan queue handle

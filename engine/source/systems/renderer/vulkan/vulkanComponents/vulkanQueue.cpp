@@ -66,4 +66,23 @@ namespace siofraEngine::systems
             throw std::runtime_error("Failed to submit command buffer to queue");
         }
     }
+
+    void VulkanQueue::present(IVulkanSemaphore const * waitSemaphore, IVulkanSwapchain const * swapchain, uint32_t imageIndex) const
+    {
+        VkSemaphore waitSemaphoreHandle = waitSemaphore->getSemaphore();
+        VkSwapchainKHR swapchainHandle = swapchain->getSwapchain();
+
+        VkPresentInfoKHR presentInfo = {};
+        presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+        presentInfo.pWaitSemaphores = &waitSemaphoreHandle;
+        presentInfo.waitSemaphoreCount = 1;
+        presentInfo.pSwapchains = &swapchainHandle;
+        presentInfo.swapchainCount = 1;
+        presentInfo.pImageIndices = &imageIndex;
+
+        if (vkQueuePresentKHR(queue, &presentInfo) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to present image");
+        }
+    }
 }
