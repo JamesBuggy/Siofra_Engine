@@ -34,18 +34,31 @@ namespace siofraEngine::systems
 
         /**
          * @brief Get swapchain extents
+         * 
+         * @returns The swapchain extents
          */
         virtual VkExtent2D getExtents() const noexcept = 0;
 
         /**
          * @brief Get swapchain images
+         * 
+         * @returns The swapchain images
          */
         virtual std::vector<std::unique_ptr<IVulkanImage>> const & getSwapchainImages() const noexcept = 0;
 
         /**
          * @brief Get swapchain depth attahcment
+         * 
+         * @returns The swapchain depth attahcment
          */
         virtual std::unique_ptr<IVulkanImage> const & getDepthAttachment() const noexcept = 0;
+
+        /**
+         * @brief Get maximum number of frames which can be rendered to
+         * 
+         * @returns The maximum number of frames which can be rendered to
+         */
+        virtual uint32_t getMaxFramesInFlight() const noexcept = 0;
 
         /**
          * @brief Interface destructor

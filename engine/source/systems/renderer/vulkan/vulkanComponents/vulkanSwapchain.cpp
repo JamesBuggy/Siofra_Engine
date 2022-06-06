@@ -92,4 +92,9 @@ namespace siofraEngine::systems
     {
         return depthAttachment;
     }
+
+    uint32_t VulkanSwapchain::getMaxFramesInFlight() const noexcept
+    {
+        return swapChainImages.size() - 1;
+    }
 }

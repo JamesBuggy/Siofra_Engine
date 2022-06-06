@@ -59,5 +59,21 @@ namespace siofraEngine::systems
             .withDevice(device.get())
             .withLevel(VK_COMMAND_BUFFER_LEVEL_PRIMARY)
             .build(renderPass->getFramebuffers().size());
+
+        uint32_t maxFramesInFlight = swapchain->getMaxFramesInFlight();
+        imageAvailable.resize(maxFramesInFlight);
+        renderFinished.resize(maxFramesInFlight);
+        drawFences.resize(maxFramesInFlight);
+
+        VulkanSemaphore::Builder vulkanSemaphoreBuilder;
+        vulkanSemaphoreBuilder.withDevice(device.get());
+        VulkanFence::Builder vulkanFenceBuilder;
+        vulkanFenceBuilder.withDevice(device.get());
+        for (size_t i = 0; i < maxFramesInFlight; i++)
+        {
+            imageAvailable[i] = vulkanSemaphoreBuilder.build();
+            imageAvailable[i] = vulkanSemaphoreBuilder.build();
+            drawFences[i] = vulkanFenceBuilder.build();
+        }
     }
 }

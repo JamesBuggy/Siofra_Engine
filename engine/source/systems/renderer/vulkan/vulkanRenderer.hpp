@@ -13,6 +13,8 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFramebufferBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanCommandPoolBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanCommandBufferBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSemaphoreBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFenceBuilder.hpp"
 
 namespace siofraEngine::systems
 {
@@ -64,5 +66,20 @@ namespace siofraEngine::systems
          * @brief Vulkan graphics command buffers
          */
         std::vector<std::unique_ptr<IVulkanCommandBuffer>> graphicsCommandBuffers{ };
+
+        /**
+         * @brief Image available semaphores. Signaled when an image has become available after presentation
+         */
+        std::vector<std::unique_ptr<IVulkanSemaphore>> imageAvailable{ };
+
+        /**
+         * @brief Render finished semaphores. Signaled when an image has been rendered and is ready for presentation
+         */
+		std::vector<std::unique_ptr<IVulkanSemaphore>> renderFinished{ };
+
+        /**
+         * @brief Draw fences. Will block rendering of an image/frame until it is available. Prevents an image from being queued for rendering/presentation while it is already queued
+         */
+		std::vector<std::unique_ptr<IVulkanFence>> drawFences{ };
     };
 }

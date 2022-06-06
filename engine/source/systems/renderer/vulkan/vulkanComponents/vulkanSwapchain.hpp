@@ -103,6 +103,13 @@ namespace siofraEngine::systems
          */
         std::unique_ptr<IVulkanImage> const & getDepthAttachment() const noexcept override;
 
+        /**
+         * @brief Get maximum number of frames which can be rendered to
+         * 
+         * @returns The maximum number of frames which can be rendered to
+         */
+        uint32_t getMaxFramesInFlight() const noexcept override;
+
     private:
         /**
          * @brief Vulkan swapchain handle
