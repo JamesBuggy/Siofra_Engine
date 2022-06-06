@@ -76,4 +76,9 @@ namespace siofraEngine::systems
             drawFences[i] = vulkanFenceBuilder.build();
         }
     }
+
+    void VulkanRenderer::draw()
+    {
+        
+    }
 }

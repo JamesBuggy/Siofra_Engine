@@ -31,6 +31,11 @@ namespace siofraEngine::systems
          */
         VulkanRenderer(siofraEngine::platform::IWindow &window);
 
+        /**
+         * @brief Draw current frame
+         */
+        void draw() override;
+
     private:
         /**
          * @brief The vulkan instance

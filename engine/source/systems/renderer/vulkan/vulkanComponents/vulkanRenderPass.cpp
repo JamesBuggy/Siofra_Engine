@@ -2,10 +2,11 @@
 
 namespace siofraEngine::systems
 {
-    VulkanRenderPass::VulkanRenderPass(VkRenderPass renderPass, VkOffset2D renderAreaOffset, VkExtent2D renderAreaExtents, std::vector<std::unique_ptr<IVulkanFramebuffer>> framebuffers, IVulkanDevice const * device) :
+    VulkanRenderPass::VulkanRenderPass(VkRenderPass renderPass, VkOffset2D renderAreaOffset, VkExtent2D renderAreaExtents, std::vector<VkClearValue> clearValues, std::vector<std::unique_ptr<IVulkanFramebuffer>> framebuffers, IVulkanDevice const * device) :
         renderPass{renderPass},
         renderAreaOffset{renderAreaOffset},
         renderAreaExtents{renderAreaExtents},
+        clearValues{std::move(clearValues)},
         framebuffers{std::move(framebuffers)},
         device{device}
     {
@@ -16,6 +17,7 @@ namespace siofraEngine::systems
         renderPass{other.renderPass},
         renderAreaOffset{other.renderAreaOffset},
         renderAreaExtents{other.renderAreaExtents},
+        clearValues{std::move(other.clearValues)},
         framebuffers{std::move(other.framebuffers)},
         device{other.device}
     {
@@ -35,6 +37,7 @@ namespace siofraEngine::systems
         renderPass = other.renderPass;
         renderAreaOffset = other.renderAreaOffset;
         renderAreaExtents = other.renderAreaExtents;
+        clearValues = std::move(other.clearValues);
         framebuffers = std::move(other.framebuffers);
         device = other.device;
         other.renderPass = VK_NULL_HANDLE;
@@ -58,4 +61,23 @@ namespace siofraEngine::systems
     {
         return framebuffers;
     }
+
+    void VulkanRenderPass::begin(IVulkanCommandBuffer const * commandBuffer, uint32_t framebufferIndex) const
+    {
+        VkRenderPassBeginInfo renderPassBeginInfo = {};
+        renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+        renderPassBeginInfo.renderPass = renderPass;
+        renderPassBeginInfo.renderArea.offset = renderAreaOffset;
+        renderPassBeginInfo.renderArea.extent = renderAreaExtents;
+        renderPassBeginInfo.pClearValues = clearValues.data();
+        renderPassBeginInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
+        renderPassBeginInfo.framebuffer = framebuffers[framebufferIndex]->getFramebuffer();
+
+        vkCmdBeginRenderPass(commandBuffer->getCommandBuffer(), &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+    }
+
+     void VulkanRenderPass::end(IVulkanCommandBuffer const * commandBuffer) const
+     {
+         vkCmdEndRenderPass(commandBuffer->getCommandBuffer());
+     }
 }

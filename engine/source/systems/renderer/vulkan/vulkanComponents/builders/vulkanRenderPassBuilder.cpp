@@ -134,6 +134,11 @@ namespace siofraEngine::systems
                 .build();
         }
 
-        return std::make_unique<VulkanRenderPass>(renderPass, renderAreaOffset, renderAreaExtents, std::move(framebuffers), device);
+        std::vector<VkClearValue> clearValues = {
+            colourClearValue,
+            depthClearValue
+        };
+
+        return std::make_unique<VulkanRenderPass>(renderPass, renderAreaOffset, renderAreaExtents, std::move(clearValues), std::move(framebuffers), device);
     }
 }
