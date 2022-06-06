@@ -78,6 +78,6 @@ namespace siofraEngine::systems
 
      void VulkanRenderPass::end(IVulkanCommandBuffer const * commandBuffer) const
      {
-         vkCmdEndRenderPass(commandBuffer->getCommandBuffer());
+        vkCmdEndRenderPass(commandBuffer->getCommandBuffer());
      }
 }

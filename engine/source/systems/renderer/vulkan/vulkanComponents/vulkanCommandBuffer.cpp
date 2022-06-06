@@ -30,4 +30,24 @@ namespace siofraEngine::systems
     {
         return commandBuffer;
     }
+
+    void VulkanCommandBuffer::begin(VkCommandBufferUsageFlags flags) const
+    {
+        VkCommandBufferBeginInfo commandBufferBeginInfo = {};
+        commandBufferBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        commandBufferBeginInfo.flags = flags;
+
+        if (vkBeginCommandBuffer(commandBuffer, &commandBufferBeginInfo) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to start recording on the command buffer");
+        }
+    }
+
+    void VulkanCommandBuffer::end() const
+    {
+        if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to stop recording on the command buffer");
+        }
+    }
 }

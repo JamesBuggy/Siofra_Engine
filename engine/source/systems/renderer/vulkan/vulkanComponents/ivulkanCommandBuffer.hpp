@@ -18,6 +18,16 @@ namespace siofraEngine::systems
         virtual VkCommandBuffer getCommandBuffer() const noexcept = 0;
 
         /**
+         * @brief Start recording on the command buffer
+         */
+        virtual void begin(VkCommandBufferUsageFlags flags) const = 0;
+
+        /**
+         * @brief Stop recording on the command buffer
+         */
+        virtual void end() const = 0;
+
+        /**
          * @brief Interface destructor
          */
         virtual ~IVulkanCommandBuffer() = default;

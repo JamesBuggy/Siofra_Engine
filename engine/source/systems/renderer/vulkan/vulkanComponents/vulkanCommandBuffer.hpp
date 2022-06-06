@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanCommandBuffer.hpp"
 
 namespace siofraEngine::systems
@@ -63,6 +64,16 @@ namespace siofraEngine::systems
          * @returns The Vulkan command buffer handle
          */
         VkCommandBuffer getCommandBuffer() const noexcept override;
+
+        /**
+         * @brief Start recording on the command buffer
+         */
+        void begin(VkCommandBufferUsageFlags flags) const override;
+
+        /**
+         * @brief Stop recording on the command buffer
+         */
+        void end() const override;
 
     private:
         /**
