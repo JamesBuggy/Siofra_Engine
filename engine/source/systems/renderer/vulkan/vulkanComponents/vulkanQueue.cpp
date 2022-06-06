@@ -39,4 +39,31 @@ namespace siofraEngine::systems
     {
         return familyIndex;
     }
+
+    void VulkanQueue::submit(IVulkanSemaphore const * waitSemaphore, IVulkanSemaphore const * signalSemaphore, IVulkanFence const * fence, IVulkanCommandBuffer const * commandBuffer) const
+    {
+        VkPipelineStageFlags waitStages[] = {
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT
+        };
+
+        VkSemaphore waitSemaphoreHandle = waitSemaphore->getSemaphore();
+        VkSemaphore signalSemaphoreHandle = signalSemaphore->getSemaphore();
+        VkCommandBuffer commandBufferHandle = commandBuffer->getCommandBuffer();
+        VkFence fenceHandle = fence->getFence();
+
+        VkSubmitInfo submitInfo{ };
+        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        submitInfo.pWaitSemaphores = &waitSemaphoreHandle;
+        submitInfo.waitSemaphoreCount = 1;
+        submitInfo.pWaitDstStageMask = waitStages;
+        submitInfo.pCommandBuffers = &commandBufferHandle;
+        submitInfo.commandBufferCount = 1;
+        submitInfo.pSignalSemaphores = &signalSemaphoreHandle;
+        submitInfo.signalSemaphoreCount = 1;
+
+        if (vkQueueSubmit(queue, 1, &submitInfo, fenceHandle) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to submit command buffer to queue");
+        }
+    }
 }

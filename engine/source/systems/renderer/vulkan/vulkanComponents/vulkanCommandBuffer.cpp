@@ -33,7 +33,7 @@ namespace siofraEngine::systems
 
     void VulkanCommandBuffer::begin(VkCommandBufferUsageFlags flags) const
     {
-        VkCommandBufferBeginInfo commandBufferBeginInfo = {};
+        VkCommandBufferBeginInfo commandBufferBeginInfo{ };
         commandBufferBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
         commandBufferBeginInfo.flags = flags;
 

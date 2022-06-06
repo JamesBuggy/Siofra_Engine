@@ -19,6 +19,8 @@ namespace siofraEngine::systems
 
         /**
          * @brief Start recording on the command buffer
+         * 
+         * @param flags Usage behavior for the command buffer
          */
         virtual void begin(VkCommandBufferUsageFlags flags) const = 0;
 
