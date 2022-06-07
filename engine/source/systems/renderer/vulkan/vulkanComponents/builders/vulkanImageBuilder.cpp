@@ -151,6 +151,6 @@ namespace siofraEngine::systems
             }
         }
 
-        return -1;
+        throw std::runtime_error("Failed to find image memory type index");
     }
 }

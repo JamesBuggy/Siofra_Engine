@@ -173,7 +173,7 @@ namespace siofraEngine::systems
         bool allocateImageMemory(IVulkanDevice const * device, VkImage image, VkMemoryPropertyFlags memoryPropertyFlags, VkDeviceMemory& imageMemory) const;
 
         /**
-         * @brief Find the index of the required memory type within the physical device memory properties which satisfies the image memory requirements and the desired memory types
+         * @brief Find the index of the required memory type, within the physical device memory properties, which satisfies the image memory requirements and the desired memory types
          * 
          * @param device The device to search for the required memory type index
          * @param allowedTypes The allowed image memory types
