@@ -21,4 +21,9 @@ namespace siofraEngine::systems
         SE_ASSERT_TRUE(rendererBackend != nullptr, "Unsupported renderer implementation");
         return rendererBackend;
     }
+
+    void RendererSystem::draw()
+    {
+        rendererBackend->draw();
+    }
 }

@@ -6,8 +6,8 @@
 			"label": "Build Engine",
 			"command": "${workspaceFolder}\\engine\\build.bat",
 			"options": {
-                "cwd": "${workspaceFolder}\\engine"
-            },
+				"cwd": "${workspaceFolder}\\engine"
+			},
 			"group": {
 				"kind": "build"
 			}
@@ -17,8 +17,17 @@
 			"label": "Build Testbed",
 			"command": "${workspaceFolder}\\testbed\\build.bat",
 			"options": {
-                "cwd": "${workspaceFolder}\\testbed"
-            },
+				"cwd": "${workspaceFolder}\\testbed"
+			},
+			"group": {
+				"kind": "build"
+			}
+		},
+		{
+			"type": "shell",
+			"label": "Build All",
+			"command": "${workspaceFolder}\\build.bat",
+			"options": { },
 			"group": {
 				"kind": "build"
 			}

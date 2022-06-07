@@ -66,6 +66,13 @@ namespace siofraEngine::systems
          * @returns True if the wrapped handle is intialized, otherwise false
          */
         operator bool() const noexcept override;
+
+        /**
+         * @brief Get the image view handle
+         * 
+         * @returns The image view handle
+         */
+        VkImageView getImageView() const noexcept override;
         
     private:
         /**

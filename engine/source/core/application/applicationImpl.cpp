@@ -25,6 +25,8 @@ namespace siofraEngine::core
 
             inputSystem.update();
 
+            rendererSystem.draw();
+
             if(inputSystem.isReleased(siofraEngine::core::KeyCode::KEY_ESC))
             {
                 break;

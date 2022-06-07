@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanQueue.hpp"
 
 namespace siofraEngine::systems
@@ -76,6 +77,25 @@ namespace siofraEngine::systems
          * @returns The vulkan queue family index
          */
         uint32_t getFamilyIndex() const noexcept override;
+
+        /**
+         * @brief Submits a command buffer to the queue
+         * 
+         * @param waitSemaphore Semaphore upon which to wait before the command buffer will begin execution
+         * @param signalSemaphore Semaphore which will be signaled when the command buffer has completed execution
+         * @param fence A fence to be signaled once the submitted command buffer has completed execution
+         * @param commandBuffer Command buffer to execute
+         */
+        void submit(IVulkanSemaphore const * waitSemaphore, IVulkanSemaphore const * signalSemaphore, IVulkanFence const * fence, IVulkanCommandBuffer const * commandBuffer) const override;
+
+        /**
+         * @brief Queue an image for presentation
+         * 
+         * @param waitSemaphore Semaphore to wait for before issuing the present request
+         * @param swapchain The swapchain
+         * @param imageIndex Index of the swapchain image to present
+         */
+        void present(IVulkanSemaphore const * waitSemaphore, IVulkanSwapchain const * swapchain, uint32_t imageIndex) const override;
 
     private:
         /**

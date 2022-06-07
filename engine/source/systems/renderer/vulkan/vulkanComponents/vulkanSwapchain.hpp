@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanSwapchain.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanDevice.hpp"
 
@@ -21,12 +22,13 @@ namespace siofraEngine::systems
          * 
          * @param swapchain Swapchain handle
          * @param swapchainImageFormat Swapchain image format
+         * @param depthAttachmentFormat Swapchain depth attachment format
          * @param swapchainExtents Swapchain extents
          * @param swapChainImages Swapchain images
          * @param depthAttachment Swapchain depth attachment
          * @param device Device used to create the swapchain
          */
-        VulkanSwapchain(VkSwapchainKHR swapchain, VkFormat swapchainImageFormat, VkExtent2D swapchainExtents, std::vector<std::unique_ptr<IVulkanImage>> swapChainImages, std::unique_ptr<IVulkanImage> depthAttachment, IVulkanDevice const * device);
+        VulkanSwapchain(VkSwapchainKHR swapchain, VkFormat swapchainImageFormat, VkFormat depthAttachmentFormat, VkExtent2D swapchainExtents, std::vector<std::unique_ptr<IVulkanImage>> swapChainImages, std::unique_ptr<IVulkanImage> depthAttachment, IVulkanDevice const * device);
 
         /**
          * @brief VulkanSwapchain copy constructor
@@ -75,8 +77,17 @@ namespace siofraEngine::systems
 
         /**
          * @brief Get swapchain image format
+         * 
+         * @returns The swapchain image format
          */
         VkFormat getImageFormat() const noexcept override;
+
+        /**
+         * @brief Get the depth attchment format
+         * 
+         * @returns The Vulkan depth attchment format
+         */
+        VkFormat getDepthAttachmentFormat() const noexcept override;
 
         /**
          * @brief Get swapchain extents
@@ -93,6 +104,21 @@ namespace siofraEngine::systems
          */
         std::unique_ptr<IVulkanImage> const & getDepthAttachment() const noexcept override;
 
+        /**
+         * @brief Get maximum number of frames which can be rendered to
+         * 
+         * @returns The maximum number of frames which can be rendered to
+         */
+        uint32_t getMaxFramesInFlight() const noexcept override;
+
+        /**
+         * @brief Retrieve the index of the next available presentable image
+         * 
+         * @param semaphore A semaphore to signal
+         * @returns The index of the next available presentable image
+         */
+        uint32_t acquireNextImage(IVulkanSemaphore const * semaphore) const override;
+
     private:
         /**
          * @brief Vulkan swapchain handle
@@ -103,6 +129,11 @@ namespace siofraEngine::systems
          * @brief Swapchain image format
          */
         VkFormat swapchainImageFormat{ VK_FORMAT_UNDEFINED };
+
+        /**
+         * @brief Swapchain depth attachment format
+         */
+        VkFormat depthAttachmentFormat{ VK_FORMAT_UNDEFINED };
 
         /**
          * @brief Swapchain extents

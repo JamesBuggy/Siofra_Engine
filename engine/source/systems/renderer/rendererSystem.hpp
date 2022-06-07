@@ -22,6 +22,11 @@ namespace siofraEngine::systems
          */
         RendererSystem(siofraEngine::platform::IWindow &window);
 
+        /**
+         * @brief Draw current frame
+         */
+        void draw();
+
     private:
         /**
          * @brief Renderer backend

@@ -118,7 +118,7 @@ namespace siofraEngine::systems
             .withAspectFlags(VK_IMAGE_ASPECT_DEPTH_BIT)
             .build();
 
-        return std::make_unique<VulkanSwapchain>(swapchain, surfaceFormat.format, selectedExtents, std::move(swapChainImages), std::move(depthAttachment), device);
+        return std::make_unique<VulkanSwapchain>(swapchain, surfaceFormat.format, depthFormat, selectedExtents, std::move(swapChainImages), std::move(depthAttachment), device);
     }
 
     bool VulkanSwapchain::Builder::selectSurfaceFormat(IVulkanDevice const * device, IVulkanSurface const * surface, VkSurfaceFormatKHR& surfaceFormat) const
