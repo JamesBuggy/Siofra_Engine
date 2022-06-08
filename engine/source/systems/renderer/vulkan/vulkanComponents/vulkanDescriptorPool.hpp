@@ -20,7 +20,7 @@ namespace siofraEngine::systems
          * @brief VulkanDescriptorPool constructor
          * 
          * @param descriptorPool Vulkan descriptor pool handle
-         * @param deviceHandle Vulkan device used to create the descriptor pool
+         * @param device Vulkan device used to create the descriptor pool
          */
         VulkanDescriptorPool(VkDescriptorPool descriptorPool, IVulkanDevice const * device);
 
