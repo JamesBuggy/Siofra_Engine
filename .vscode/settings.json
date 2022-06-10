@@ -54,6 +54,7 @@
         "span": "cpp",
         "sstream": "cpp",
         "xhash": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "variant": "cpp"
     }
 }

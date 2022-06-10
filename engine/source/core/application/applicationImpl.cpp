@@ -2,15 +2,16 @@
 
 namespace siofraEngine::core
 {
-    Application::Impl::Impl(std::unique_ptr<siofraEngine::core::Game> game) :
+    Application::Impl::Impl(std::unique_ptr<core::Game> game) :
         ApplicationBase(),
-        clock{std::make_unique<siofraEngine::platform::PlatformClock>()},
-        window{siofraEngine::platform::Window(game->getTitle(), 100, 100, 800, 600, siofraEngine::platform::WindowFlags::WINDOW_VULKAN)},
-        inputSystem{std::make_unique<siofraEngine::platform::PlatformInput>()},
+        eventSystem{ },
+        clock{std::make_unique<platform::PlatformClock>()},
+        window{platform::Window(game->getTitle(), 100, 100, 800, 600, platform::WindowFlags::WINDOW_VULKAN)},
+        inputSystem{std::make_unique<platform::PlatformInput>()},
         rendererSystem{window},
         game{std::move(game)}
     {
-
+        
     }
 
     void Application::Impl::execute()
@@ -27,7 +28,7 @@ namespace siofraEngine::core
 
             rendererSystem.draw();
 
-            if(inputSystem.isReleased(siofraEngine::core::KeyCode::KEY_ESC))
+            if(inputSystem.isReleased(core::KeyCode::KEY_ESC))
             {
                 break;
             }
