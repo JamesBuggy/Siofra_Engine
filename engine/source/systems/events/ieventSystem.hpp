@@ -24,7 +24,7 @@ namespace siofraEngine::systems
          * @param eventType The event type
          * @param callback The callback to be executed upon broadcast of the specified event type
          */
-        virtual void subcsribe(EventTypes eventType, EventCallback callback) noexcept = 0;
+        virtual void subscribe(EventTypes eventType, EventCallback callback) noexcept = 0;
 
         /**
          * @brief Interface destructor

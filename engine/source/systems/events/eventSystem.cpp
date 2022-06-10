@@ -19,7 +19,7 @@ namespace siofraEngine::systems
         }
     }
 
-    void EventSystem::subcsribe(EventTypes eventType, EventCallback callback) noexcept
+    void EventSystem::subscribe(EventTypes eventType, EventCallback callback) noexcept
     {
         eventSubscriptions[eventType].push_back(callback);
     }

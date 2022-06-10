@@ -8,7 +8,8 @@ namespace siofraEngine::core
         clock{std::make_unique<platform::PlatformClock>()},
         window{platform::Window(game->getTitle(), 100, 100, 800, 600, platform::WindowFlags::WINDOW_VULKAN)},
         inputSystem{std::make_unique<platform::PlatformInput>()},
-        rendererSystem{window},
+        rendererSystem{window, eventSystem},
+        resourceSystem{std::make_unique<platform::PlatformFileSystem>(), eventSystem},
         game{std::move(game)}
     {
         

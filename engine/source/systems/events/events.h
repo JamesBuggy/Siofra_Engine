@@ -3,13 +3,21 @@
 #include <functional>
 #include <variant>
 #include <string>
+#include <vector>
 
 /**
  * @brief Supported event types
  */
 enum class EventTypes
 {
+    CREATE_SHADER,
     MAX_EVENT_TYPES
+};
+
+struct CreateShaderEvent
+{
+    std::vector<char> vertexStageFileContent;
+    std::vector<char> fragmentStageFileContent;
 };
 
 /**
@@ -21,7 +29,8 @@ using EventPayload = std::variant<
     float,
     double,
     char,
-    std::string
+    std::string,
+    CreateShaderEvent
 >;
 
 /**

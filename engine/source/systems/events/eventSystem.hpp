@@ -32,7 +32,7 @@ namespace siofraEngine::systems
          * @param eventType The event type
          * @param callback The callback to be executed upon broadcast of the specified event type
          */
-        void subcsribe(EventTypes eventType, EventCallback callback) noexcept override;
+        void subscribe(EventTypes eventType, EventCallback callback) noexcept override;
     
     private:
         /**

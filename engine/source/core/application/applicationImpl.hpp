@@ -7,10 +7,12 @@
 #include "systems/input/inputSystem.hpp"
 #include "systems/renderer/rendererSystem.hpp"
 #include "systems/events/eventSystem.hpp"
+#include "systems/resource/resourceSystem.hpp"
 #include "platform/window.hpp"
 #include "platform/platform.hpp"
 #include "platform/platformInput.hpp"
 #include "platform/platformClock.hpp"
+#include "platform/platformFileSystem.hpp"
 
 namespace siofraEngine::core
 {
@@ -57,6 +59,11 @@ namespace siofraEngine::core
          * @brief Renderer system instance
          */
         systems::RendererSystem rendererSystem;
+
+        /**
+         * @brief Renderer system instance
+         */
+        systems::ResourceSystem resourceSystem;
 
         /**
          * @brief Current game instance
