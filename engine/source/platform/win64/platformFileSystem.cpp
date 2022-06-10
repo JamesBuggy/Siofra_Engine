@@ -8,13 +8,14 @@ namespace siofraEngine::platform
     std::vector<char> PlatformFileSystem::readFile(const std::string & filePath) const
     {
         SDL_RWops * io = SDL_RWFromFile(filePath.c_str(), "rb");
-        if (io == NULL) {
+        if (io == nullptr) {
             throw std::runtime_error("Failed to open file");
         }
 
-        auto size = io->size(io);
-        std::vector<char> content(size);
-        if (io->read(io, content.data(), 1, size) == 0) {
+        Sint64 objectsToRead = io->size(io);
+        size_t objectSizeBytes = 1;
+        std::vector<char> content(objectsToRead);
+        if (io->read(io, content.data(), objectSizeBytes, objectsToRead) == 0) {
             throw std::runtime_error("Failed to read file content");
         }
         io->close(io);
