@@ -1,6 +1,7 @@
 #pragma once
 
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanComponent.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/ivulkanCommandBuffer.hpp"
 
 namespace siofraEngine::systems
 {
@@ -16,6 +17,14 @@ namespace siofraEngine::systems
          * @returns The vulkan pipeline handle
          */
         virtual VkPipeline getPipeline() const noexcept = 0;
+
+        /**
+         * @brief Bind the pipeline to a command buffer
+         * 
+         * @param commandBuffer The command buffer to bind to
+         * @param pipelineBindPoint Specifies to which bind point the pipeline is bound
+         */
+        virtual void bind(IVulkanCommandBuffer const * commandBuffer, VkPipelineBindPoint pipelineBindPoint) const = 0;
 
         /**
          * @brief Interface destructor

@@ -94,6 +94,8 @@ namespace siofraEngine::systems
         graphicsCommandBuffers[imageIndex]->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
         renderPass->begin(graphicsCommandBuffers[imageIndex].get(), imageIndex);
 
+        objectShaderPipeline->bind(graphicsCommandBuffers[imageIndex].get(), VK_PIPELINE_BIND_POINT_GRAPHICS);
+
         renderPass->end(graphicsCommandBuffers[imageIndex].get());
         graphicsCommandBuffers[imageIndex].get()->end();
 
@@ -108,8 +110,74 @@ namespace siofraEngine::systems
         return RendererBackends::VULKAN;
     }
 
-    void VulkanRenderer::createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode) const noexcept
-    {
-        SE_LOG_INFO("VulkanRenderer::createShader");
+    void VulkanRenderer::createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode)
+    {        
+        viewProjectionUniformBuffers.resize(swapchain->getSwapchainImages().size());
+        objectShaderDescriptorSets.resize(swapchain->getSwapchainImages().size());
+
+        objectShaderDescriptorPool = VulkanDescriptorPool::Builder()
+            .withDevice(device.get())
+            .withMaxSets(static_cast<uint32_t>(viewProjectionUniformBuffers.size()))
+            .withPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, static_cast<uint32_t>(viewProjectionUniformBuffers.size()))
+            .build();
+
+        objectShaderDescriptorSetLayout = VulkanDescriptorSetLayout::Builder()
+            .withDevice(device.get())
+            .withLayoutBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_VERTEX_BIT)
+            .build();
+
+        uint32_t const MAX_SAMPLER_DESCRIPTORS = 20;
+        objectShaderSamplerDescriptorPool = VulkanDescriptorPool::Builder()
+            .withDevice(device.get())
+            .withMaxSets(static_cast<uint32_t>(MAX_SAMPLER_DESCRIPTORS))
+            .withPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, static_cast<uint32_t>(MAX_SAMPLER_DESCRIPTORS))
+            .build();
+
+        objectShaderSamplerDescriptorSetLayout = VulkanDescriptorSetLayout::Builder()
+            .withDevice(device.get())
+            .withLayoutBinding(0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT)
+            .build();
+
+        for (size_t i = 0; i < viewProjectionUniformBuffers.size(); i++)
+        {
+            viewProjectionUniformBuffers[i] = VulkanBuffer::Builder()
+                .withDevice(device.get())
+                .withBufferSize(sizeof(ViewProjection))
+                .withBufferUsageFlags(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT)
+                .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
+                .build();
+
+            objectShaderDescriptorSets[i] = VulkanDescriptorSet::Builder()
+                .withDevice(device.get())
+                .withDescriptorPool(objectShaderDescriptorPool.get())
+                .withDescriptorSetLayout(objectShaderDescriptorSetLayout.get())
+                .build();
+
+            objectShaderDescriptorSets[i]->updateFromBuffer(viewProjectionUniformBuffers[i].get(), 0, sizeof(ViewProjection), 0, device.get());
+        }
+
+        std::unique_ptr<IVulkanShaderModule> vertexShaderModule = VulkanShaderModule::Builder()
+            .withDevice(device.get())
+            .withShaderCode(vertexShaderCode)
+            .build();
+
+        std::unique_ptr<IVulkanShaderModule> fragmenthaderModule = VulkanShaderModule::Builder()
+            .withDevice(device.get())
+            .withShaderCode(fragmentShaderCode)
+            .build();
+
+        objectShaderPipeline = VulkanPipeline::Builder()
+            .withDevice(device.get())
+            .withDescriptorSetLayouts({ objectShaderDescriptorSetLayout.get(), objectShaderSamplerDescriptorSetLayout.get() })
+            .withVertexStage(std::move(vertexShaderModule))
+            .withFragmentStage(std::move(fragmenthaderModule))
+            .withPushConstantRange(VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(ModelMatrix))
+            .withVertexInputAttributeDescription(0, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex3, position))
+            .withVertexInputAttributeDescription(0, 1, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex3, normal))
+            .withVertexInputAttributeDescription(0, 2, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex3, textureCoordinate))
+            .withVertexInputBindingDescription(0, sizeof(Vertex3), VK_VERTEX_INPUT_RATE_VERTEX)
+            .withRenderPass(renderPass.get())
+            .withViewportExtents(swapchain->getExtents())
+            .build();
     }
 }

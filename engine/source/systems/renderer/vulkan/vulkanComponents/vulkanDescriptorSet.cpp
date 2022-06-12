@@ -30,4 +30,27 @@ namespace siofraEngine::systems
     {
         return descriptorSet;
     }
+
+    void VulkanDescriptorSet::updateFromBuffer(IVulkanBuffer const * buffer, VkDeviceSize offset, VkDeviceSize range, uint32_t destinationBinding, IVulkanDevice const * device) const
+    {
+        VkDescriptorBufferInfo vpBufferInfo = {};
+        vpBufferInfo.buffer = buffer->getBuffer();
+        vpBufferInfo.offset = offset;
+        vpBufferInfo.range = range;
+
+        VkWriteDescriptorSet vpSetWrite = {};
+        vpSetWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        vpSetWrite.dstSet = descriptorSet;
+        vpSetWrite.dstBinding = destinationBinding;
+        vpSetWrite.dstArrayElement = 0;
+        vpSetWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        vpSetWrite.descriptorCount = 1;
+        vpSetWrite.pBufferInfo = &vpBufferInfo;
+
+        std::vector<VkWriteDescriptorSet> descriptorSetWrites = {
+            vpSetWrite
+        };
+
+        vkUpdateDescriptorSets(device->getLogicalDevice(), static_cast<uint32_t>(descriptorSetWrites.size()), descriptorSetWrites.data(), 0, nullptr);
+    }
 }

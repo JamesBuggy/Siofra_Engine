@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/engine/include",
                 "${workspaceFolder}/engine/source",
-                "${workspaceFolder}/engine/libs/SDL2-2.0.20/include"
+                "${workspaceFolder}/engine/libs/SDL2-2.0.20/include",
+                "${workspaceFolder}/engine/libs/GLM-0.9.6.3/include"
             ],
             "defines": [
                 "DEBUG",

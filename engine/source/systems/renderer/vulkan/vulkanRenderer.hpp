@@ -15,6 +15,14 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanCommandBufferBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSemaphoreBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFenceBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanBufferBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorPoolBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorSetLayoutBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorSetBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanShaderModuleBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanPipelineBuilder.hpp"
+#include "systems/renderer/vulkan/models/viewProjection.hpp"
+#include "systems/renderer/vulkan/models/modelMatrix.hpp"
 
 namespace siofraEngine::systems
 {
@@ -51,7 +59,7 @@ namespace siofraEngine::systems
         /**
          * @brief Create a shader
          */
-        void createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode) const noexcept override;
+        void createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode) override;
 
     private:
         /**
@@ -108,5 +116,40 @@ namespace siofraEngine::systems
          * @brief The current image/frame to be rendered
          */
         uint32_t currentFrame{ 0 };
+
+        /**
+         * @brief Buffers containing view projection data for each image/frame
+         */
+        std::vector<std::unique_ptr<IVulkanBuffer>> viewProjectionUniformBuffers{ };
+
+        /**
+         * @brief Descriptor pool for the object shader
+         */
+        std::unique_ptr<IVulkanDescriptorPool> objectShaderDescriptorPool{ };
+
+        /**
+         * @brief Descriptor set layout for the object shader
+         */
+        std::unique_ptr<IVulkanDescriptorSetLayout> objectShaderDescriptorSetLayout{ };
+
+        /**
+         * @brief Descriptor sets for the object shader
+         */
+        std::vector<std::unique_ptr<IVulkanDescriptorSet>> objectShaderDescriptorSets{ };
+
+        /**
+         * @brief Descriptor pool for the object shader sampler
+         */
+        std::unique_ptr<IVulkanDescriptorPool> objectShaderSamplerDescriptorPool{ };
+
+        /**
+         * @brief Descriptor set layout for the object shader sampler
+         */
+        std::unique_ptr<IVulkanDescriptorSetLayout> objectShaderSamplerDescriptorSetLayout{ };
+
+        /**
+         * @brief Pipeline for the object shader sampler
+         */
+        std::unique_ptr<IVulkanPipeline> objectShaderPipeline{ };
     };
 }

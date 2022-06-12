@@ -31,8 +31,6 @@ namespace siofraEngine::systems
 
     void RendererSystem::createShader(EventPayload payload)
     {
-        SE_LOG_INFO("RendererSystem::createShader");
-
         auto shaderData = std::get<CreateShaderEvent>(payload);
         switch (rendererBackend->getRendererBackendType())
         {
