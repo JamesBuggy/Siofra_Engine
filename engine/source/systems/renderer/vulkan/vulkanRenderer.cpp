@@ -155,5 +155,15 @@ namespace siofraEngine::systems
 
             objectShaderDescriptorSets[i]->updateFromBuffer(viewProjectionUniformBuffers[i].get(), 0, sizeof(ViewProjection), 0, device.get());
         }
+
+        std::unique_ptr<IVulkanShaderModule> vertexShaderModule = VulkanShaderModule::Builder()
+            .withDevice(device.get())
+            .withShaderCode(vertexShaderCode)
+            .build();
+
+        std::unique_ptr<IVulkanShaderModule> fragmenthaderModule = VulkanShaderModule::Builder()
+            .withDevice(device.get())
+            .withShaderCode(fragmentShaderCode)
+            .build();
     }
 }
