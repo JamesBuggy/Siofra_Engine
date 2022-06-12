@@ -133,5 +133,15 @@ namespace siofraEngine::systems
          * @brief Descriptor sets for the object shader
          */
         std::vector<std::unique_ptr<IVulkanDescriptorSet>> objectShaderDescriptorSets{ };
+
+        /**
+         * @brief Descriptor pool for the object shader sampler
+         */
+        std::unique_ptr<IVulkanDescriptorPool> objectShaderSamplerDescriptorPool{ };
+
+        /**
+         * @brief Descriptor set layout for the object shader sampler
+         */
+        std::unique_ptr<IVulkanDescriptorSetLayout> objectShaderSamplerDescriptorSetLayout{ };
     };
 }

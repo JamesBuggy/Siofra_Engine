@@ -126,6 +126,18 @@ namespace siofraEngine::systems
             .withLayoutBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_VERTEX_BIT)
             .build();
 
+        uint32_t const MAX_SAMPLER_DESCRIPTORS = 20;
+        objectShaderSamplerDescriptorPool = VulkanDescriptorPool::Builder()
+            .withDevice(device.get())
+            .withMaxSets(static_cast<uint32_t>(MAX_SAMPLER_DESCRIPTORS))
+            .withPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, static_cast<uint32_t>(MAX_SAMPLER_DESCRIPTORS))
+            .build();
+
+        objectShaderSamplerDescriptorSetLayout = VulkanDescriptorSetLayout::Builder()
+            .withDevice(device.get())
+            .withLayoutBinding(0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT)
+            .build();
+
         for (size_t i = 0; i < viewProjectionUniformBuffers.size(); i++)
         {
             viewProjectionUniformBuffers[i] = VulkanBuffer::Builder()
