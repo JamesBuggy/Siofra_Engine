@@ -16,6 +16,9 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSemaphoreBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFenceBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanBufferBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorPoolBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorSetLayoutBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorSetBuilder.hpp"
 #include "systems/renderer/vulkan/models/viewProjection.hpp"
 
 namespace siofraEngine::systems
@@ -115,5 +118,20 @@ namespace siofraEngine::systems
          * @brief Buffers containing view projection data for each image/frame
          */
         std::vector<std::unique_ptr<IVulkanBuffer>> viewProjectionUniformBuffers{ };
+
+        /**
+         * @brief Descriptor pool for the object shader
+         */
+        std::unique_ptr<IVulkanDescriptorPool> objectShaderDescriptorPool{ };
+
+        /**
+         * @brief Descriptor set layout for the object shader
+         */
+        std::unique_ptr<IVulkanDescriptorSetLayout> objectShaderDescriptorSetLayout{ };
+
+        /**
+         * @brief Descriptor sets for the object shader
+         */
+        std::vector<std::unique_ptr<IVulkanDescriptorSet>> objectShaderDescriptorSets{ };
     };
 }

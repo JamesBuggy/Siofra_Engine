@@ -113,6 +113,19 @@ namespace siofraEngine::systems
         SE_LOG_INFO("VulkanRenderer::createShader");
         
         viewProjectionUniformBuffers.resize(swapchain->getSwapchainImages().size());
+        objectShaderDescriptorSets.resize(swapchain->getSwapchainImages().size());
+
+        objectShaderDescriptorPool = VulkanDescriptorPool::Builder()
+            .withDevice(device.get())
+            .withMaxSets(static_cast<uint32_t>(viewProjectionUniformBuffers.size()))
+            .withPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, static_cast<uint32_t>(viewProjectionUniformBuffers.size()))
+            .build();
+
+        objectShaderDescriptorSetLayout = VulkanDescriptorSetLayout::Builder()
+            .withDevice(device.get())
+            .withLayoutBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_VERTEX_BIT)
+            .build();
+
         for (size_t i = 0; i < viewProjectionUniformBuffers.size(); i++)
         {
             viewProjectionUniformBuffers[i] = VulkanBuffer::Builder()
@@ -120,6 +133,12 @@ namespace siofraEngine::systems
                 .withBufferSize(sizeof(ViewProjection))
                 .withBufferUsageFlags(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT)
                 .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
+                .build();
+
+            objectShaderDescriptorSets[i] = VulkanDescriptorSet::Builder()
+                .withDevice(device.get())
+                .withDescriptorPool(objectShaderDescriptorPool.get())
+                .withDescriptorSetLayout(objectShaderDescriptorSetLayout.get())
                 .build();
         }
     }
