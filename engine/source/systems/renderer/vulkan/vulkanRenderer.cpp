@@ -140,6 +140,8 @@ namespace siofraEngine::systems
                 .withDescriptorPool(objectShaderDescriptorPool.get())
                 .withDescriptorSetLayout(objectShaderDescriptorSetLayout.get())
                 .build();
+
+            objectShaderDescriptorSets[i]->updateFromBuffer(viewProjectionUniformBuffers[i].get(), 0, sizeof(ViewProjection), 0, device.get());
         }
     }
 }

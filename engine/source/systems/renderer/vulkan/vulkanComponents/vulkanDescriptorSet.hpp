@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanDescriptorSet.hpp"
 
 namespace siofraEngine::systems
@@ -63,6 +64,16 @@ namespace siofraEngine::systems
          * @returns The Vulkan descriptor set handle
          */
         VkDescriptorSet getDescriptorSet() const noexcept override;
+
+        /**
+         * @brief Update the contents of a descriptor set from a buffer
+         * 
+         * @param buffer The buffer containing the data
+         * @param offset The offset in bytes from the start of buffer
+         * @param range The size in bytes that is used for this descriptor update
+         * @param destinationBinding The descriptor binding within the set
+         */
+        void updateFromBuffer(IVulkanBuffer const * buffer, VkDeviceSize offset, VkDeviceSize range, uint32_t destinationBinding, IVulkanDevice const * device) const override;
     
     private:
     /**
