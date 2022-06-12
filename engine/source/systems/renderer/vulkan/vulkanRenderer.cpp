@@ -102,4 +102,14 @@ namespace siofraEngine::systems
 
         currentFrame = (currentFrame + 1) % swapchain->getMaxFramesInFlight();
     }
+
+    RendererBackends VulkanRenderer::getRendererBackendType() const noexcept
+    {
+        return RendererBackends::VULKAN;
+    }
+
+    void VulkanRenderer::createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode) const noexcept
+    {
+        SE_LOG_INFO("VulkanRenderer::createShader");
+    }
 }

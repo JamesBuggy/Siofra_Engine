@@ -6,10 +6,13 @@
 #include "core/clock.hpp"
 #include "systems/input/inputSystem.hpp"
 #include "systems/renderer/rendererSystem.hpp"
+#include "systems/events/eventSystem.hpp"
+#include "systems/resource/resourceSystem.hpp"
 #include "platform/window.hpp"
 #include "platform/platform.hpp"
 #include "platform/platformInput.hpp"
 #include "platform/platformClock.hpp"
+#include "platform/platformFileSystem.hpp"
 
 namespace siofraEngine::core
 {
@@ -24,7 +27,7 @@ namespace siofraEngine::core
          * 
          * @param game Instance of game to execute
          */
-        Impl(std::unique_ptr<siofraEngine::core::Game> game);
+        Impl(std::unique_ptr<core::Game> game);
 
         /**
          * @brief Begin the application update loop
@@ -33,28 +36,38 @@ namespace siofraEngine::core
     
     private:
         /**
+         * @brief Event system instance
+         */
+        systems::EventSystem eventSystem;
+
+        /**
          * @brief Application clock instance
          */
-        siofraEngine::core::Clock clock;
+        core::Clock clock;
 
         /**
          * @brief Window instance
          */
-        siofraEngine::platform::Window window;
+        platform::Window window;
 
         /**
          * @brief Input system instance
          */
-        siofraEngine::systems::InputSystem inputSystem;
+        systems::InputSystem inputSystem;
 
         /**
          * @brief Renderer system instance
          */
-        siofraEngine::systems::RendererSystem rendererSystem;
+        systems::RendererSystem rendererSystem;
+
+        /**
+         * @brief Renderer system instance
+         */
+        systems::ResourceSystem resourceSystem;
 
         /**
          * @brief Current game instance
          */
-        std::unique_ptr<siofraEngine::core::Game> game;
+        std::unique_ptr<core::Game> game;
     };
 }

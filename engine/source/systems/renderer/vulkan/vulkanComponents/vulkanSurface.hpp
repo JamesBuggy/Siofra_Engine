@@ -78,6 +78,9 @@ namespace siofraEngine::systems
          */
         VkSurfaceKHR surface{ VK_NULL_HANDLE };
 
-        IVulkanInstance const *instance{ nullptr };
+        /**
+         * @brief Vulkan instance to which the surface relates
+         */
+        IVulkanInstance const * instance{ nullptr };
     };
 }

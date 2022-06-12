@@ -3,6 +3,7 @@
 #include <memory>
 #include "core/logging.hpp"
 #include "core/assertions.hpp"
+#include "systems/events/ieventSystem.hpp"
 #include "systems/renderer/irendererBackend.hpp"
 #include "systems/renderer/vulkan/vulkanRenderer.hpp"
 #include "platform/iwindow.hpp"
@@ -19,8 +20,9 @@ namespace siofraEngine::systems
          * @brief Wraps plaftorm specific window logic
          * 
          * @param window Window to be rendered to
+         * @param eventSystem Event system reference
          */
-        RendererSystem(siofraEngine::platform::IWindow &window);
+        RendererSystem(siofraEngine::platform::IWindow &window, systems::IEventSystem & eventSystem);
 
         /**
          * @brief Draw current frame
@@ -40,5 +42,12 @@ namespace siofraEngine::systems
          * @returns Renderer backend
          */
         static std::unique_ptr<IRendererBackend> createRendererBackend(siofraEngine::platform::IWindow &window);
+
+        /**
+         * @brief Create a shader pipeline. Triggered by a CREATE_SHADER event broadcast
+         * 
+         * @param payload Payload describing the shader pipeline to create
+         */
+        void createShader(EventPayload payload);
     };
 }
