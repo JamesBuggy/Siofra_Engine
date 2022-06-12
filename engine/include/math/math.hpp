@@ -25,5 +25,5 @@ struct Vertex3
 {
     Vector3 position;
     Vector3 normal;
-    Vector3 textureCoordinate;
+    Vector2 textureCoordinate;
 };

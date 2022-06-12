@@ -72,6 +72,14 @@ namespace siofraEngine::systems
          */
         VkPipeline getPipeline() const noexcept override;
 
+        /**
+         * @brief Bind the pipeline to a command buffer
+         * 
+         * @param commandBuffer The command buffer to bind to
+         * @param pipelineBindPoint Specifies to which bind point the pipeline is bound
+         */
+        void bind(IVulkanCommandBuffer const * commandBuffer, VkPipelineBindPoint pipelineBindPoint) const override;
+
     private:
         /**
          * @brief Vulkan pipeline handle

@@ -2,8 +2,6 @@
 
 layout(location = 0) in vec3 fragNor;
 layout(location = 1) in vec2 fragTex;
-layout(location = 2) in vec4 lightDirection;
-layout(location = 3) in vec4 lightColour;
 
 layout(set = 1, binding = 0) uniform sampler2D textureSampler;
 
@@ -26,6 +24,9 @@ vec4 calculateDirectionalLight(vec3 normal, DirectionalLight directionalLight)
 }
 
 void main() {
+
+    vec4 lightDirection = vec4(1.0f, 1.0f, 1.0f, 0.1f);
+    vec4 lightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
     DirectionalLight directionalLight;
     directionalLight.colour = vec3(lightColour);

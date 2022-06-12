@@ -48,4 +48,9 @@ namespace siofraEngine::systems
     {
         return pipeline;
     }
+
+    void VulkanPipeline::bind(IVulkanCommandBuffer const * commandBuffer, VkPipelineBindPoint pipelineBindPoint) const
+    {
+        vkCmdBindPipeline(commandBuffer->getCommandBuffer(), pipelineBindPoint, pipeline);
+    }
 }

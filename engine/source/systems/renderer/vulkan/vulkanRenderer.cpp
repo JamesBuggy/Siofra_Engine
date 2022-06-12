@@ -94,6 +94,8 @@ namespace siofraEngine::systems
         graphicsCommandBuffers[imageIndex]->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
         renderPass->begin(graphicsCommandBuffers[imageIndex].get(), imageIndex);
 
+        objectShaderPipeline->bind(graphicsCommandBuffers[imageIndex].get(), VK_PIPELINE_BIND_POINT_GRAPHICS);
+
         renderPass->end(graphicsCommandBuffers[imageIndex].get());
         graphicsCommandBuffers[imageIndex].get()->end();
 
@@ -109,9 +111,7 @@ namespace siofraEngine::systems
     }
 
     void VulkanRenderer::createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode)
-    {
-        SE_LOG_INFO("VulkanRenderer::createShader");
-        
+    {        
         viewProjectionUniformBuffers.resize(swapchain->getSwapchainImages().size());
         objectShaderDescriptorSets.resize(swapchain->getSwapchainImages().size());
 
@@ -164,6 +164,20 @@ namespace siofraEngine::systems
         std::unique_ptr<IVulkanShaderModule> fragmenthaderModule = VulkanShaderModule::Builder()
             .withDevice(device.get())
             .withShaderCode(fragmentShaderCode)
+            .build();
+
+        objectShaderPipeline = VulkanPipeline::Builder()
+            .withDevice(device.get())
+            .withDescriptorSetLayouts({ objectShaderDescriptorSetLayout.get(), objectShaderSamplerDescriptorSetLayout.get() })
+            .withVertexStage(std::move(vertexShaderModule))
+            .withFragmentStage(std::move(fragmenthaderModule))
+            .withPushConstantRange(VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(ModelMatrix))
+            .withVertexInputAttributeDescription(0, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex3, position))
+            .withVertexInputAttributeDescription(0, 1, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex3, normal))
+            .withVertexInputAttributeDescription(0, 2, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex3, textureCoordinate))
+            .withVertexInputBindingDescription(0, sizeof(Vertex3), VK_VERTEX_INPUT_RATE_VERTEX)
+            .withRenderPass(renderPass.get())
+            .withViewportExtents(swapchain->getExtents())
             .build();
     }
 }

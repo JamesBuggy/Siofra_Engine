@@ -20,7 +20,9 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorSetLayoutBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorSetBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanShaderModuleBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanPipelineBuilder.hpp"
 #include "systems/renderer/vulkan/models/viewProjection.hpp"
+#include "systems/renderer/vulkan/models/modelMatrix.hpp"
 
 namespace siofraEngine::systems
 {
@@ -144,5 +146,10 @@ namespace siofraEngine::systems
          * @brief Descriptor set layout for the object shader sampler
          */
         std::unique_ptr<IVulkanDescriptorSetLayout> objectShaderSamplerDescriptorSetLayout{ };
+
+        /**
+         * @brief Pipeline for the object shader sampler
+         */
+        std::unique_ptr<IVulkanPipeline> objectShaderPipeline{ };
     };
 }
