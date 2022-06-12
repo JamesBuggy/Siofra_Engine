@@ -12,8 +12,10 @@ namespace siofraEngine::systems
     void ResourceSystem::loadShader(std::string shaderName)
     {
         CreateShaderEvent createShaderEvent;
-        createShaderEvent.vertexStageFileContent = fileSystem->readFile(assetBasePath + "shaders\\" + shaderName + ".vert.spv");
-        createShaderEvent.fragmentStageFileContent = fileSystem->readFile(assetBasePath + "shaders\\" + shaderName + ".frag.spv");
+        createShaderEvent.vertexStageGlsl = fileSystem->readFile(assetBasePath + "shaders\\" + shaderName + ".vert.glsl");
+        createShaderEvent.vertexStageSpirv = fileSystem->readFile(assetBasePath + "shaders\\" + shaderName + ".vert.spv");
+        createShaderEvent.fragmentStageGlsl = fileSystem->readFile(assetBasePath + "shaders\\" + shaderName + ".frag.glsl");
+        createShaderEvent.fragmentStageSpirv = fileSystem->readFile(assetBasePath + "shaders\\" + shaderName + ".frag.spv");
         eventSystem.broadcast(EventTypes::CREATE_SHADER, createShaderEvent);
     }
 }

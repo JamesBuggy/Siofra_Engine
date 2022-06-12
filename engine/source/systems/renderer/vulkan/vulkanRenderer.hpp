@@ -41,6 +41,18 @@ namespace siofraEngine::systems
          */
         void draw() override;
 
+        /**
+         * @brief Get the renderer backend type
+         * 
+         * @returns The renderer backend type
+         */
+        RendererBackends getRendererBackendType() const noexcept override;
+
+        /**
+         * @brief Create a shader
+         */
+        void createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode) const noexcept override;
+
     private:
         /**
          * @brief The vulkan instance

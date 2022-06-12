@@ -14,10 +14,30 @@ enum class EventTypes
     MAX_EVENT_TYPES
 };
 
+/**
+ * @brief Create shader event payload. Contains shader file content in bytes
+ */
 struct CreateShaderEvent
 {
-    std::vector<char> vertexStageFileContent;
-    std::vector<char> fragmentStageFileContent;
+    /**
+     * @brief Vertex stage GLSL file content
+     */
+    std::vector<char> vertexStageGlsl;
+
+    /**
+     * @brief Vertex stage Spir-v file content
+     */
+    std::vector<char> vertexStageSpirv;
+
+    /**
+     * @brief Fragment stage GLSL file content
+     */
+    std::vector<char> fragmentStageGlsl;
+
+    /**
+     * @brief Fragment stage Spir-v file content
+     */
+    std::vector<char> fragmentStageSpirv;
 };
 
 /**
