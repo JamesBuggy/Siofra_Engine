@@ -108,8 +108,19 @@ namespace siofraEngine::systems
         return RendererBackends::VULKAN;
     }
 
-    void VulkanRenderer::createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode) const noexcept
+    void VulkanRenderer::createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode)
     {
         SE_LOG_INFO("VulkanRenderer::createShader");
+        
+        viewProjectionUniformBuffers.resize(swapchain->getSwapchainImages().size());
+        for (size_t i = 0; i < viewProjectionUniformBuffers.size(); i++)
+        {
+            viewProjectionUniformBuffers[i] = VulkanBuffer::Builder()
+                .withDevice(device.get())
+                .withBufferSize(sizeof(ViewProjection))
+                .withBufferUsageFlags(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT)
+                .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
+                .build();
+        }
     }
 }

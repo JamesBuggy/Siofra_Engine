@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GLM/glm.hpp"
+#include "glm/glm.hpp"
 
 using Vector4 = glm::vec4;
 using Vector3 = glm::vec3;
@@ -26,9 +26,4 @@ struct Vertex3
     Vector3 position;
     Vector3 normal;
     Vector3 textureCoordinate;
-};
-
-struct ViewProjection {
-    Matrix4 projection;
-    Matrix4 view;
 };

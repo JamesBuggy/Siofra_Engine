@@ -33,7 +33,7 @@ namespace siofraEngine::systems
         /**
          * @brief Create a shader
          */
-        virtual void createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode) const noexcept = 0;
+        virtual void createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode) = 0;
 
         /**
          * @brief Interface destructor
