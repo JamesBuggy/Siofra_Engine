@@ -2,6 +2,8 @@
 
 #include <memory>
 #include <string>
+#include <algorithm>
+#include "core/logging.hpp"
 #include "platform/iplatformFileSystem.hpp"
 #include "systems/events/ieventSystem.hpp"
 
@@ -27,6 +29,13 @@ namespace siofraEngine::systems
          * @param shaderName The name of the shader file to load
          */
         void loadShader(std::string shaderName);
+
+        /**
+         * @brief Load a material
+         * 
+         * @param materialName The name of the material file to load
+         */
+        void loadMaterial(std::string materialName);
     
     private:
         /**

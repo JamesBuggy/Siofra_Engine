@@ -42,4 +42,21 @@ namespace siofraEngine::systems
 
         return commandBuffers;
     }
+
+    std::unique_ptr<IVulkanCommandBuffer> VulkanCommandBuffer::Builder::build() const
+    {
+        VkCommandBufferAllocateInfo commandBufferAllocInfo{ };
+        commandBufferAllocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        commandBufferAllocInfo.commandPool = commandPool->getCommandPool();
+        commandBufferAllocInfo.level = level;
+        commandBufferAllocInfo.commandBufferCount = 1;
+
+        VkCommandBuffer commandBuffer{ VK_NULL_HANDLE };
+        if (vkAllocateCommandBuffers(device->getLogicalDevice(), &commandBufferAllocInfo, &commandBuffer) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to allocate command buffer(s)");
+        }
+
+        return std::make_unique<VulkanCommandBuffer>(commandBuffer);
+    }
 }

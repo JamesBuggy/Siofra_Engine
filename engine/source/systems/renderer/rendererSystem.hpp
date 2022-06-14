@@ -49,5 +49,12 @@ namespace siofraEngine::systems
          * @param payload Payload describing the shader pipeline to create
          */
         void createShader(EventPayload payload);
+
+        /**
+         * @brief Create a material. Triggered by a CREATE_MATERIAL event broadcast
+         * 
+         * @param payload Payload describing the material to create
+         */
+        void createMaterial(EventPayload payload);
     };
 }

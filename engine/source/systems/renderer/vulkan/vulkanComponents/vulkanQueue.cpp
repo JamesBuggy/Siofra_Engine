@@ -67,6 +67,22 @@ namespace siofraEngine::systems
         }
     }
 
+    void VulkanQueue::submit(IVulkanCommandBuffer const * commandBuffer) const
+    {
+        VkCommandBuffer commandBufferHandle = commandBuffer->getCommandBuffer();
+
+        VkSubmitInfo submitInfo{ };
+        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        submitInfo.pCommandBuffers = &commandBufferHandle;
+        submitInfo.commandBufferCount = 1;
+
+        VkResult result = vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE);
+        if (result != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to submit command buffer to queue");
+        }
+    }
+
     void VulkanQueue::present(IVulkanSemaphore const * waitSemaphore, IVulkanSwapchain const * swapchain, uint32_t imageIndex) const
     {
         VkSemaphore waitSemaphoreHandle = waitSemaphore->getSemaphore();
@@ -84,5 +100,10 @@ namespace siofraEngine::systems
         {
             throw std::runtime_error("Failed to present image");
         }
+    }
+
+    void VulkanQueue::waitIdle() const
+    {
+        vkQueueWaitIdle(queue);
     }
 }

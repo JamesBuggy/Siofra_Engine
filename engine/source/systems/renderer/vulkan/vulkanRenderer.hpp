@@ -21,6 +21,7 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorSetBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanShaderModuleBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanPipelineBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSamplerBuilder.hpp"
 #include "systems/renderer/vulkan/models/viewProjection.hpp"
 #include "systems/renderer/vulkan/models/modelMatrix.hpp"
 
@@ -58,8 +59,21 @@ namespace siofraEngine::systems
 
         /**
          * @brief Create a shader
+         * 
+         * @param vertexShaderCode Vertex shader code bytes
+         * @param fragmentShaderCode Fragment shader code bytes
          */
         void createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode) override;
+
+        /**
+         * @brief Create a shader pipeline. Triggered by a CREATE_SHADER event broadcast
+         * 
+         * @param imageData Image bytes
+         * @param width Image width
+         * @param height Image height
+         * @param channels Image channel count
+         */
+        void createMaterial(std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels) override;
 
     private:
         /**
@@ -96,6 +110,11 @@ namespace siofraEngine::systems
          * @brief Vulkan graphics command buffers
          */
         std::vector<std::unique_ptr<IVulkanCommandBuffer>> graphicsCommandBuffers{ };
+
+        /**
+         * @brief Vulkan transfer command pool
+         */
+        std::unique_ptr<IVulkanCommandPool> transferCommandPool{ nullptr };
 
         /**
          * @brief Image available semaphores. Signaled when an image has become available after presentation
@@ -137,6 +156,11 @@ namespace siofraEngine::systems
          */
         std::vector<std::unique_ptr<IVulkanDescriptorSet>> objectShaderDescriptorSets{ };
 
+         /**
+         * @brief Object shader sampler
+         */
+        std::unique_ptr<IVulkanSampler> objectShaderSampler{ };
+
         /**
          * @brief Descriptor pool for the object shader sampler
          */
@@ -148,8 +172,18 @@ namespace siofraEngine::systems
         std::unique_ptr<IVulkanDescriptorSetLayout> objectShaderSamplerDescriptorSetLayout{ };
 
         /**
+         * @brief Descriptor sets for the object shader sampler textures
+         */
+        std::vector<std::unique_ptr<IVulkanDescriptorSet>> objectShaderSamplerDescriptorSets{ };
+
+        /**
          * @brief Pipeline for the object shader sampler
          */
         std::unique_ptr<IVulkanPipeline> objectShaderPipeline{ };
+
+        /**
+         * @brief Vulkan images for textures loaded by the renderer
+         */
+        std::vector<std::unique_ptr<IVulkanImage>> textureImages{ };
     };
 }

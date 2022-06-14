@@ -47,4 +47,44 @@ namespace siofraEngine::systems
     {
         return buffer;
     }
+
+    void VulkanBuffer::update(void const * data, size_t size) const
+    {
+        void * destination;
+        auto logicalDevice = device->getLogicalDevice();
+        vkMapMemory(logicalDevice, bufferMemory, 0, size, 0, &destination);
+        memcpy(destination, data, size);
+        vkUnmapMemory(logicalDevice, bufferMemory);
+    }
+
+    void VulkanBuffer::copyToImage(IVulkanCommandBuffer const * transferCommandBuffer, IVulkanQueue const * transferQueue, IVulkanImage const * image, uint32_t width, uint32_t height) const
+    {
+        transferCommandBuffer->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+
+        VkBufferImageCopy imageRegion{ };
+        imageRegion.bufferOffset = 0;
+        imageRegion.bufferRowLength = 0;
+        imageRegion.bufferImageHeight = 0;
+        imageRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        imageRegion.imageSubresource.mipLevel = 0;
+        imageRegion.imageSubresource.baseArrayLayer = 0;
+        imageRegion.imageSubresource.layerCount = 1;
+        imageRegion.imageOffset.x = 0;
+        imageRegion.imageOffset.y = 0;
+        imageRegion.imageOffset.z = 0;
+        imageRegion.imageExtent.width = width;
+        imageRegion.imageExtent.height = height;
+        imageRegion.imageExtent.depth = 1;
+
+        std::vector<VkBufferImageCopy> regions{
+            imageRegion
+        };
+
+        vkCmdCopyBufferToImage(transferCommandBuffer->getCommandBuffer(), buffer, image->getImage(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, static_cast<uint32_t>(regions.size()), regions.data());
+
+        transferCommandBuffer->end();
+
+        transferQueue->submit(transferCommandBuffer);
+        transferQueue->waitIdle();
+    }
 }

@@ -72,6 +72,25 @@ namespace siofraEngine::systems
          */
         VkBuffer getBuffer() const noexcept override;
 
+        /**
+         * @brief Update buffer contents
+         * 
+         * @param data New data to copy to the buffer
+         * @param size Size of the data to copy in bytes
+         */
+        void update(void const * data, size_t size) const override;
+
+        /**
+         * @brief Copy the buffer to an image
+         * 
+         * @param transferCommandBuffer Buffer to record commands on
+         * @param transferQueue Queue to submit recorded commands to
+         * @param image The image to copy the buffer to
+         * @param width The image width
+         * @param height The image height
+         */
+        void copyToImage(IVulkanCommandBuffer const * transferCommandBuffer, IVulkanQueue const * transferQueue, IVulkanImage const * image, uint32_t width, uint32_t height) const override;
+
     private:
         /**
          * @brief Vulkan buffer handle
