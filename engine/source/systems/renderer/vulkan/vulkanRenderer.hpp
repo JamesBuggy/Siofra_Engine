@@ -22,8 +22,8 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanShaderModuleBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanPipelineBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSamplerBuilder.hpp"
-#include "systems/renderer/vulkan/models/viewProjection.hpp"
-#include "systems/renderer/vulkan/models/modelMatrix.hpp"
+#include "systems/renderer/vulkan/resources/model.hpp"
+#include "systems/renderer/common/models.hpp"
 
 namespace siofraEngine::systems
 {
@@ -74,6 +74,14 @@ namespace siofraEngine::systems
          * @param channels Image channel count
          */
         void createMaterial(std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels) override;
+
+        /**
+         * @brief Create a model
+         * 
+         * @param vertexBuffer Model vertices
+         * @param indexBuffers Model vertex indices
+         */
+        void createModel(std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers) override;
 
     private:
         /**
@@ -185,5 +193,10 @@ namespace siofraEngine::systems
          * @brief Vulkan images for textures loaded by the renderer
          */
         std::vector<std::unique_ptr<IVulkanImage>> textureImages{ };
+
+        /**
+         * @brief Contains vertex and index buffers of loaded models
+         */
+        std::vector<Model> models{ };
     };
 }

@@ -7,6 +7,7 @@ namespace siofraEngine::systems
     {
         eventSystem.subscribe(EventTypes::CREATE_SHADER, std::bind(&RendererSystem::createShader, this, std::placeholders::_1));
         eventSystem.subscribe(EventTypes::CREATE_MATERIAL, std::bind(&RendererSystem::createMaterial, this, std::placeholders::_1));
+        eventSystem.subscribe(EventTypes::CREATE_MODEL, std::bind(&RendererSystem::createModel, this, std::placeholders::_1));
 
         SE_LOG_INFO("Initialized renderer system");
     }
@@ -52,5 +53,11 @@ namespace siofraEngine::systems
             createMaterialEvent.width,
             createMaterialEvent.height,
             createMaterialEvent.channels);
+    }
+
+    void RendererSystem::createModel(EventPayload payload)
+    {
+        auto createModelEvent = std::get<CreateModelEvent>(payload);
+        rendererBackend->createModel(std::move(createModelEvent.vertexBuffer), std::move(createModelEvent.indexBuffers));
     }
 }

@@ -83,13 +83,23 @@ namespace siofraEngine::systems
         /**
          * @brief Copy the buffer to an image
          * 
-         * @param transferCommandBuffer Buffer to record commands on
-         * @param transferQueue Queue to submit recorded commands to
+         * @param commandBuffer Buffer to record commands on
+         * @param queue Queue to submit recorded commands to
          * @param image The image to copy the buffer to
          * @param width The image width
          * @param height The image height
          */
-        void copyToImage(IVulkanCommandBuffer const * transferCommandBuffer, IVulkanQueue const * transferQueue, IVulkanImage const * image, uint32_t width, uint32_t height) const override;
+        void copyToImage(IVulkanCommandBuffer const * commandBuffer, IVulkanQueue const * queue, IVulkanImage const * image, uint32_t width, uint32_t height) const override;
+
+        /**
+         * @brief Copy the buffer to another buffer
+         * 
+         * @param commandBuffer Buffer to record commands on
+         * @param queue Queue to submit recorded commands to
+         * @param destinationBuffer The destination buffer
+         * @param bytes The number of bytes to copy
+         */
+        void copyToBuffer(IVulkanCommandBuffer const * commandBuffer, IVulkanQueue const * queue, IVulkanBuffer const * destinationBuffer, VkDeviceSize bytes) const override;
 
     private:
         /**

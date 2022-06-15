@@ -57,9 +57,9 @@ namespace siofraEngine::systems
         vkUnmapMemory(logicalDevice, bufferMemory);
     }
 
-    void VulkanBuffer::copyToImage(IVulkanCommandBuffer const * transferCommandBuffer, IVulkanQueue const * transferQueue, IVulkanImage const * image, uint32_t width, uint32_t height) const
+    void VulkanBuffer::copyToImage(IVulkanCommandBuffer const * commandBuffer, IVulkanQueue const * queue, IVulkanImage const * image, uint32_t width, uint32_t height) const
     {
-        transferCommandBuffer->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+        commandBuffer->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
 
         VkBufferImageCopy imageRegion{ };
         imageRegion.bufferOffset = 0;
@@ -80,11 +80,32 @@ namespace siofraEngine::systems
             imageRegion
         };
 
-        vkCmdCopyBufferToImage(transferCommandBuffer->getCommandBuffer(), buffer, image->getImage(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, static_cast<uint32_t>(regions.size()), regions.data());
+        vkCmdCopyBufferToImage(commandBuffer->getCommandBuffer(), buffer, image->getImage(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, static_cast<uint32_t>(regions.size()), regions.data());
 
-        transferCommandBuffer->end();
+        commandBuffer->end();
 
-        transferQueue->submit(transferCommandBuffer);
-        transferQueue->waitIdle();
+        queue->submit(commandBuffer);
+        queue->waitIdle();
+    }
+
+    void VulkanBuffer::copyToBuffer(IVulkanCommandBuffer const * commandBuffer, IVulkanQueue const * queue, IVulkanBuffer const * destinationBuffer, VkDeviceSize bytes) const
+    {
+        commandBuffer->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+
+        VkBufferCopy bufferCopyRegion = {};
+        bufferCopyRegion.srcOffset = 0;
+        bufferCopyRegion.dstOffset = 0;
+        bufferCopyRegion.size = bytes;
+
+        std::vector<VkBufferCopy> bufferCopyRegions = {
+            bufferCopyRegion
+        };
+
+        vkCmdCopyBuffer(commandBuffer->getCommandBuffer(), buffer, destinationBuffer->getBuffer(), static_cast<uint32_t>(bufferCopyRegions.size()), bufferCopyRegions.data());
+
+        commandBuffer->end();
+
+        queue->submit(commandBuffer);
+        queue->waitIdle();
     }
 }

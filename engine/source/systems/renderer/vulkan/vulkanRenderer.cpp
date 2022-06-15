@@ -250,4 +250,65 @@ namespace siofraEngine::systems
         textureImages.push_back(std::move(image));
         objectShaderSamplerDescriptorSets.push_back(std::move(samplerDescriptorSet));
     }
+
+    void VulkanRenderer::createModel(std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers)
+    {
+        auto commandBuffer = VulkanCommandBuffer::Builder()
+            .withDevice(device.get())
+            .withCommandPool(graphicsCommandPool.get())
+            .withLevel(VK_COMMAND_BUFFER_LEVEL_PRIMARY)
+            .build();
+        
+        std::vector<std::unique_ptr<IVulkanBuffer>> vulkanIndexBuffers{ };
+        for(auto const & indexBuffer : indexBuffers)
+        {
+            VkDeviceSize bufferSize = sizeof(uint32_t) * indexBuffer.size();
+            auto stagingBuffer = VulkanBuffer::Builder()
+                .withDevice(device.get())
+                .withBufferSize(bufferSize)
+                .withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
+                .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
+                .build();
+
+            stagingBuffer->update(indexBuffer.data(), bufferSize);
+
+            auto vulkanIndexBuffer = VulkanBuffer::Builder()
+                .withDevice(device.get())
+                .withBufferSize(bufferSize)
+                .withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT)
+                .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+                .build();
+
+            stagingBuffer->copyToBuffer(commandBuffer.get(), device->getGraphicsQueue().get(), vulkanIndexBuffer.get(), bufferSize);
+
+            vulkanIndexBuffers.push_back(std::move(vulkanIndexBuffer));
+        }
+
+        VkDeviceSize bufferSize = sizeof(Vertex3) * vertexBuffer.size();
+        auto stagingBuffer = VulkanBuffer::Builder()
+            .withDevice(device.get())
+            .withBufferSize(bufferSize)
+            .withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
+            .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
+            .build();
+
+        stagingBuffer->update(vertexBuffer.data(), bufferSize);
+
+        auto vulkanVertexBuffer = VulkanBuffer::Builder()
+            .withDevice(device.get())
+			.withBufferSize(bufferSize)
+			.withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
+			.withMemoryPropertyFlags(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+			.build();
+
+        stagingBuffer->copyToBuffer(commandBuffer.get(), device->getGraphicsQueue().get(), vulkanVertexBuffer.get(), bufferSize);
+
+        Model model;
+        model.vertexBuffer = std::move(vulkanVertexBuffer);
+        model.indexBuffers = std::move(vulkanIndexBuffers);
+        models.push_back(std::move(model));
+
+        VkCommandBuffer commandBufferHandle = commandBuffer->getCommandBuffer();
+        vkFreeCommandBuffers(device->getLogicalDevice(), graphicsCommandPool->getCommandPool(), 1, &commandBufferHandle);
+    }
 }

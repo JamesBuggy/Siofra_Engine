@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <stdint.h>
+#include "math/math.hpp"
 
 namespace siofraEngine::systems
 {
@@ -40,7 +41,7 @@ namespace siofraEngine::systems
         virtual void createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode) = 0;
 
         /**
-         * @brief Create a shader pipeline. Triggered by a CREATE_SHADER event broadcast
+         * @brief Create a shader pipeline
          * 
          * @param imageData Image bytes
          * @param width Image width
@@ -48,6 +49,14 @@ namespace siofraEngine::systems
          * @param channels Image channel count
          */
         virtual void createMaterial(std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels) = 0;
+
+        /**
+         * @brief Create a model
+         * 
+         * @param vertexBuffer Model vertices
+         * @param indexBuffers Model vertex indices
+         */
+        virtual void createModel(std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers) = 0;
 
         /**
          * @brief Interface destructor

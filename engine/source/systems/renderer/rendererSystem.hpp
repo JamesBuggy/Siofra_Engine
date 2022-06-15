@@ -56,5 +56,12 @@ namespace siofraEngine::systems
          * @param payload Payload describing the material to create
          */
         void createMaterial(EventPayload payload);
+
+        /**
+         * @brief Create a model. Triggered by a CREATE_MODEL event broadcast
+         * 
+         * @param payload Payload describing the model to create
+         */
+        void createModel(EventPayload payload);
     };
 }
