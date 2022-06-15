@@ -30,12 +30,12 @@ namespace siofraEngine::systems
         /**
          * @brief Transition the image layout
          * 
-         * @param transferCommandBuffer The command buffer to record on
-         * @param transferQueue The queue on which to submit the command buffer
+         * @param commandBuffer The command buffer to record on
+         * @param queue The queue on which to submit the command buffer
          * @param oldLayout The old image layout
          * @param newLayout The new image layout
          */
-        virtual void transitionImageLayout(IVulkanCommandBuffer const * transferCommandBuffer, IVulkanQueue const * transferQueue, VkImageLayout oldLayout, VkImageLayout newLayout) const = 0;
+        virtual void transitionImageLayout(IVulkanCommandBuffer const * commandBuffer, IVulkanQueue const * queue, VkImageLayout oldLayout, VkImageLayout newLayout) const = 0;
 
         /**
          * @brief Interface destructor

@@ -96,15 +96,27 @@ namespace siofraEngine::systems
         vkResetFences(device->getLogicalDevice(), 1, &fenceHandle);
 
         uint32_t imageIndex = swapchain->acquireNextImage(imageAvailable[currentFrame].get());
+
+        ViewProjection viewProjection{ };
+        viewProjection.projection = glm::perspective(glm::radians(45.0f), (float)swapchain->getExtents().width / (float)swapchain->getExtents().height, 0.1f, 400.0f);
+        viewProjection.projection[1][1] *= -1;
+        viewProjection.view = glm::lookAt(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f) + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        viewProjectionUniformBuffers[imageIndex]->update(&viewProjection, sizeof(viewProjection));
+
+        Matrix4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 5.0f));
+
+        VkDeviceSize bufferOffset = 0;
  
         graphicsCommandBuffers[imageIndex]->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
         renderPass->begin(graphicsCommandBuffers[imageIndex].get(), imageIndex);
 
         objectShaderPipeline->bind(graphicsCommandBuffers[imageIndex].get(), VK_PIPELINE_BIND_POINT_GRAPHICS);
 
+        vkCmdPushConstants(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), objectShaderPipeline->getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(ModelMatrix), &modelMatrix);
+
         std::vector<VkDescriptorSet> descriptorSetGroup = {
             objectShaderDescriptorSets[imageIndex]->getDescriptorSet(),
-            objectShaderSamplerDescriptorSets[0]->getDescriptorSet()
+            objectShaderSamplerDescriptorSets[1]->getDescriptorSet()
         };
         vkCmdBindDescriptorSets(
             graphicsCommandBuffers[imageIndex]->getCommandBuffer(),
@@ -115,6 +127,14 @@ namespace siofraEngine::systems
             descriptorSetGroup.data(),
             0,
             nullptr);
+
+        VkBuffer vertexBuffers[] = { models[0].vertexBuffer->getBuffer() };
+        vkCmdBindVertexBuffers(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), 0, 1, vertexBuffers, &bufferOffset);
+        for (size_t i = 0; i < models[0].indexBuffers.size(); i++)
+        {				
+            vkCmdBindIndexBuffer(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), models[0].indexBuffers[i]->getBuffer(), bufferOffset, VK_INDEX_TYPE_UINT32);
+            vkCmdDrawIndexed(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), models[0].indexBufferCounts[i], 1, 0, 0, 0);
+        }
 
         renderPass->end(graphicsCommandBuffers[imageIndex].get());
         graphicsCommandBuffers[imageIndex].get()->end();
@@ -260,6 +280,7 @@ namespace siofraEngine::systems
             .build();
         
         std::vector<std::unique_ptr<IVulkanBuffer>> vulkanIndexBuffers{ };
+        std::vector<std::uint32_t> vulkanIndexBufferCounts{ };
         for(auto const & indexBuffer : indexBuffers)
         {
             VkDeviceSize bufferSize = sizeof(uint32_t) * indexBuffer.size();
@@ -282,6 +303,7 @@ namespace siofraEngine::systems
             stagingBuffer->copyToBuffer(commandBuffer.get(), device->getGraphicsQueue().get(), vulkanIndexBuffer.get(), bufferSize);
 
             vulkanIndexBuffers.push_back(std::move(vulkanIndexBuffer));
+            vulkanIndexBufferCounts.push_back(indexBuffer.size());
         }
 
         VkDeviceSize bufferSize = sizeof(Vertex3) * vertexBuffer.size();
@@ -306,6 +328,7 @@ namespace siofraEngine::systems
         Model model;
         model.vertexBuffer = std::move(vulkanVertexBuffer);
         model.indexBuffers = std::move(vulkanIndexBuffers);
+        model.indexBufferCounts = std::move(vulkanIndexBufferCounts);
         models.push_back(std::move(model));
 
         VkCommandBuffer commandBufferHandle = commandBuffer->getCommandBuffer();

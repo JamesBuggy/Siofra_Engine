@@ -69,9 +69,9 @@ namespace siofraEngine::systems
         return image;
     }
 
-    void VulkanImage::transitionImageLayout(IVulkanCommandBuffer const * transferCommandBuffer, IVulkanQueue const * transferQueue, VkImageLayout oldLayout, VkImageLayout newLayout) const
+    void VulkanImage::transitionImageLayout(IVulkanCommandBuffer const * commandBuffer, IVulkanQueue const * queue, VkImageLayout oldLayout, VkImageLayout newLayout) const
     {
-        transferCommandBuffer->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+        commandBuffer->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
 
         VkImageMemoryBarrier imageMemoryBarrier{ };
         imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -110,12 +110,12 @@ namespace siofraEngine::systems
             imageMemoryBarrier
         };
 
-        VkCommandBuffer commandBufferHandle = transferCommandBuffer->getCommandBuffer();
+        VkCommandBuffer commandBufferHandle = commandBuffer->getCommandBuffer();
         vkCmdPipelineBarrier(commandBufferHandle, srcStage, dstStage, 0, 0, nullptr, 0, nullptr, static_cast<uint32_t>(imageMemoryBarriers.size()), imageMemoryBarriers.data());
 
-        transferCommandBuffer->end();
+        commandBuffer->end();
 
-        transferQueue->submit(transferCommandBuffer);
-        transferQueue->waitIdle();
+        queue->submit(commandBuffer);
+        queue->waitIdle();
     }
 }

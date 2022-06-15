@@ -25,7 +25,7 @@ vec4 calculateDirectionalLight(vec3 normal, DirectionalLight directionalLight)
 
 void main() {
 
-    vec4 lightDirection = vec4(1.0f, 1.0f, 1.0f, 0.1f);
+    vec4 lightDirection = vec4(-1.0f, 1.0f, -1.0f, 0.1f);
     vec4 lightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
     DirectionalLight directionalLight;
