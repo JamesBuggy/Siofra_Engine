@@ -3,7 +3,9 @@
 #include <memory>
 #include <string>
 #include <algorithm>
+#include <stdint.h>
 #include "core/logging.hpp"
+#include "math/math.hpp"
 #include "platform/iplatformFileSystem.hpp"
 #include "systems/events/ieventSystem.hpp"
 
@@ -36,6 +38,13 @@ namespace siofraEngine::systems
          * @param materialName The name of the material file to load
          */
         void loadMaterial(std::string materialName);
+
+        /**
+         * @brief Load a model
+         * 
+         * @param modelName The name of the model file to load
+         */
+        void loadModel(std::string modelName);
     
     private:
         /**

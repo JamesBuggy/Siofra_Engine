@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <stdint.h>
+#include "math/math.hpp"
 
 /**
  * @brief Supported event types
@@ -13,6 +14,7 @@ enum class EventTypes
 {
     CREATE_SHADER,
     CREATE_MATERIAL,
+    CREATE_MODEL,
     MAX_EVENT_TYPES
 };
 
@@ -54,6 +56,15 @@ struct CreateMaterialEvent
 };
 
 /**
+ * @brief Create model event payload
+ */
+struct CreateModelEvent
+{
+    std::vector<Vertex3> vertexBuffer;
+    std::vector<std::vector<std::uint32_t>> indexBuffers;
+};
+
+/**
  * @brief Event payload
  */
 using EventPayload = std::variant<
@@ -64,7 +75,8 @@ using EventPayload = std::variant<
     char,
     std::string,
     CreateShaderEvent,
-    CreateMaterialEvent
+    CreateMaterialEvent,
+    CreateModelEvent
 >;
 
 /**
