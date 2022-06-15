@@ -73,6 +73,13 @@ namespace siofraEngine::systems
         VkPipeline getPipeline() const noexcept override;
 
         /**
+         * @brief Get the vulkan pipeline layout handle
+         * 
+         * @returns The vulkan pipeline layout handle
+         */
+        VkPipelineLayout getPipelineLayout() const noexcept override;
+
+        /**
          * @brief Bind the pipeline to a command buffer
          * 
          * @param commandBuffer The command buffer to bind to

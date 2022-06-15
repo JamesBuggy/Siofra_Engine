@@ -6,6 +6,8 @@ namespace siofraEngine::systems
         rendererBackend{createRendererBackend(window)}
     {
         eventSystem.subscribe(EventTypes::CREATE_SHADER, std::bind(&RendererSystem::createShader, this, std::placeholders::_1));
+        eventSystem.subscribe(EventTypes::CREATE_MATERIAL, std::bind(&RendererSystem::createMaterial, this, std::placeholders::_1));
+        eventSystem.subscribe(EventTypes::CREATE_MODEL, std::bind(&RendererSystem::createModel, this, std::placeholders::_1));
 
         SE_LOG_INFO("Initialized renderer system");
     }
@@ -41,5 +43,21 @@ namespace siofraEngine::systems
         default:
             SE_LOG_CRITICAL("Create shader: Failed to identify renderer backend");
         }
+    }
+
+    void RendererSystem::createMaterial(EventPayload payload)
+    {
+        auto createMaterialEvent = std::get<CreateMaterialEvent>(payload);
+        rendererBackend->createMaterial(
+            createMaterialEvent.imageData,
+            createMaterialEvent.width,
+            createMaterialEvent.height,
+            createMaterialEvent.channels);
+    }
+
+    void RendererSystem::createModel(EventPayload payload)
+    {
+        auto createModelEvent = std::get<CreateModelEvent>(payload);
+        rendererBackend->createModel(std::move(createModelEvent.vertexBuffer), std::move(createModelEvent.indexBuffers));
     }
 }

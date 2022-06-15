@@ -7,7 +7,9 @@
                 "${workspaceFolder}/engine/include",
                 "${workspaceFolder}/engine/source",
                 "${workspaceFolder}/engine/libs/SDL2-2.0.20/include",
-                "${workspaceFolder}/engine/libs/GLM-0.9.6.3/include"
+                "${workspaceFolder}/engine/libs/GLM-0.9.6.3/include",
+                "${workspaceFolder}/engine/libs/STB/include",
+                "${workspaceFolder}/engine/libs/TINYOBJLOADER/include"
             ],
             "defines": [
                 "DEBUG",

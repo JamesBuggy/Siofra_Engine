@@ -39,6 +39,13 @@ namespace siofraEngine::systems
         virtual void submit(IVulkanSemaphore const * waitSemaphore, IVulkanSemaphore const * signalSemaphore, IVulkanFence const * fence, IVulkanCommandBuffer const * commandBuffer) const = 0;
 
         /**
+         * @brief Submits a command buffer to the queue
+         * 
+         * @param commandBuffer Command buffer to execute
+         */
+        virtual void submit(IVulkanCommandBuffer const * commandBuffer) const = 0;
+
+        /**
          * @brief Queue an image for presentation
          * 
          * @param waitSemaphore Semaphore to wait for before issuing the present request
@@ -46,6 +53,11 @@ namespace siofraEngine::systems
          * @param imageIndex Index of the swapchain image to present
          */
         virtual void present(IVulkanSemaphore const * waitSemaphore, IVulkanSwapchain const * swapchain, uint32_t imageIndex) const = 0;
+
+        /**
+         * @brief Wait for the queue to become idle
+         */
+        virtual void waitIdle() const = 0;
 
         /**
          * @brief Interface destructor

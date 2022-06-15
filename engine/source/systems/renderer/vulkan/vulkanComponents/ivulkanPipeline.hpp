@@ -19,6 +19,13 @@ namespace siofraEngine::systems
         virtual VkPipeline getPipeline() const noexcept = 0;
 
         /**
+         * @brief Get the vulkan pipeline layout handle
+         * 
+         * @returns The vulkan pipeline layout handle
+         */
+        virtual VkPipelineLayout getPipelineLayout() const noexcept = 0;
+
+        /**
          * @brief Bind the pipeline to a command buffer
          * 
          * @param commandBuffer The command buffer to bind to

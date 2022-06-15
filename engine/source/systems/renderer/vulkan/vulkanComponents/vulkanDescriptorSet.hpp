@@ -74,6 +74,16 @@ namespace siofraEngine::systems
          * @param destinationBinding The descriptor binding within the set
          */
         void updateFromBuffer(IVulkanBuffer const * buffer, VkDeviceSize offset, VkDeviceSize range, uint32_t destinationBinding, IVulkanDevice const * device) const override;
+
+        /**
+         * @brief Update the contents of a descriptor set from an image
+         * 
+         * @param image The image containing the data
+         * @param sampler The image sampler
+         * @param destinationBinding The descriptor binding within the set
+         * @param device The device with which to update the descriptor set
+         */
+        void updateFromImage(IVulkanImage const * image, IVulkanSampler const * sampler, uint32_t destinationBinding, IVulkanDevice const * device) const override;
     
     private:
     /**

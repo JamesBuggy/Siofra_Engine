@@ -47,6 +47,13 @@ namespace siofraEngine::systems
         virtual std::vector<std::unique_ptr<IVulkanCommandBuffer>> build(uint32_t count) const = 0;
 
         /**
+         * @brief Build the Vulkan command buffer
+         * 
+         * @returns The final Vulkan command buffer
+         */
+        virtual std::unique_ptr<IVulkanCommandBuffer> build() const = 0;
+
+        /**
          * @brief Interface destructor
          */
         virtual ~IVulkanCommandBufferBuilder() = default;

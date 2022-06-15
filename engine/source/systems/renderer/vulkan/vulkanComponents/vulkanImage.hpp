@@ -73,6 +73,23 @@ namespace siofraEngine::systems
          * @returns The image view handle
          */
         VkImageView getImageView() const noexcept override;
+
+        /**
+         * @brief Get the image handle
+         * 
+         * @returns The image handle
+         */
+        VkImage getImage() const noexcept override;
+
+        /**
+         * @brief Transition the image layout
+         * 
+         * @param commandBuffer The command buffer to record on
+         * @param queue The queue on which to submit the command buffer
+         * @param oldLayout The old image layout
+         * @param newLayout The new image layout
+         */
+        void transitionImageLayout(IVulkanCommandBuffer const * commandBuffer, IVulkanQueue const * queue, VkImageLayout oldLayout, VkImageLayout newLayout) const override;
         
     private:
         /**

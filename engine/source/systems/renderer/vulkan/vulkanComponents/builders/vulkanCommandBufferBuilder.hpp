@@ -44,6 +44,13 @@ namespace siofraEngine::systems
          */
         std::vector<std::unique_ptr<IVulkanCommandBuffer>> build(uint32_t count) const override;
 
+        /**
+         * @brief Build the Vulkan command buffer
+         * 
+         * @returns The final Vulkan command buffer
+         */
+        std::unique_ptr<IVulkanCommandBuffer> build() const override;
+
     private:
         /**
          * @brief The device with which to create the command buffer

@@ -53,4 +53,23 @@ namespace siofraEngine::systems
 
         vkUpdateDescriptorSets(device->getLogicalDevice(), static_cast<uint32_t>(descriptorSetWrites.size()), descriptorSetWrites.data(), 0, nullptr);
     }
+
+    void VulkanDescriptorSet::updateFromImage(IVulkanImage const * image, IVulkanSampler const * sampler, uint32_t destinationBinding, IVulkanDevice const * device) const
+    {
+        VkDescriptorImageInfo imageInfo{ };
+		imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		imageInfo.imageView = image->getImageView();
+		imageInfo.sampler = sampler->getSampler();
+
+		VkWriteDescriptorSet descriptorWrite{ };
+		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWrite.dstSet = descriptorSet;
+		descriptorWrite.dstBinding = destinationBinding;
+		descriptorWrite.dstArrayElement = 0;
+		descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+		descriptorWrite.descriptorCount = 1;
+		descriptorWrite.pImageInfo = &imageInfo;
+
+		vkUpdateDescriptorSets(device->getLogicalDevice(), 1, &descriptorWrite, 0, nullptr);
+    }
 }

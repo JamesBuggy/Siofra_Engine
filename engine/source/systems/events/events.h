@@ -4,6 +4,8 @@
 #include <variant>
 #include <string>
 #include <vector>
+#include <stdint.h>
+#include "math/math.hpp"
 
 /**
  * @brief Supported event types
@@ -11,6 +13,8 @@
 enum class EventTypes
 {
     CREATE_SHADER,
+    CREATE_MATERIAL,
+    CREATE_MODEL,
     MAX_EVENT_TYPES
 };
 
@@ -41,6 +45,26 @@ struct CreateShaderEvent
 };
 
 /**
+ * @brief Create material event payload
+ */
+struct CreateMaterialEvent
+{
+    std::vector<char> imageData;
+    std::uint32_t width;
+    std::uint32_t height;
+    std::uint32_t channels;
+};
+
+/**
+ * @brief Create model event payload
+ */
+struct CreateModelEvent
+{
+    std::vector<Vertex3> vertexBuffer;
+    std::vector<std::vector<std::uint32_t>> indexBuffers;
+};
+
+/**
  * @brief Event payload
  */
 using EventPayload = std::variant<
@@ -50,7 +74,9 @@ using EventPayload = std::variant<
     double,
     char,
     std::string,
-    CreateShaderEvent
+    CreateShaderEvent,
+    CreateMaterialEvent,
+    CreateModelEvent
 >;
 
 /**

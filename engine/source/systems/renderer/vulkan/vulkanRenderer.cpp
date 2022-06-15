@@ -60,6 +60,12 @@ namespace siofraEngine::systems
             .withLevel(VK_COMMAND_BUFFER_LEVEL_PRIMARY)
             .build(renderPass->getFramebuffers().size());
 
+        transferCommandPool = VulkanCommandPool::Builder()
+            .withDevice(device.get())
+            .withFlags(VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT)
+            .withQueueFamilyIndex(device->getTransferQueue()->getFamilyIndex())
+            .build();
+
         uint32_t maxFramesInFlight = swapchain->getMaxFramesInFlight();
         imageAvailable.resize(maxFramesInFlight);
         renderFinished.resize(maxFramesInFlight);
@@ -90,11 +96,45 @@ namespace siofraEngine::systems
         vkResetFences(device->getLogicalDevice(), 1, &fenceHandle);
 
         uint32_t imageIndex = swapchain->acquireNextImage(imageAvailable[currentFrame].get());
+
+        ViewProjection viewProjection{ };
+        viewProjection.projection = glm::perspective(glm::radians(45.0f), (float)swapchain->getExtents().width / (float)swapchain->getExtents().height, 0.1f, 400.0f);
+        viewProjection.projection[1][1] *= -1;
+        viewProjection.view = glm::lookAt(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f) + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        viewProjectionUniformBuffers[imageIndex]->update(&viewProjection, sizeof(viewProjection));
+
+        Matrix4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 5.0f));
+
+        VkDeviceSize bufferOffset = 0;
  
         graphicsCommandBuffers[imageIndex]->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
         renderPass->begin(graphicsCommandBuffers[imageIndex].get(), imageIndex);
 
         objectShaderPipeline->bind(graphicsCommandBuffers[imageIndex].get(), VK_PIPELINE_BIND_POINT_GRAPHICS);
+
+        vkCmdPushConstants(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), objectShaderPipeline->getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(ModelMatrix), &modelMatrix);
+
+        std::vector<VkDescriptorSet> descriptorSetGroup = {
+            objectShaderDescriptorSets[imageIndex]->getDescriptorSet(),
+            objectShaderSamplerDescriptorSets[1]->getDescriptorSet()
+        };
+        vkCmdBindDescriptorSets(
+            graphicsCommandBuffers[imageIndex]->getCommandBuffer(),
+            VK_PIPELINE_BIND_POINT_GRAPHICS,
+            objectShaderPipeline->getPipelineLayout(),
+            0,
+            static_cast<uint32_t>(descriptorSetGroup.size()), 
+            descriptorSetGroup.data(),
+            0,
+            nullptr);
+
+        VkBuffer vertexBuffers[] = { models[0].vertexBuffer->getBuffer() };
+        vkCmdBindVertexBuffers(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), 0, 1, vertexBuffers, &bufferOffset);
+        for (size_t i = 0; i < models[0].indexBuffers.size(); i++)
+        {				
+            vkCmdBindIndexBuffer(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), models[0].indexBuffers[i]->getBuffer(), bufferOffset, VK_INDEX_TYPE_UINT32);
+            vkCmdDrawIndexed(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), models[0].indexBufferCounts[i], 1, 0, 0, 0);
+        }
 
         renderPass->end(graphicsCommandBuffers[imageIndex].get());
         graphicsCommandBuffers[imageIndex].get()->end();
@@ -111,7 +151,7 @@ namespace siofraEngine::systems
     }
 
     void VulkanRenderer::createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode)
-    {        
+    {
         viewProjectionUniformBuffers.resize(swapchain->getSwapchainImages().size());
         objectShaderDescriptorSets.resize(swapchain->getSwapchainImages().size());
 
@@ -179,5 +219,119 @@ namespace siofraEngine::systems
             .withRenderPass(renderPass.get())
             .withViewportExtents(swapchain->getExtents())
             .build();
+
+        objectShaderSampler = VulkanSampler::Builder()
+            .withDevice(device.get())
+            .build();
+    }
+
+    void VulkanRenderer::createMaterial(std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels)
+    {
+        auto stagingBuffer = VulkanBuffer::Builder()
+            .withDevice(device.get())
+            .withBufferSize(imageData.size())
+            .withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
+            .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
+            .build();
+
+        stagingBuffer->update(imageData.data(), imageData.size());
+
+        auto image = VulkanImage::Builder()
+            .withDevice(device.get())
+            .withExtents(width, height)
+            .withFormat(VK_FORMAT_R8G8B8A8_UNORM)
+            .withTiling(VK_IMAGE_TILING_OPTIMAL)
+            .withUsageFlags(VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT)
+            .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+            .withAspectFlags(VK_IMAGE_ASPECT_COLOR_BIT)
+            .build();
+
+        auto commandBuffer = VulkanCommandBuffer::Builder()
+            .withDevice(device.get())
+            .withCommandPool(graphicsCommandPool.get())
+            .withLevel(VK_COMMAND_BUFFER_LEVEL_PRIMARY)
+            .build();
+
+        image->transitionImageLayout(commandBuffer.get(), device->getGraphicsQueue().get(), VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+        stagingBuffer->copyToImage(commandBuffer.get(), device->getGraphicsQueue().get(), image.get(), width, height);
+        image->transitionImageLayout(commandBuffer.get(), device->getGraphicsQueue().get(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+
+        VkCommandBuffer commandBufferHandle = commandBuffer->getCommandBuffer();
+        vkFreeCommandBuffers(device->getLogicalDevice(), graphicsCommandPool->getCommandPool(), 1, &commandBufferHandle);
+
+        auto samplerDescriptorSet = VulkanDescriptorSet::Builder()
+            .withDevice(device.get())
+			.withDescriptorPool(objectShaderSamplerDescriptorPool.get())
+			.withDescriptorSetLayout(objectShaderSamplerDescriptorSetLayout.get())
+			.build();
+
+        samplerDescriptorSet->updateFromImage(image.get(), objectShaderSampler.get(), 0, device.get());
+
+        textureImages.push_back(std::move(image));
+        objectShaderSamplerDescriptorSets.push_back(std::move(samplerDescriptorSet));
+    }
+
+    void VulkanRenderer::createModel(std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers)
+    {
+        auto commandBuffer = VulkanCommandBuffer::Builder()
+            .withDevice(device.get())
+            .withCommandPool(graphicsCommandPool.get())
+            .withLevel(VK_COMMAND_BUFFER_LEVEL_PRIMARY)
+            .build();
+        
+        std::vector<std::unique_ptr<IVulkanBuffer>> vulkanIndexBuffers{ };
+        std::vector<std::uint32_t> vulkanIndexBufferCounts{ };
+        for(auto const & indexBuffer : indexBuffers)
+        {
+            VkDeviceSize bufferSize = sizeof(uint32_t) * indexBuffer.size();
+            auto stagingBuffer = VulkanBuffer::Builder()
+                .withDevice(device.get())
+                .withBufferSize(bufferSize)
+                .withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
+                .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
+                .build();
+
+            stagingBuffer->update(indexBuffer.data(), bufferSize);
+
+            auto vulkanIndexBuffer = VulkanBuffer::Builder()
+                .withDevice(device.get())
+                .withBufferSize(bufferSize)
+                .withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT)
+                .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+                .build();
+
+            stagingBuffer->copyToBuffer(commandBuffer.get(), device->getGraphicsQueue().get(), vulkanIndexBuffer.get(), bufferSize);
+
+            vulkanIndexBuffers.push_back(std::move(vulkanIndexBuffer));
+            vulkanIndexBufferCounts.push_back(indexBuffer.size());
+        }
+
+        VkDeviceSize bufferSize = sizeof(Vertex3) * vertexBuffer.size();
+        auto stagingBuffer = VulkanBuffer::Builder()
+            .withDevice(device.get())
+            .withBufferSize(bufferSize)
+            .withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
+            .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
+            .build();
+
+        stagingBuffer->update(vertexBuffer.data(), bufferSize);
+
+        auto vulkanVertexBuffer = VulkanBuffer::Builder()
+            .withDevice(device.get())
+			.withBufferSize(bufferSize)
+			.withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
+			.withMemoryPropertyFlags(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+			.build();
+
+        stagingBuffer->copyToBuffer(commandBuffer.get(), device->getGraphicsQueue().get(), vulkanVertexBuffer.get(), bufferSize);
+
+        Model model;
+        model.vertexBuffer = std::move(vulkanVertexBuffer);
+        model.indexBuffers = std::move(vulkanIndexBuffers);
+        model.indexBufferCounts = std::move(vulkanIndexBufferCounts);
+        models.push_back(std::move(model));
+
+        VkCommandBuffer commandBufferHandle = commandBuffer->getCommandBuffer();
+        vkFreeCommandBuffers(device->getLogicalDevice(), graphicsCommandPool->getCommandPool(), 1, &commandBufferHandle);
     }
 }
