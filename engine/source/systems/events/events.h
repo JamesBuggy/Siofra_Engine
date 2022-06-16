@@ -4,7 +4,7 @@
 #include <variant>
 #include <string>
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 #include "math/math.hpp"
 
 /**

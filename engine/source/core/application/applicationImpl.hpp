@@ -8,6 +8,7 @@
 #include "systems/renderer/rendererSystem.hpp"
 #include "systems/events/eventSystem.hpp"
 #include "systems/resource/resourceSystem.hpp"
+#include "systems/ecs/entityComponent.hpp"
 #include "platform/window.hpp"
 #include "platform/platform.hpp"
 #include "platform/platformInput.hpp"
@@ -64,6 +65,11 @@ namespace siofraEngine::core
          * @brief Renderer system instance
          */
         systems::ResourceSystem resourceSystem;
+
+        /**
+         * @brief Entity component system
+         */
+        systems::EntityComponentSystem entityComponentSystem;
 
         /**
          * @brief Current game instance

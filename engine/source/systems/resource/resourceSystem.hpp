@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include <algorithm>
-#include <stdint.h>
+#include <cstdint>
 #include "core/logging.hpp"
 #include "math/math.hpp"
 #include "platform/iplatformFileSystem.hpp"

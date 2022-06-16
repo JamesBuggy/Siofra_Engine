@@ -76,7 +76,7 @@ namespace siofraEngine::systems
         for (size_t i = 0; i < shapes.size(); i++)
         {
             tinyobj::mesh_t mesh = shapes[i].mesh;
-            std::vector<uint32_t> indices(mesh.indices.size());
+            std::vector<std::uint32_t> indices(mesh.indices.size());
             for (size_t j = 0; j < indices.size(); j++)
             {
                 tinyobj::index_t index = mesh.indices[j];

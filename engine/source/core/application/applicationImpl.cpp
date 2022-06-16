@@ -10,6 +10,7 @@ namespace siofraEngine::core
         inputSystem{std::make_unique<platform::PlatformInput>()},
         rendererSystem{window, eventSystem},
         resourceSystem{std::make_unique<platform::PlatformFileSystem>(), eventSystem},
+        entityComponentSystem{ },
         game{std::move(game)}
     {
         

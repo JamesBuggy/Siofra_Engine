@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <memory>
-#include <stdint.h>
+#include <cstdint>
 #include "systems/renderer/vulkan/vulkanComponents/ivulkanBuffer.hpp"
 
 namespace siofraEngine::systems
