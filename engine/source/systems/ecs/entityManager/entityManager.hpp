@@ -6,14 +6,10 @@
 #include <limits>
 #include <algorithm>
 #include "core/logging.hpp"
+#include "systems/ecs/common/types.hpp"
 
 namespace siofraEngine::systems
 {
-    /**
-     * @brief Entity type
-     */
-    using Entity = std::uint32_t;
-
     /**
      * @brief Entity manager. Maintains collections of active and available entity Ids
      */
