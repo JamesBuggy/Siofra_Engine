@@ -31,5 +31,13 @@
 *.out
 *.app
 
+# Build output directories
 /bin
+/x64
+*/x64
+
+# Third party libraries
 /engine/libs
+
+# IDE directries
+/.vs

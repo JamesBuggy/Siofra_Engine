@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{6211406f-e71c-4d52-8cf1-78710131bf63}</ProjectGuid>
+    <RootNamespace>Engine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Engine</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;DEBUG;SE_EXPORT;SE_PLATFORM_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)source;$(ProjectDir)libs\GLM-0.9.6.3\include;$(ProjectDir)libs\SDL2-2.0.20\include;$(ProjectDir)libs\STB\include;$(ProjectDir)libs\TINYOBJLOADER\include;$(ProjectDir)libs\Vulkan-1.3.211.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs\SDL2-2.0.20\lib\x64;$(ProjectDir)libs\Vulkan-1.3.211.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>XCOPY "$(ProjectDir)libs\SDL2-2.0.20\lib\x64\SDL2.dll" "$(OutputPath)" /Y
+XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y 
+
+%VULKAN_SDK%\Bin\glslc.exe -fshader-stage=vert $(OutputPath)assets\shaders\object_shader.vert.glsl -o $(OutputPath)assets\shaders\object_shader.vert.spv
+%VULKAN_SDK%\Bin\glslc.exe -fshader-stage=frag $(OutputPath)assets\shaders\object_shader.frag.glsl -o $(OutputPath)assets\shaders\object_shader.frag.spv</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\core\application.hpp" />
+    <ClInclude Include="include\core\assertions.hpp" />
+    <ClInclude Include="include\core\game.hpp" />
+    <ClInclude Include="include\core\input\keyCodes.hpp" />
+    <ClInclude Include="include\core\input\mouseCodes.hpp" />
+    <ClInclude Include="include\core\logging.hpp" />
+    <ClInclude Include="include\defines.hpp" />
+    <ClInclude Include="include\engineMain.hpp" />
+    <ClInclude Include="include\math\math.hpp" />
+    <ClInclude Include="source\core\application\applicationBase.hpp" />
+    <ClInclude Include="source\core\application\applicationImpl.hpp" />
+    <ClInclude Include="source\core\clock.hpp" />
+    <ClInclude Include="source\core\input\inputStates.hpp" />
+    <ClInclude Include="source\platform\iplatformClock.hpp" />
+    <ClInclude Include="source\platform\iplatformFileSystem.hpp" />
+    <ClInclude Include="source\platform\iplatformInput.hpp" />
+    <ClInclude Include="source\platform\iwindow.hpp" />
+    <ClInclude Include="source\platform\platform.hpp" />
+    <ClInclude Include="source\platform\platformClock.hpp" />
+    <ClInclude Include="source\platform\platformFileSystem.hpp" />
+    <ClInclude Include="source\platform\platformInput.hpp" />
+    <ClInclude Include="source\platform\win64\inputMapping.hpp" />
+    <ClInclude Include="source\platform\window.hpp" />
+    <ClInclude Include="source\systems\ecs\common\types.hpp" />
+    <ClInclude Include="source\systems\ecs\componentManager\componentManager.hpp" />
+    <ClInclude Include="source\systems\ecs\entityComponent.hpp" />
+    <ClInclude Include="source\systems\ecs\entityManager\entityManager.hpp" />
+    <ClInclude Include="source\systems\events\events.h" />
+    <ClInclude Include="source\systems\events\eventSystem.hpp" />
+    <ClInclude Include="source\systems\events\ieventSystem.hpp" />
+    <ClInclude Include="source\systems\input\inputSystem.hpp" />
+    <ClInclude Include="source\systems\renderer\common\models.hpp" />
+    <ClInclude Include="source\systems\renderer\irendererBackend.hpp" />
+    <ClInclude Include="source\systems\renderer\rendererSystem.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\resources\model.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanBufferBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanCommandBufferBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanCommandPoolBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanDescriptorPoolBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanDescriptorSetBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanDescriptorSetLayoutBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanDeviceBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanFenceBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanFramebufferBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanImageBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanInstanceBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanPipelineBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanQueueBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanRenderPassBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanSamplerBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanSemaphoreBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanShaderModuleBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanSurfaceBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\ivulkanSwapchainBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanBufferBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanCommandBufferBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanCommandPoolBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanDescriptorPoolBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanDescriptorSetBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanDescriptorSetLayoutBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanDeviceBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanFenceBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanFramebufferBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanImageBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanInstanceBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanPipelineBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanQueueBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanRenderPassBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanSamplerBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanSemaphoreBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanShaderModuleBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanSurfaceBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanSwapchainBuilder.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanBuffer.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanCommandBuffer.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanCommandPool.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanComponent.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanDescriptorPool.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanDescriptorSet.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanDescriptorSetLayout.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanDevice.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanFence.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanFramebuffer.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanImage.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanInstance.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanPipeline.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanQueue.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanRenderPass.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanSampler.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanSemaphore.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanShaderModule.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanSurface.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\ivulkanSwapchain.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanBuffer.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanCommandBuffer.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanCommandPool.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanDescriptorPool.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanDescriptorSet.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanDescriptorSetLayout.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanDevice.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanFence.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanFramebuffer.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanImage.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanInstance.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanPipeline.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanQueue.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanRenderPass.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanSampler.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanSemaphore.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanShaderModule.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanSurface.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanSwapchain.hpp" />
+    <ClInclude Include="source\systems\renderer\vulkan\vulkanRenderer.hpp" />
+    <ClInclude Include="source\systems\resource\resourceSystem.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\core\application\application.cpp" />
+    <ClCompile Include="source\core\application\applicationImpl.cpp" />
+    <ClCompile Include="source\core\clock.cpp" />
+    <ClCompile Include="source\core\game.cpp" />
+    <ClCompile Include="source\platform\win64\plaform.cpp" />
+    <ClCompile Include="source\platform\win64\platformClock.cpp" />
+    <ClCompile Include="source\platform\win64\platformFileSystem.cpp" />
+    <ClCompile Include="source\platform\win64\platformInput.cpp" />
+    <ClCompile Include="source\platform\win64\window.cpp" />
+    <ClCompile Include="source\systems\ecs\entityManager\entityManager.cpp" />
+    <ClCompile Include="source\systems\events\eventSystem.cpp" />
+    <ClCompile Include="source\systems\input\inputSystem.cpp" />
+    <ClCompile Include="source\systems\renderer\rendererSystem.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanBufferBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanCommandBufferBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanCommandPoolBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanDescriptorPoolBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanDescriptorSetBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanDescriptorSetLayoutBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanDeviceBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanFenceBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanFramebufferBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanImageBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanInstanceBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanPipelineBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanQueueBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanRenderPassBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanSamplerBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanSemaphoreBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanShaderModuleBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanSurfaceBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\builders\vulkanSwapchainBuilder.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanBuffer.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanCommandBuffer.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanCommandPool.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanDescriptorPool.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanDescriptorSet.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanDescriptorSetLayout.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanDevice.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanFence.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanFramebuffer.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanImage.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanInstance.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanPipeline.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanQueue.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanRenderPass.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanSampler.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanSemaphore.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanShaderModule.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanSurface.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanComponents\vulkanSwapchain.cpp" />
+    <ClCompile Include="source\systems\renderer\vulkan\vulkanRenderer.cpp" />
+    <ClCompile Include="source\systems\resource\resourceSystem.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
