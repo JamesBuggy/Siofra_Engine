@@ -360,6 +360,9 @@
     <ClInclude Include="source\core\serviceLocator\serviceLocator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\core\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core\application\application.cpp">

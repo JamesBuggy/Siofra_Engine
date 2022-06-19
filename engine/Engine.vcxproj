@@ -146,6 +146,7 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="include\core\input\keyCodes.hpp" />
     <ClInclude Include="include\core\input\mouseCodes.hpp" />
     <ClInclude Include="include\core\logging.hpp" />
+    <ClInclude Include="include\core\scene.h" />
     <ClInclude Include="include\defines.hpp" />
     <ClInclude Include="include\engineMain.hpp" />
     <ClInclude Include="include\math\math.hpp" />
