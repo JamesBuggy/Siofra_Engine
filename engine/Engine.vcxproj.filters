@@ -360,7 +360,10 @@
     <ClInclude Include="source\core\serviceLocator\serviceLocator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\scene.h">
+    <ClInclude Include="include\core\ecs\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\game\gameImpl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -374,7 +377,7 @@
     <ClCompile Include="source\core\clock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\core\game.cpp">
+    <ClCompile Include="source\core\game\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\platform\win64\plaform.cpp">
@@ -522,6 +525,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\systems\resource\resourceSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\game\gameImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

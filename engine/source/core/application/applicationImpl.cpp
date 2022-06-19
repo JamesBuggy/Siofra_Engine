@@ -19,6 +19,8 @@ namespace siofraEngine::core
     {
         float lastTime{ };
 
+        game->init();
+
         while(true)
         {
             clock.update();

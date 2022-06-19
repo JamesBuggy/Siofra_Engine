@@ -146,13 +146,14 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="include\core\input\keyCodes.hpp" />
     <ClInclude Include="include\core\input\mouseCodes.hpp" />
     <ClInclude Include="include\core\logging.hpp" />
-    <ClInclude Include="include\core\scene.h" />
+    <ClInclude Include="include\core\ecs\scene.h" />
     <ClInclude Include="include\defines.hpp" />
     <ClInclude Include="include\engineMain.hpp" />
     <ClInclude Include="include\math\math.hpp" />
     <ClInclude Include="source\core\application\applicationBase.hpp" />
     <ClInclude Include="source\core\application\applicationImpl.hpp" />
     <ClInclude Include="source\core\clock.hpp" />
+    <ClInclude Include="source\core\game\gameImpl.hpp" />
     <ClInclude Include="source\core\input\inputStates.hpp" />
     <ClInclude Include="source\core\serviceLocator\serviceLocator.hpp" />
     <ClInclude Include="source\platform\iplatformClock.hpp" />
@@ -261,7 +262,8 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClCompile Include="source\core\application\application.cpp" />
     <ClCompile Include="source\core\application\applicationImpl.cpp" />
     <ClCompile Include="source\core\clock.cpp" />
-    <ClCompile Include="source\core\game.cpp" />
+    <ClCompile Include="source\core\game\game.cpp" />
+    <ClCompile Include="source\core\game\gameImpl.cpp" />
     <ClCompile Include="source\platform\win64\plaform.cpp" />
     <ClCompile Include="source\platform\win64\platformClock.cpp" />
     <ClCompile Include="source\platform\win64\platformFileSystem.cpp" />
