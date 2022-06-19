@@ -78,18 +78,13 @@ namespace siofraEngine::systems
                 return componentTypeId;
             }
 
-            return INVALID_COMPONENT;
+            return core::INVALID_COMPONENT;
         }
 
         /**
          * @brief Maximum number of components per entity
          */
-        static inline std::uint32_t const MAX_COMPONENT_COUNT{ 32 };
-
-        /**
-         * @brief Invalid component identifier
-         */
-        static inline std::uint32_t const INVALID_COMPONENT{ std::numeric_limits<std::uint32_t>::max() };
+        static inline std::uint32_t const MAX_COMPONENT_COUNT{ 32 };   
     
     private:
         /**

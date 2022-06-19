@@ -88,7 +88,7 @@ namespace siofraEngine::systems
         T * assignComponent(core::Entity entity)
         {
             auto componentId = componentManager.getComponentTypeId<T>();
-            if (componentId == ComponentManager::INVALID_COMPONENT)
+            if (componentId == core::INVALID_COMPONENT)
             {
                 SE_LOG_WARNING("Failed to register new component type. Maximum component count reached");
                 return nullptr;
@@ -122,7 +122,7 @@ namespace siofraEngine::systems
         bool removeComponent(core::Entity entity) noexcept
         {
             auto componentId = componentManager.getComponentTypeId<T>();
-            if (componentId == ComponentManager::INVALID_COMPONENT)
+            if (componentId == core::INVALID_COMPONENT)
             {
                 SE_LOG_WARNING("Failed to remove component. Invalid component specified");
                 return false;
@@ -149,7 +149,7 @@ namespace siofraEngine::systems
         T * getComponent(core::Entity entity)
         {
             auto componentId = componentManager.getComponentTypeId<T>();
-            if (componentId == ComponentManager::INVALID_COMPONENT)
+            if (componentId == core::INVALID_COMPONENT)
             {
                 SE_LOG_WARNING("Failed to get component. Invalid component specified");
                 return nullptr;

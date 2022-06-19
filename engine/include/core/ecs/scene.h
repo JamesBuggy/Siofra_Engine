@@ -57,7 +57,10 @@ namespace siofraEngine::core
             std::uint32_t componentIds[] = { entityComponentSystem.getComponentTypeId<Ts>() ... };
             for (int i = 0; i < sizeof...(Ts); i++)
             {
-                componentSignature.set(componentIds[i]);
+                if (componentIds[i] != core::INVALID_COMPONENT)
+                {
+                    componentSignature.set(componentIds[i]);
+                }
             }
 
             std::vector<core::Entity> filteredEntities{ };
