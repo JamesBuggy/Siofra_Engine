@@ -21,6 +21,23 @@ namespace siofraEngine::systems
     {
     public:
         /**
+         * @brief Get the component signature of an entity
+         *
+         * @param entity The entity for which the component signature should be retrieved
+         * @returns The component signature of an entity
+         */
+        EntityComponentSignature getEntityComponentSignature(core::Entity entity)
+        {
+            if (!entityComponentSignatures.count(entity))
+            {
+                SE_LOG_WARNING("Cannot get component signature of inactive entity");
+                return EntityComponentSignature{ 0 };
+            }
+
+            return entityComponentSignatures[entity];
+        }
+
+        /**
          * @brief Activate a new entity
          * 
          * @returns The newly activated entity
@@ -151,6 +168,18 @@ namespace siofraEngine::systems
             }
 
             return componentManager.getComponent<T>(entity);
+        }
+
+        /**
+         * @brief Get the Id assigned to a component type. An Id will be assigned if one has not been already
+         *
+         * @tparam T The component type for which to get an Id
+         * @returns The Id for the given component type
+         */
+        template<typename T>
+        std::uint32_t getComponentTypeId()
+        {
+            return componentManager.getComponentTypeId<T>();
         }
     
     private:

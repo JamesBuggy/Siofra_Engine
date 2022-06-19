@@ -39,9 +39,37 @@ namespace siofraEngine::core
          *
          * @returns The list of all entities present in the scene
          */
-        std::vector<core::Entity> const& getEntities() const noexcept
+        std::vector<core::Entity> const & getEntities() const noexcept
         {
             return entityComponentSystem.getActiveEntities();
+        }
+
+        template<typename... Ts>
+        std::vector<core::Entity> getEntities() noexcept
+        {
+            auto entities = entityComponentSystem.getActiveEntities();
+            if (sizeof...(Ts) == 0)
+            {
+                return entities;
+            }
+
+            systems::EntityComponentSignature componentSignature;
+            std::uint32_t componentIds[] = { entityComponentSystem.getComponentTypeId<Ts>() ... };
+            for (int i = 0; i < sizeof...(Ts); i++)
+            {
+                componentSignature.set(componentIds[i]);
+            }
+
+            std::vector<core::Entity> filteredEntities{ };
+            for (auto const & entity : entities)
+            {
+                if ((entityComponentSystem.getEntityComponentSignature(entity) & componentSignature) == componentSignature)
+                {
+                    filteredEntities.push_back(entity);
+                }
+            }
+
+            return filteredEntities;
         }
 
         /**
