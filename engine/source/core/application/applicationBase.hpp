@@ -1,6 +1,8 @@
 #pragma once
 
 #include "core/logging.hpp"
+#include "core/serviceLocator/serviceLocator.hpp"
+#include "systems/events/eventSystem.hpp"
 #include "platform/platform.hpp"
 
 namespace siofraEngine::core
@@ -18,6 +20,8 @@ namespace siofraEngine::core
         {
             SE_LOG_INFO("Application Init");
             siofraEngine::platform::initialize();
+
+            ServiceLocator::provide<systems::EventSystem>();
         }
         
         /**

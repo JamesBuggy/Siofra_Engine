@@ -84,7 +84,7 @@
     <ClInclude Include="source\platform\window.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\systems\ecs\common\types.hpp">
+    <ClInclude Include="include\core\ecs\types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\systems\ecs\componentManager\componentManager.hpp">
@@ -355,6 +355,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\systems\resource\resourceSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\serviceLocator\serviceLocator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

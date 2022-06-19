@@ -4,12 +4,11 @@ namespace siofraEngine::core
 {
     Application::Impl::Impl(std::unique_ptr<core::Game> game) :
         ApplicationBase(),
-        eventSystem{ },
         clock{std::make_unique<platform::PlatformClock>()},
         window{platform::Window(game->getTitle(), 100, 100, 800, 600, platform::WindowFlags::WINDOW_VULKAN)},
         inputSystem{std::make_unique<platform::PlatformInput>()},
-        rendererSystem{window, eventSystem},
-        resourceSystem{std::make_unique<platform::PlatformFileSystem>(), eventSystem},
+        rendererSystem{window, ServiceLocator::get<systems::EventSystem>()},
+        resourceSystem{std::make_unique<platform::PlatformFileSystem>(), ServiceLocator::get<systems::EventSystem>() },
         entityComponentSystem{ },
         game{std::move(game)}
     {

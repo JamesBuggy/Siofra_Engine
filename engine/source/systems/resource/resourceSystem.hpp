@@ -21,9 +21,9 @@ namespace siofraEngine::systems
          * @brief ResourceSystem constructor
          * 
          * @param platformInput Access to platform file system logic
-         * @param eventSystem Event system reference
+         * @param eventSystem Event system
          */
-        ResourceSystem(std::unique_ptr<platform::IPlatformFileSystem> fileSystem, systems::IEventSystem & eventSystem);
+        ResourceSystem(std::unique_ptr<platform::IPlatformFileSystem> fileSystem, systems::IEventSystem * const eventSystem);
 
         /**
          * @brief Load a shader
@@ -53,9 +53,9 @@ namespace siofraEngine::systems
         std::unique_ptr<platform::IPlatformFileSystem> fileSystem{ };
 
         /**
-         * @brief Event system reference
+         * @brief Event system
          */
-        systems::IEventSystem & eventSystem;
+        systems::IEventSystem * const eventSystem;
 
         /**
          * @brief Base path of the assets directory

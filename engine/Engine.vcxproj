@@ -153,6 +153,7 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="source\core\application\applicationImpl.hpp" />
     <ClInclude Include="source\core\clock.hpp" />
     <ClInclude Include="source\core\input\inputStates.hpp" />
+    <ClInclude Include="source\core\serviceLocator\serviceLocator.hpp" />
     <ClInclude Include="source\platform\iplatformClock.hpp" />
     <ClInclude Include="source\platform\iplatformFileSystem.hpp" />
     <ClInclude Include="source\platform\iplatformInput.hpp" />
@@ -163,7 +164,7 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="source\platform\platformInput.hpp" />
     <ClInclude Include="source\platform\win64\inputMapping.hpp" />
     <ClInclude Include="source\platform\window.hpp" />
-    <ClInclude Include="source\systems\ecs\common\types.hpp" />
+    <ClInclude Include="include\core\ecs\types.hpp" />
     <ClInclude Include="source\systems\ecs\componentManager\componentManager.hpp" />
     <ClInclude Include="source\systems\ecs\entityComponent.hpp" />
     <ClInclude Include="source\systems\ecs\entityManager\entityManager.hpp" />

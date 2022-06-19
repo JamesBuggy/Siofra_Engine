@@ -8,7 +8,7 @@
 
 namespace siofraEngine::systems
 {
-    ResourceSystem::ResourceSystem(std::unique_ptr<platform::IPlatformFileSystem> fileSystem, systems::IEventSystem & eventSystem) :
+    ResourceSystem::ResourceSystem(std::unique_ptr<platform::IPlatformFileSystem> fileSystem, systems::IEventSystem * const eventSystem) :
         fileSystem{std::move(fileSystem)},
         eventSystem{eventSystem}
     {
@@ -26,7 +26,7 @@ namespace siofraEngine::systems
         createShaderEvent.vertexStageSpirv = fileSystem->readFile(assetBasePath + "shaders\\" + shaderName + ".vert.spv");
         createShaderEvent.fragmentStageGlsl = fileSystem->readFile(assetBasePath + "shaders\\" + shaderName + ".frag.glsl");
         createShaderEvent.fragmentStageSpirv = fileSystem->readFile(assetBasePath + "shaders\\" + shaderName + ".frag.spv");
-        eventSystem.broadcast(EventTypes::CREATE_SHADER, createShaderEvent);
+        eventSystem->broadcast(EventTypes::CREATE_SHADER, createShaderEvent);
     }
 
     void ResourceSystem::loadMaterial(std::string materialName)
@@ -50,7 +50,7 @@ namespace siofraEngine::systems
         createMaterialEvent.width = width;
         createMaterialEvent.height = height;
         createMaterialEvent.channels = channels;
-        eventSystem.broadcast(EventTypes::CREATE_MATERIAL, createMaterialEvent);
+        eventSystem->broadcast(EventTypes::CREATE_MATERIAL, createMaterialEvent);
     }
 
     void ResourceSystem::loadModel(std::string modelName)
@@ -104,6 +104,6 @@ namespace siofraEngine::systems
         CreateModelEvent createModelEvent;
         createModelEvent.vertexBuffer = std::move(vertexBuffer);
         createModelEvent.indexBuffers = std::move(indexBuffers);
-        eventSystem.broadcast(EventTypes::CREATE_MODEL, createModelEvent);
+        eventSystem->broadcast(EventTypes::CREATE_MODEL, createModelEvent);
     }
 }

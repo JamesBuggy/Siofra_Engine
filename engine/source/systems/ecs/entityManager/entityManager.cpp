@@ -5,13 +5,13 @@ namespace siofraEngine::systems
     EntityManager::EntityManager()
     {
         activeEntities.reserve(MAX_ENTITY_COUNT);
-        for(Entity entity{ 0 }; entity < MAX_ENTITY_COUNT; ++entity)
+        for(core::Entity entity{ 0 }; entity < MAX_ENTITY_COUNT; ++entity)
         {
             availableEntities.push_back(entity);
         }
     }
 
-    Entity EntityManager::activateEntity() noexcept
+    core::Entity EntityManager::activateEntity() noexcept
     {
         if(!availableEntities.empty())
         {
@@ -21,10 +21,10 @@ namespace siofraEngine::systems
         }
 
         SE_LOG_WARNING("Failed to activate entity. Maximun entity count reached");
-        return INVALID_ENTITY;
+        return core::INVALID_ENTITY;
     }
 
-    bool EntityManager::deactivateEntity(Entity entity) noexcept
+    bool EntityManager::deactivateEntity(core::Entity entity) noexcept
     {
         auto entityIter = std::find(activeEntities.begin(), activeEntities.end(), entity);
         if(entityIter != activeEntities.end())
@@ -38,7 +38,7 @@ namespace siofraEngine::systems
         return false;
     }
 
-    std::vector<Entity> const & EntityManager::getActiveEntities() const noexcept
+    std::vector<core::Entity> const & EntityManager::getActiveEntities() const noexcept
     {
         return activeEntities;
     }

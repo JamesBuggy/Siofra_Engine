@@ -20,9 +20,9 @@ namespace siofraEngine::systems
          * @brief Wraps plaftorm specific window logic
          * 
          * @param window Window to be rendered to
-         * @param eventSystem Event system reference
+         * @param eventSystem Event system
          */
-        RendererSystem(siofraEngine::platform::IWindow &window, systems::IEventSystem & eventSystem);
+        RendererSystem(siofraEngine::platform::IWindow &window, systems::IEventSystem * const eventSystem);
 
         /**
          * @brief Draw current frame

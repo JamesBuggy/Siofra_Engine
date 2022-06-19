@@ -6,7 +6,6 @@
 #include "core/clock.hpp"
 #include "systems/input/inputSystem.hpp"
 #include "systems/renderer/rendererSystem.hpp"
-#include "systems/events/eventSystem.hpp"
 #include "systems/resource/resourceSystem.hpp"
 #include "systems/ecs/entityComponent.hpp"
 #include "platform/window.hpp"
@@ -36,11 +35,6 @@ namespace siofraEngine::core
         void execute() override;
     
     private:
-        /**
-         * @brief Event system instance
-         */
-        systems::EventSystem eventSystem;
-
         /**
          * @brief Application clock instance
          */

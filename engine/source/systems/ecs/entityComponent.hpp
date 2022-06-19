@@ -2,6 +2,7 @@
 
 #include <bitset>
 #include <map>
+#include "core/ecs/types.hpp"
 #include "systems/ecs/entityManager/entityManager.hpp"
 #include "systems/ecs/componentManager/componentManager.hpp"
 
@@ -23,10 +24,10 @@ namespace siofraEngine::systems
          * 
          * @returns The newly activated entity
          */
-        Entity activateEntity() noexcept
+        core::Entity activateEntity() noexcept
         {
-            Entity newEntity = entityManager.activateEntity();
-            if(newEntity != EntityManager::INVALID_ENTITY)
+            core::Entity newEntity = entityManager.activateEntity();
+            if(newEntity != core::INVALID_ENTITY)
             {
                 entityComponentSignatures[newEntity] = EntityComponentSignature{ 0 };
             }
@@ -38,13 +39,14 @@ namespace siofraEngine::systems
          * 
          * @param entity The currently active entity to deactivate
          */
-        void deactivateEntity(Entity entity) noexcept
+        bool deactivateEntity(core::Entity entity) noexcept
         {
             bool result = entityManager.deactivateEntity(entity);
             if(result)
             {
                 entityComponentSignatures.erase(entity);
             }
+            return result;
         }
 
         /**
@@ -52,7 +54,7 @@ namespace siofraEngine::systems
          * 
          * @returns A list of all currently active entities
          */
-        std::vector<Entity> const & getActiveEntities() const noexcept
+        std::vector<core::Entity> const & getActiveEntities() const noexcept
         {
             return entityManager.getActiveEntities();
         }
@@ -65,7 +67,7 @@ namespace siofraEngine::systems
          * @returns A pointer to the assigned component, or nullptr if assignment failed
          */
         template<typename T>
-        T * assignComponent(Entity entity)
+        T * assignComponent(core::Entity entity)
         {
             auto componentId = componentManager.getComponentTypeId<T>();
             if (componentId == ComponentManager::INVALID_COMPONENT)
@@ -99,7 +101,7 @@ namespace siofraEngine::systems
          * @returns True if the component was removed, otherwise false
          */
         template<typename T>
-        bool removeComponent(Entity entity) noexcept
+        bool removeComponent(core::Entity entity) noexcept
         {
             auto componentId = componentManager.getComponentTypeId<T>();
             if (componentId == ComponentManager::INVALID_COMPONENT)
@@ -126,7 +128,7 @@ namespace siofraEngine::systems
          * @returns A pointer to the component, or nullptr if the retrieval failed
          */
         template<typename T>
-        T * getComponent(Entity entity)
+        T * getComponent(core::Entity entity)
         {
             auto componentId = componentManager.getComponentTypeId<T>();
             if (componentId == ComponentManager::INVALID_COMPONENT)
@@ -164,6 +166,6 @@ namespace siofraEngine::systems
         /**
          * @brief Mapping of active entity Ids to their component signatures
          */
-        std::map<Entity, EntityComponentSignature> entityComponentSignatures{ };
+        std::map<core::Entity, EntityComponentSignature> entityComponentSignatures{ };
     };
 }

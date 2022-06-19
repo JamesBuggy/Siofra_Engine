@@ -2,12 +2,12 @@
 
 namespace siofraEngine::systems
 {
-    RendererSystem::RendererSystem(siofraEngine::platform::IWindow &window, systems::IEventSystem & eventSystem) :
+    RendererSystem::RendererSystem(siofraEngine::platform::IWindow &window, systems::IEventSystem * const eventSystem) :
         rendererBackend{createRendererBackend(window)}
     {
-        eventSystem.subscribe(EventTypes::CREATE_SHADER, std::bind(&RendererSystem::createShader, this, std::placeholders::_1));
-        eventSystem.subscribe(EventTypes::CREATE_MATERIAL, std::bind(&RendererSystem::createMaterial, this, std::placeholders::_1));
-        eventSystem.subscribe(EventTypes::CREATE_MODEL, std::bind(&RendererSystem::createModel, this, std::placeholders::_1));
+        eventSystem->subscribe(EventTypes::CREATE_SHADER, std::bind(&RendererSystem::createShader, this, std::placeholders::_1));
+        eventSystem->subscribe(EventTypes::CREATE_MATERIAL, std::bind(&RendererSystem::createMaterial, this, std::placeholders::_1));
+        eventSystem->subscribe(EventTypes::CREATE_MODEL, std::bind(&RendererSystem::createModel, this, std::placeholders::_1));
 
         SE_LOG_INFO("Initialized renderer system");
     }

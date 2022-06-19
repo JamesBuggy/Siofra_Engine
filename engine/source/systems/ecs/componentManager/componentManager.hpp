@@ -5,7 +5,7 @@
 #include <limits>
 #include <vector>
 #include "core/logging.hpp"
-#include "systems/ecs/common/types.hpp"
+#include "core/ecs/types.hpp"
 
 namespace siofraEngine::systems
 {    
@@ -34,7 +34,7 @@ namespace siofraEngine::systems
          * @returns A pointer to the assigned component
          */
         template<typename T>
-        T * assignComponent(Entity entity)
+        T * assignComponent(core::Entity entity)
         {
             std::uint32_t componentId = getComponentTypeId<T>();
             if (componentId == componentPools.size())
@@ -56,7 +56,7 @@ namespace siofraEngine::systems
          * @returns A pointer to the component
          */
         template<typename T>
-        T * getComponent(Entity entity)
+        T * getComponent(core::Entity entity)
         {
             std::uint32_t componentId = getComponentTypeId<T>();
             return reinterpret_cast<T*>(componentPools[componentId].data() + (entity * componentSizes[componentId]));

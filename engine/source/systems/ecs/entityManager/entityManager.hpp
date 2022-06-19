@@ -6,7 +6,7 @@
 #include <limits>
 #include <algorithm>
 #include "core/logging.hpp"
-#include "systems/ecs/common/types.hpp"
+#include "core/ecs/types.hpp"
 
 namespace siofraEngine::systems
 {
@@ -26,7 +26,7 @@ namespace siofraEngine::systems
          * 
          * @returns The newly activated entity
          */
-        Entity activateEntity() noexcept;
+        core::Entity activateEntity() noexcept;
 
         /**
          * @brief Dectivate an active entity
@@ -34,34 +34,29 @@ namespace siofraEngine::systems
          * @param entity The currently active entity to deactivate
          * @returns True if the entity was deactivated, otherwise false
          */
-        bool deactivateEntity(Entity entity) noexcept;
+        bool deactivateEntity(core::Entity entity) noexcept;
 
         /**
          * @brief Get a list of all currently active entities
          * 
          * @returns A list of all currently active entities
          */
-        std::vector<Entity> const & getActiveEntities() const noexcept;
+        std::vector<core::Entity> const & getActiveEntities() const noexcept;
 
         /**
          * @brief Maximum number of entities supported
          */
         static inline std::uint32_t const MAX_ENTITY_COUNT{ 1000 };
-
-        /**
-         * @brief Invalid entity identifier
-         */
-        static inline Entity const INVALID_ENTITY{ std::numeric_limits<Entity>::max() };
     
     private:
         /**
          * @brief Collection of active entities
          */
-        std::vector<Entity> activeEntities{ };
+        std::vector<core::Entity> activeEntities{ };
 
         /**
          * @brief Collection of available (inactive) entities. Entities are popped off of the front on creation and pushed to the back on deletion
          */
-        std::deque<Entity> availableEntities{ };
+        std::deque<core::Entity> availableEntities{ };
     };
 }
