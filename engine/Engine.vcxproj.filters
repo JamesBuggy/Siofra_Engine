@@ -389,7 +389,7 @@
     <ClCompile Include="source\platform\win64\window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\systems\ecs\entityManager\entityManager.cpp">
+    <ClCompile Include="source\systems\ecs\entityManager\entityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\systems\events\eventSystem.cpp">
