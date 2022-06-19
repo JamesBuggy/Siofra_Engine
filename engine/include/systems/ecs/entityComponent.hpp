@@ -2,6 +2,7 @@
 
 #include <bitset>
 #include <map>
+#include "defines.hpp"
 #include "core/ecs/types.hpp"
 #include "systems/ecs/entityManager/entityManager.hpp"
 #include "systems/ecs/componentManager/componentManager.hpp"
@@ -16,7 +17,7 @@ namespace siofraEngine::systems
     /**
      * @brief Entity component system. Maintains entities, component pool and assignment of components to entities 
      */
-    class EntityComponentSystem
+    class SE_API EntityComponentSystem
     {
     public:
         /**

@@ -5,6 +5,7 @@
 #include <deque>
 #include <limits>
 #include <algorithm>
+#include "defines.hpp"
 #include "core/logging.hpp"
 #include "core/ecs/types.hpp"
 
@@ -13,7 +14,7 @@ namespace siofraEngine::systems
     /**
      * @brief Entity manager. Maintains collections of active and available entity Ids
      */
-    class EntityManager
+    class SE_API EntityManager
     {
     public:
         /**

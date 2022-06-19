@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <limits>
 #include <vector>
+#include "defines.hpp"
 #include "core/logging.hpp"
 #include "core/ecs/types.hpp"
 
@@ -12,7 +13,7 @@ namespace siofraEngine::systems
     /**
      * @brief Component manager. Maintains component memory pools
      */
-    class ComponentManager
+    class SE_API ComponentManager
     {
     public:
         /**

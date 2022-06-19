@@ -87,13 +87,13 @@
     <ClInclude Include="include\core\ecs\types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\systems\ecs\componentManager\componentManager.hpp">
+    <ClInclude Include="include\systems\ecs\componentManager\componentManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\systems\ecs\entityManager\entityManager.hpp">
+    <ClInclude Include="include\systems\ecs\entityManager\entityManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\systems\ecs\entityComponent.hpp">
+    <ClInclude Include="include\systems\ecs\entityComponent.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\systems\events\events.h">
@@ -389,7 +389,7 @@
     <ClCompile Include="source\platform\win64\window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\systems\ecs\entityManager\entityManager.cpp">
+    <ClCompile Include="include\systems\ecs\entityManager\entityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\systems\events\eventSystem.cpp">

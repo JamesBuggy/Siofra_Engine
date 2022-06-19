@@ -165,9 +165,9 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="source\platform\win64\inputMapping.hpp" />
     <ClInclude Include="source\platform\window.hpp" />
     <ClInclude Include="include\core\ecs\types.hpp" />
-    <ClInclude Include="source\systems\ecs\componentManager\componentManager.hpp" />
-    <ClInclude Include="source\systems\ecs\entityComponent.hpp" />
-    <ClInclude Include="source\systems\ecs\entityManager\entityManager.hpp" />
+    <ClInclude Include="include\systems\ecs\componentManager\componentManager.hpp" />
+    <ClInclude Include="include\systems\ecs\entityComponent.hpp" />
+    <ClInclude Include="include\systems\ecs\entityManager\entityManager.hpp" />
     <ClInclude Include="source\systems\events\events.h" />
     <ClInclude Include="source\systems\events\eventSystem.hpp" />
     <ClInclude Include="source\systems\events\ieventSystem.hpp" />
@@ -266,7 +266,7 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClCompile Include="source\platform\win64\platformFileSystem.cpp" />
     <ClCompile Include="source\platform\win64\platformInput.cpp" />
     <ClCompile Include="source\platform\win64\window.cpp" />
-    <ClCompile Include="source\systems\ecs\entityManager\entityManager.cpp" />
+    <ClCompile Include="include\systems\ecs\entityManager\entityManager.cpp" />
     <ClCompile Include="source\systems\events\eventSystem.cpp" />
     <ClCompile Include="source\systems\input\inputSystem.cpp" />
     <ClCompile Include="source\systems\renderer\rendererSystem.cpp" />
