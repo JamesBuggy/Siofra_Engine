@@ -49,6 +49,7 @@ namespace siofraEngine::systems
     {
         auto createMaterialEvent = std::get<CreateMaterialEvent>(payload);
         rendererBackend->createMaterial(
+            createMaterialEvent.materialName,
             createMaterialEvent.imageData,
             createMaterialEvent.width,
             createMaterialEvent.height,
@@ -58,6 +59,6 @@ namespace siofraEngine::systems
     void RendererSystem::createModel(EventPayload payload)
     {
         auto createModelEvent = std::get<CreateModelEvent>(payload);
-        rendererBackend->createModel(std::move(createModelEvent.vertexBuffer), std::move(createModelEvent.indexBuffers));
+        rendererBackend->createModel(createModelEvent.modelName, std::move(createModelEvent.vertexBuffer), std::move(createModelEvent.indexBuffers));
     }
 }

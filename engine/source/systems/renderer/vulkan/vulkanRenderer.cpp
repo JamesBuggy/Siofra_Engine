@@ -116,7 +116,7 @@ namespace siofraEngine::systems
 
         std::vector<VkDescriptorSet> descriptorSetGroup = {
             objectShaderDescriptorSets[imageIndex]->getDescriptorSet(),
-            objectShaderSamplerDescriptorSets[1]->getDescriptorSet()
+            objectShaderSamplerDescriptorSets["wood_quartered_chiffon"]->getDescriptorSet()
         };
         vkCmdBindDescriptorSets(
             graphicsCommandBuffers[imageIndex]->getCommandBuffer(),
@@ -128,12 +128,12 @@ namespace siofraEngine::systems
             0,
             nullptr);
 
-        VkBuffer vertexBuffers[] = { models[0].vertexBuffer->getBuffer() };
+        VkBuffer vertexBuffers[] = { models["chair"].vertexBuffer->getBuffer()};
         vkCmdBindVertexBuffers(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), 0, 1, vertexBuffers, &bufferOffset);
-        for (size_t i = 0; i < models[0].indexBuffers.size(); i++)
+        for (size_t i = 0; i < models["chair"].indexBuffers.size(); i++)
         {				
-            vkCmdBindIndexBuffer(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), models[0].indexBuffers[i]->getBuffer(), bufferOffset, VK_INDEX_TYPE_UINT32);
-            vkCmdDrawIndexed(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), models[0].indexBufferCounts[i], 1, 0, 0, 0);
+            vkCmdBindIndexBuffer(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), models["chair"].indexBuffers[i]->getBuffer(), bufferOffset, VK_INDEX_TYPE_UINT32);
+            vkCmdDrawIndexed(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), models["chair"].indexBufferCounts[i], 1, 0, 0, 0);
         }
 
         renderPass->end(graphicsCommandBuffers[imageIndex].get());
@@ -225,7 +225,7 @@ namespace siofraEngine::systems
             .build();
     }
 
-    void VulkanRenderer::createMaterial(std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels)
+    void VulkanRenderer::createMaterial(std::string materialName, std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels)
     {
         auto stagingBuffer = VulkanBuffer::Builder()
             .withDevice(device.get())
@@ -268,10 +268,10 @@ namespace siofraEngine::systems
         samplerDescriptorSet->updateFromImage(image.get(), objectShaderSampler.get(), 0, device.get());
 
         textureImages.push_back(std::move(image));
-        objectShaderSamplerDescriptorSets.push_back(std::move(samplerDescriptorSet));
+        objectShaderSamplerDescriptorSets[materialName] = std::move(samplerDescriptorSet);
     }
 
-    void VulkanRenderer::createModel(std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers)
+    void VulkanRenderer::createModel(std::string modelName, std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers)
     {
         auto commandBuffer = VulkanCommandBuffer::Builder()
             .withDevice(device.get())
@@ -329,7 +329,7 @@ namespace siofraEngine::systems
         model.vertexBuffer = std::move(vulkanVertexBuffer);
         model.indexBuffers = std::move(vulkanIndexBuffers);
         model.indexBufferCounts = std::move(vulkanIndexBufferCounts);
-        models.push_back(std::move(model));
+        models[modelName] = std::move(model);
 
         VkCommandBuffer commandBufferHandle = commandBuffer->getCommandBuffer();
         vkFreeCommandBuffers(device->getLogicalDevice(), graphicsCommandPool->getCommandPool(), 1, &commandBufferHandle);

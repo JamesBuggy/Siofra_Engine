@@ -1,5 +1,8 @@
 #pragma once
 
+#include <map>
+#include <vector>
+#include <string>
 #include "core/logging.hpp"
 #include "platform/iwindow.hpp"
 #include "systems/renderer/irendererBackend.hpp"
@@ -68,20 +71,22 @@ namespace siofraEngine::systems
         /**
          * @brief Create a shader pipeline. Triggered by a CREATE_SHADER event broadcast
          * 
+         * @param materialName The material name
          * @param imageData Image bytes
          * @param width Image width
          * @param height Image height
          * @param channels Image channel count
          */
-        void createMaterial(std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels) override;
+        void createMaterial(std::string materialName, std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels) override;
 
         /**
          * @brief Create a model
          * 
+         * @param modelName The model name
          * @param vertexBuffer Model vertices
          * @param indexBuffers Model vertex indices
          */
-        void createModel(std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers) override;
+        void createModel(std::string modelName, std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers) override;
 
     private:
         /**
@@ -182,7 +187,7 @@ namespace siofraEngine::systems
         /**
          * @brief Descriptor sets for the object shader sampler textures
          */
-        std::vector<std::unique_ptr<IVulkanDescriptorSet>> objectShaderSamplerDescriptorSets{ };
+        std::map<std::string, std::unique_ptr<IVulkanDescriptorSet>> objectShaderSamplerDescriptorSets{ };
 
         /**
          * @brief Pipeline for the object shader sampler
@@ -197,6 +202,6 @@ namespace siofraEngine::systems
         /**
          * @brief Contains vertex and index buffers of loaded models
          */
-        std::vector<Model> models{ };
+        std::map<std::string, Model> models{ };
     };
 }

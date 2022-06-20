@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <string>
 #include "math/math.hpp"
 
 namespace siofraEngine::systems
@@ -43,20 +44,22 @@ namespace siofraEngine::systems
         /**
          * @brief Create a shader pipeline
          * 
+         * @param materialName The material name
          * @param imageData Image bytes
          * @param width Image width
          * @param height Image height
          * @param channels Image channel count
          */
-        virtual void createMaterial(std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels) = 0;
+        virtual void createMaterial(std::string materialName, std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels) = 0;
 
         /**
          * @brief Create a model
          * 
+         * @param modelName The model name
          * @param vertexBuffer Model vertices
          * @param indexBuffers Model vertex indices
          */
-        virtual void createModel(std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers) = 0;
+        virtual void createModel(std::string modelName, std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers) = 0;
 
         /**
          * @brief Interface destructor
