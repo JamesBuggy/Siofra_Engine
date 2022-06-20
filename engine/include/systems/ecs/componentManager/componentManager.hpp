@@ -2,8 +2,8 @@
 
 #include <array>
 #include <cstdint>
-#include <limits>
 #include <vector>
+#include <map>
 #include "defines.hpp"
 #include "core/logging.hpp"
 #include "core/ecs/types.hpp"
@@ -74,8 +74,14 @@ namespace siofraEngine::systems
         {
             if(componentTypeCount < MAX_COMPONENT_COUNT)
             {
-                static std::uint32_t componentTypeId = componentTypeCount++;
-                return componentTypeId;
+                size_t componentTypeHashCode = typeid(T).hash_code();
+
+                if (!componentTypeIds.count(componentTypeHashCode))
+                {
+                    componentTypeIds[componentTypeHashCode] = componentTypeCount++;
+                }
+
+                return componentTypeIds[componentTypeHashCode];
             }
 
             return core::INVALID_COMPONENT;
@@ -84,13 +90,18 @@ namespace siofraEngine::systems
         /**
          * @brief Maximum number of components per entity
          */
-        static inline std::uint32_t const MAX_COMPONENT_COUNT{ 32 };   
+        static inline std::uint32_t const MAX_COMPONENT_COUNT{ 32 };
     
     private:
         /**
          * @brief Component memory pools. One per component type
          */
         std::vector<std::vector<char>> componentPools{ };
+
+        /**
+         * @brief Maping of component type hash codes to component Ids
+         */
+        std::map<size_t, std::uint32_t> componentTypeIds{ };
 
         /**
          * @brief The sizes, in bytes, of components stored in the component pools. There is a one to one relationship between componentSizes and componentPools. Used to allow indexing into a specific component pool
@@ -105,6 +116,6 @@ namespace siofraEngine::systems
         /**
          * @brief The number of component types which have been given an Id. Incremented each time a new component type is given an Id
          */
-        static inline std::uint32_t componentTypeCount{ 0 };
+        std::uint32_t componentTypeCount{ 0 };
     };
 }

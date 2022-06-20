@@ -29,6 +29,9 @@ namespace siofraEngine::core
 
             inputSystem.update();
 
+            auto& scene = game->getScene();
+            resourceSystem.updateResources(&scene);
+
             rendererSystem.draw();
 
             if(inputSystem.isReleased(core::KeyCode::KEY_ESC))

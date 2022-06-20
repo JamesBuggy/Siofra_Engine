@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <cstdint>
 #include "core/logging.hpp"
+#include "core/ecs/scene.h"
+#include "core/ecs/components.h"
 #include "math/math.hpp"
 #include "platform/iplatformFileSystem.hpp"
 #include "systems/events/ieventSystem.hpp"
@@ -45,6 +47,13 @@ namespace siofraEngine::systems
          * @param modelName The name of the model file to load
          */
         void loadModel(std::string modelName);
+
+        /**
+         * @brief Load resources required by the scene
+         *
+         * @param scene The containing entities for which to load resources
+         */
+        void updateResources(core::Scene * scene);
     
     private:
         /**

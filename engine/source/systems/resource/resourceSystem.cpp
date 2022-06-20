@@ -14,9 +14,6 @@ namespace siofraEngine::systems
     {
         loadShader("object_shader");
         loadMaterial("default_material");
-
-        loadMaterial("wood_quartered_chiffon");
-        loadModel("chair");
     }
 
     void ResourceSystem::loadShader(std::string shaderName)
@@ -46,6 +43,7 @@ namespace siofraEngine::systems
         stbi_image_free(image);
 
         CreateMaterialEvent createMaterialEvent;
+        createMaterialEvent.materialName = materialName;
         createMaterialEvent.imageData = imageData;
         createMaterialEvent.width = width;
         createMaterialEvent.height = height;
@@ -102,8 +100,28 @@ namespace siofraEngine::systems
         }
 
         CreateModelEvent createModelEvent;
+        createModelEvent.modelName = modelName;
         createModelEvent.vertexBuffer = std::move(vertexBuffer);
         createModelEvent.indexBuffers = std::move(indexBuffers);
         eventSystem->broadcast(EventTypes::CREATE_MODEL, createModelEvent);
+    }
+
+    void ResourceSystem::updateResources(core::Scene * scene)
+    {
+        auto modelUpdates = scene->getEntities<core::ModelUpdated>();
+        for (auto const & entity : modelUpdates)
+        {
+            auto modelComponent = scene->getComponent<core::Model>(entity);
+            loadModel(modelComponent->filename);
+            scene->removeComponent<core::ModelUpdated>(entity);
+        }
+
+        auto materialUpdates = scene->getEntities<core::MaterialUpdated>();
+        for (auto const& entity : materialUpdates)
+        {
+            auto materialComponent = scene->getComponent<core::Material>(entity);
+            loadMaterial(materialComponent->filename);
+            scene->removeComponent<core::MaterialUpdated>(entity);
+        }
     }
 }

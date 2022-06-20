@@ -49,6 +49,7 @@ struct CreateShaderEvent
  */
 struct CreateMaterialEvent
 {
+    std::string materialName;
     std::vector<char> imageData;
     std::uint32_t width;
     std::uint32_t height;
@@ -60,6 +61,7 @@ struct CreateMaterialEvent
  */
 struct CreateModelEvent
 {
+    std::string modelName;
     std::vector<Vertex3> vertexBuffer;
     std::vector<std::vector<std::uint32_t>> indexBuffers;
 };
