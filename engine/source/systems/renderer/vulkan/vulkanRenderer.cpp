@@ -88,59 +88,74 @@ namespace siofraEngine::systems
         vkDeviceWaitIdle(device->getLogicalDevice());
     }
 
-    void VulkanRenderer::draw()
+    void VulkanRenderer::beginFrame()
     {
         VkFence fenceHandle = drawFences[currentFrame]->getFence();
 
         vkWaitForFences(device->getLogicalDevice(), 1, &fenceHandle, VK_TRUE, std::numeric_limits<uint64_t>::max());
         vkResetFences(device->getLogicalDevice(), 1, &fenceHandle);
 
-        uint32_t imageIndex = swapchain->acquireNextImage(imageAvailable[currentFrame].get());
+        currentImageIndex = swapchain->acquireNextImage(imageAvailable[currentFrame].get());
 
         ViewProjection viewProjection{ };
         viewProjection.projection = glm::perspective(glm::radians(45.0f), (float)swapchain->getExtents().width / (float)swapchain->getExtents().height, 0.1f, 400.0f);
         viewProjection.projection[1][1] *= -1;
         viewProjection.view = glm::lookAt(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f) + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        viewProjectionUniformBuffers[imageIndex]->update(&viewProjection, sizeof(viewProjection));
+        viewProjectionUniformBuffers[currentImageIndex]->update(&viewProjection, sizeof(viewProjection));
 
-        Matrix4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 5.0f));
+        graphicsCommandBuffers[currentImageIndex]->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+        renderPass->begin(graphicsCommandBuffers[currentImageIndex].get(), currentImageIndex);
 
-        VkDeviceSize bufferOffset = 0;
- 
-        graphicsCommandBuffers[imageIndex]->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
-        renderPass->begin(graphicsCommandBuffers[imageIndex].get(), imageIndex);
+        objectShaderPipeline->bind(graphicsCommandBuffers[currentImageIndex].get(), VK_PIPELINE_BIND_POINT_GRAPHICS);
+    }
 
-        objectShaderPipeline->bind(graphicsCommandBuffers[imageIndex].get(), VK_PIPELINE_BIND_POINT_GRAPHICS);
+    void VulkanRenderer::setViewProjection(ViewProjection viewProjection)
+    {
 
-        vkCmdPushConstants(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), objectShaderPipeline->getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(ModelMatrix), &modelMatrix);
+    }
+
+    void VulkanRenderer::draw(std::string material, std::string model, Matrix4 modelMatrix)
+    {
+        if (!models.count(model))
+        {
+            return;
+        }
+
+        vkCmdPushConstants(graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(), objectShaderPipeline->getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(ModelMatrix), &modelMatrix);
 
         std::vector<VkDescriptorSet> descriptorSetGroup = {
-            objectShaderDescriptorSets[imageIndex]->getDescriptorSet(),
-            objectShaderSamplerDescriptorSets["wood_quartered_chiffon"]->getDescriptorSet()
+           objectShaderDescriptorSets[currentImageIndex]->getDescriptorSet(),
+           objectShaderSamplerDescriptorSets.count(material)
+            ? objectShaderSamplerDescriptorSets[material]->getDescriptorSet()
+            : objectShaderSamplerDescriptorSets["default_material"]->getDescriptorSet()
         };
         vkCmdBindDescriptorSets(
-            graphicsCommandBuffers[imageIndex]->getCommandBuffer(),
+            graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(),
             VK_PIPELINE_BIND_POINT_GRAPHICS,
             objectShaderPipeline->getPipelineLayout(),
             0,
-            static_cast<uint32_t>(descriptorSetGroup.size()), 
+            static_cast<uint32_t>(descriptorSetGroup.size()),
             descriptorSetGroup.data(),
             0,
             nullptr);
 
-        VkBuffer vertexBuffers[] = { models["chair"].vertexBuffer->getBuffer()};
-        vkCmdBindVertexBuffers(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), 0, 1, vertexBuffers, &bufferOffset);
-        for (size_t i = 0; i < models["chair"].indexBuffers.size(); i++)
-        {				
-            vkCmdBindIndexBuffer(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), models["chair"].indexBuffers[i]->getBuffer(), bufferOffset, VK_INDEX_TYPE_UINT32);
-            vkCmdDrawIndexed(graphicsCommandBuffers[imageIndex]->getCommandBuffer(), models["chair"].indexBufferCounts[i], 1, 0, 0, 0);
+        VkDeviceSize bufferOffset = 0;
+        VkBuffer vertexBuffers[] = { models[model].vertexBuffer->getBuffer() };
+        vkCmdBindVertexBuffers(graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(), 0, 1, vertexBuffers, &bufferOffset);
+        for (size_t i = 0; i < models[model].indexBuffers.size(); i++)
+        {
+            vkCmdBindIndexBuffer(graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(), models[model].indexBuffers[i]->getBuffer(), bufferOffset, VK_INDEX_TYPE_UINT32);
+            vkCmdDrawIndexed(graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(), models[model].indexBufferCounts[i], 1, 0, 0, 0);
         }
+    }
 
-        renderPass->end(graphicsCommandBuffers[imageIndex].get());
-        graphicsCommandBuffers[imageIndex].get()->end();
+    void VulkanRenderer::endFrame()
+    {
+        renderPass->end(graphicsCommandBuffers[currentImageIndex].get());
+        graphicsCommandBuffers[currentImageIndex].get()->end();
 
-        device->getGraphicsQueue()->submit(imageAvailable[currentFrame].get(), renderFinished[currentFrame].get(), drawFences[currentFrame].get(), graphicsCommandBuffers[imageIndex].get());
-        device->getPresentationQueue()->present(renderFinished[currentFrame].get(), swapchain.get(), imageIndex);
+        device->getGraphicsQueue()->submit(imageAvailable[currentFrame].get(), renderFinished[currentFrame].get(), drawFences[currentFrame].get(), graphicsCommandBuffers[currentImageIndex].get());
+        device->getPresentationQueue()->present(renderFinished[currentFrame].get(), swapchain.get(), currentImageIndex);
 
         currentFrame = (currentFrame + 1) % swapchain->getMaxFramesInFlight();
     }

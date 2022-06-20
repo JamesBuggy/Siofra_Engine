@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <cstdint>
 #include "core/logging.hpp"
-#include "core/ecs/scene.h"
-#include "core/ecs/components.h"
+#include "core/ecs/scene.hpp"
+#include "core/ecs/components.hpp"
 #include "math/math.hpp"
 #include "platform/iplatformFileSystem.hpp"
 #include "systems/events/ieventSystem.hpp"

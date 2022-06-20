@@ -2,7 +2,7 @@
 
 #include <string>
 #include "core/game.hpp"
-#include "core/ecs/scene.h"
+#include "core/ecs/scene.hpp"
 #include "core/logging.hpp"
 
 namespace siofraEngine::core

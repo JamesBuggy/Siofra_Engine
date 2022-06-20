@@ -12,4 +12,6 @@ public:
     void init() override;
 
     void update() override;
+
+    void createEntity(std::string modelName, std::string materialName, float x, float y, float z, float angle);
 };

@@ -32,7 +32,7 @@ namespace siofraEngine::core
             auto& scene = game->getScene();
             resourceSystem.updateResources(&scene);
 
-            rendererSystem.draw();
+            rendererSystem.draw(&scene);
 
             if(inputSystem.isReleased(core::KeyCode::KEY_ESC))
             {

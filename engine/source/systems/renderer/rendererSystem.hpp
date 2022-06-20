@@ -1,8 +1,12 @@
 #pragma once
 
 #include <memory>
+#include <string>
+#include "math/math.hpp"
 #include "core/logging.hpp"
 #include "core/assertions.hpp"
+#include "core/ecs/scene.hpp"
+#include "core/ecs/components.hpp"
 #include "systems/events/ieventSystem.hpp"
 #include "systems/renderer/irendererBackend.hpp"
 #include "systems/renderer/vulkan/vulkanRenderer.hpp"
@@ -26,8 +30,10 @@ namespace siofraEngine::systems
 
         /**
          * @brief Draw current frame
+         * 
+         * @param scene The ECS scene to render
          */
-        void draw();
+        void draw(core::Scene * scene);
 
     private:
         /**

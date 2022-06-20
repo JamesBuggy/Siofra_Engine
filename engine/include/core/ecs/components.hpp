@@ -7,19 +7,22 @@ namespace siofraEngine::core
 {
 	struct Transform
 	{
-
+		float x{ };
+		float y{ };
+		float z{ };
+		float angle{ };
 	};
 
 	struct ModelUpdated { };
 	struct Model
 	{
-		std::string filename;
+		std::string filename{ };
 	};
 
 	struct MaterialUpdated { };
 	struct Material
 	{
-		std::string filename;
+		std::string filename{ };
 	};
 
 	struct Camera

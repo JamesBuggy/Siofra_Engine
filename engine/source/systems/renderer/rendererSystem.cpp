@@ -12,9 +12,28 @@ namespace siofraEngine::systems
         SE_LOG_INFO("Initialized renderer system");
     }
 
-    void RendererSystem::draw()
+    void RendererSystem::draw(core::Scene* scene)
     {
-        rendererBackend->draw();
+
+        rendererBackend->beginFrame();
+
+        auto entities = scene->getEntities<core::Model, core::Transform>();
+        for (auto const & entity : entities)
+        {
+            auto modelComponent = scene->getComponent<core::Model>(entity);
+            auto materialComponent = scene->getComponent<core::Material>(entity);
+            auto transformComponent = scene->getComponent<core::Transform>(entity);
+
+            std::string material{ materialComponent ? materialComponent->filename : "" };
+            std::string model{ modelComponent ? modelComponent->filename : "" };
+            Matrix4 modelMatrix = glm::translate(Matrix4(1.0f), Vector3(transformComponent->x, transformComponent->y, transformComponent->z));
+            modelMatrix = glm::rotate(modelMatrix, glm::radians(transformComponent->angle), glm::vec3(0.0f, 1.0f, 0.0f));
+
+            rendererBackend->setViewProjection({});
+            rendererBackend->draw(material, model, modelMatrix);
+        }
+
+        rendererBackend->endFrame();
     }
 
     std::unique_ptr<IRendererBackend> RendererSystem::createRendererBackend(siofraEngine::platform::IWindow &window)

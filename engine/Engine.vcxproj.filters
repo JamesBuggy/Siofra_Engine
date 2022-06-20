@@ -96,7 +96,7 @@
     <ClInclude Include="include\systems\ecs\entityComponent.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\systems\events\events.h">
+    <ClInclude Include="source\systems\events\events.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\systems\events\eventSystem.hpp">
@@ -360,13 +360,13 @@
     <ClInclude Include="source\core\serviceLocator\serviceLocator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\ecs\scene.h">
+    <ClInclude Include="include\core\ecs\scene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\core\game\gameImpl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\ecs\components.h">
+    <ClInclude Include="include\core\ecs\components.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

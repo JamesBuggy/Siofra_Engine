@@ -4,7 +4,7 @@
 #include <string>
 #include "defines.hpp"
 #include "core/logging.hpp"
-#include "core/ecs/scene.h"
+#include "core/ecs/scene.hpp"
 
 namespace siofraEngine::core
 {

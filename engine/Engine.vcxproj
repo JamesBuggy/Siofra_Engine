@@ -142,12 +142,12 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
   <ItemGroup>
     <ClInclude Include="include\core\application.hpp" />
     <ClInclude Include="include\core\assertions.hpp" />
-    <ClInclude Include="include\core\ecs\components.h" />
+    <ClInclude Include="include\core\ecs\components.hpp" />
     <ClInclude Include="include\core\game.hpp" />
     <ClInclude Include="include\core\input\keyCodes.hpp" />
     <ClInclude Include="include\core\input\mouseCodes.hpp" />
     <ClInclude Include="include\core\logging.hpp" />
-    <ClInclude Include="include\core\ecs\scene.h" />
+    <ClInclude Include="include\core\ecs\scene.hpp" />
     <ClInclude Include="include\defines.hpp" />
     <ClInclude Include="include\engineMain.hpp" />
     <ClInclude Include="include\math\math.hpp" />
@@ -171,7 +171,7 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="include\systems\ecs\componentManager\componentManager.hpp" />
     <ClInclude Include="include\systems\ecs\entityComponent.hpp" />
     <ClInclude Include="include\systems\ecs\entityManager\entityManager.hpp" />
-    <ClInclude Include="source\systems\events\events.h" />
+    <ClInclude Include="source\systems\events\events.hpp" />
     <ClInclude Include="source\systems\events\eventSystem.hpp" />
     <ClInclude Include="source\systems\events\ieventSystem.hpp" />
     <ClInclude Include="source\systems\input\inputSystem.hpp" />

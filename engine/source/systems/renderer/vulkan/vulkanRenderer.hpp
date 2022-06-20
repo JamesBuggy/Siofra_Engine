@@ -49,9 +49,30 @@ namespace siofraEngine::systems
         ~VulkanRenderer();
 
         /**
-         * @brief Draw current frame
+         * @brief Begin rendering a frame
          */
-        void draw() override;
+        void beginFrame() override;
+
+        /**
+         * @brief Set view projection for the current frame
+         * 
+         * @param viewProjection The view projection to set
+         */
+        void setViewProjection(ViewProjection viewProjection) override;
+
+        /**
+         * @brief Render a model with the specified material
+         *
+         * @param material The material to use
+         * @param model The model to render
+         * @param modelMatrix The models model matrix
+         */
+        void draw(std::string material, std::string model, Matrix4 modelMatrix) override;
+
+        /**
+         * @brief End rendering a frame
+         */
+        void endFrame() override;
 
         /**
          * @brief Get the renderer backend type
@@ -148,6 +169,11 @@ namespace siofraEngine::systems
          * @brief The current image/frame to be rendered
          */
         uint32_t currentFrame{ 0 };
+
+        /**
+         * @brief The index of the current swapchain image being rendered to
+         */
+        uint32_t currentImageIndex{ 0 };
 
         /**
          * @brief Buffers containing view projection data for each image/frame

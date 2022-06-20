@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 #include "math/math.hpp"
+#include "systems/renderer/common/models.hpp"
 
 namespace siofraEngine::systems
 {
@@ -22,9 +23,30 @@ namespace siofraEngine::systems
     {
     public:
         /**
-         * @brief Draw current frame
+         * @brief Begin rendering a frame
          */
-        virtual void draw() = 0;
+        virtual void beginFrame() = 0;
+
+        /**
+         * @brief Set view projection for the current frame
+         * 
+         * @param viewProjection The view projection to set
+         */
+        virtual void setViewProjection(ViewProjection viewProjection) = 0;
+
+        /**
+         * @brief Render a model with the specified material
+         *
+         * @param material The material to use
+         * @param model The model to render
+         * @param modelMatrix The models model matrix
+         */
+        virtual void draw(std::string material, std::string model, Matrix4 modelMatrix) = 0;
+
+        /**
+         * @brief End rendering a frame
+         */
+        virtual void endFrame() = 0;
 
         /**
          * @brief Get the renderer backend type
