@@ -81,6 +81,10 @@ namespace siofraEngine::systems
             renderFinished[i] = vulkanSemaphoreBuilder.build();
             drawFences[i] = vulkanFenceBuilder.build();
         }
+
+        defaultViewProjection.projection = glm::perspective(glm::radians(45.0f), (float)swapchain->getExtents().width / (float)swapchain->getExtents().height, 0.1f, 400.0f);
+        defaultViewProjection.projection[1][1] *= -1;
+        defaultViewProjection.view = glm::lookAt(Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f) + Vector3(0.0f, 0.0f, 1.0f), Vector3(0.0f, 1.0f, 0.0f));
     }
 
     VulkanRenderer::~VulkanRenderer()
@@ -97,21 +101,18 @@ namespace siofraEngine::systems
 
         currentImageIndex = swapchain->acquireNextImage(imageAvailable[currentFrame].get());
 
-        ViewProjection viewProjection{ };
-        viewProjection.projection = glm::perspective(glm::radians(45.0f), (float)swapchain->getExtents().width / (float)swapchain->getExtents().height, 0.1f, 400.0f);
-        viewProjection.projection[1][1] *= -1;
-        viewProjection.view = glm::lookAt(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f) + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        viewProjectionUniformBuffers[currentImageIndex]->update(&viewProjection, sizeof(viewProjection));
-
         graphicsCommandBuffers[currentImageIndex]->begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
         renderPass->begin(graphicsCommandBuffers[currentImageIndex].get(), currentImageIndex);
 
         objectShaderPipeline->bind(graphicsCommandBuffers[currentImageIndex].get(), VK_PIPELINE_BIND_POINT_GRAPHICS);
     }
 
-    void VulkanRenderer::setViewProjection(ViewProjection viewProjection)
+    void VulkanRenderer::setViewMatrix(Matrix4 view)
     {
-
+        ViewProjection viewProjection{ };
+        viewProjection.projection = defaultViewProjection.projection;
+        viewProjection.view = view;
+        viewProjectionUniformBuffers[currentImageIndex]->update(&viewProjection, sizeof(viewProjection));
     }
 
     void VulkanRenderer::draw(std::string material, std::string model, Matrix4 modelMatrix)
@@ -201,6 +202,8 @@ namespace siofraEngine::systems
                 .withBufferUsageFlags(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT)
                 .withMemoryPropertyFlags(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
                 .build();
+
+            viewProjectionUniformBuffers[i]->update(&defaultViewProjection, sizeof(defaultViewProjection));
 
             objectShaderDescriptorSets[i] = VulkanDescriptorSet::Builder()
                 .withDevice(device.get())

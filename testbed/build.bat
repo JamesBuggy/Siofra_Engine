@@ -8,7 +8,7 @@ SET cppStandard=c++20
 SET compiler=clang++
 SET compilerFlags=-g -std=%cppStandard%
 SET linkerFlags=-L..\bin\ -lSiofraEngine.lib
-SET includes=-I.\include -I..\engine\include
+SET includes=-I.\include -I..\engine\include -I..\engine\libs\GLM-0.9.6.3\include
 SET output=-o ..\bin\Testbed.exe
 SET defines=-DDEBUG -DSE_IMPORT
 

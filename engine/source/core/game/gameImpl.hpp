@@ -38,7 +38,21 @@ namespace siofraEngine::core
          *
          * @returns The game scene
          */
-        Scene & getScene() noexcept;
+        Scene * getScene() noexcept;
+
+        /**
+         * @brief Get game scene controller
+         *
+         * @returns The game scene controller
+         */
+        ISceneController * getSceneController() noexcept;
+
+        /**
+         * @brief Set game scene controller
+         *
+         * @param The game scene controller
+         */
+        void setSceneController(std::unique_ptr<ISceneController> sceneController) noexcept;
 
     private:
         /**
@@ -50,5 +64,10 @@ namespace siofraEngine::core
          * @brief Game scene
          */
         Scene scene{ };
+
+        /**
+         * @brief Game scene controller
+         */
+        std::unique_ptr<ISceneController> sceneController{ nullptr };
     };
 }

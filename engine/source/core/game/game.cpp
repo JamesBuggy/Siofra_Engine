@@ -16,8 +16,18 @@ namespace siofraEngine::core
         return implementation->getTitle();
     }
 
-    Scene & Game::getScene() noexcept
+    Scene * Game::getScene() noexcept
     {
         return implementation->getScene();
+    }
+
+    ISceneController * Game::getSceneController() noexcept
+    {
+        return implementation->getSceneController();
+    }
+
+    void Game::setSceneController(std::unique_ptr<ISceneController> sceneController) noexcept
+    {
+        implementation->setSceneController(std::move(sceneController));
     }
 }

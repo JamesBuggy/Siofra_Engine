@@ -30,6 +30,13 @@ namespace siofraEngine::core
              */
             float getElapsedTime() const noexcept;
 
+            /**
+             * @brief Wait a specified number of milliseconds before returning
+             *
+             * @param ms Time to wait in milliseconds
+             */
+            void sleep(std::uint32_t ms) const;
+
         private:
             /**
              * @brief Access to platform specific clock logic

@@ -28,7 +28,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -75,13 +75,25 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;DEBUG;SE_EXPORT;SE_PLATFORM_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)source;$(ProjectDir)libs\GLM-0.9.6.3\include;$(ProjectDir)libs\SDL2-2.0.20\include;$(ProjectDir)libs\STB\include;$(ProjectDir)libs\TINYOBJLOADER\include;$(ProjectDir)libs\Vulkan-1.3.211.0\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs\SDL2-2.0.20\lib\x86;$(ProjectDir)libs\Vulkan-1.3.211.0\lib32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>XCOPY "$(ProjectDir)libs\SDL2-2.0.20\lib\x86\SDL2.dll" "$(OutputPath)" /Y
+XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y 
+
+%VULKAN_SDK%\Bin\glslc.exe -fshader-stage=vert $(OutputPath)assets\shaders\object_shader.vert.glsl -o $(OutputPath)assets\shaders\object_shader.vert.spv
+%VULKAN_SDK%\Bin\glslc.exe -fshader-stage=frag $(OutputPath)assets\shaders\object_shader.frag.glsl -o $(OutputPath)assets\shaders\object_shader.frag.spv</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -143,7 +155,9 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="include\core\application.hpp" />
     <ClInclude Include="include\core\assertions.hpp" />
     <ClInclude Include="include\core\ecs\components.hpp" />
+    <ClInclude Include="include\core\ecs\isceneController.hpp" />
     <ClInclude Include="include\core\game.hpp" />
+    <ClInclude Include="include\core\input\iinputState.hpp" />
     <ClInclude Include="include\core\input\keyCodes.hpp" />
     <ClInclude Include="include\core\input\mouseCodes.hpp" />
     <ClInclude Include="include\core\logging.hpp" />

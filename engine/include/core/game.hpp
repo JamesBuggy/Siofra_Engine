@@ -5,6 +5,7 @@
 #include "defines.hpp"
 #include "core/logging.hpp"
 #include "core/ecs/scene.hpp"
+#include "core/ecs/isceneController.hpp"
 
 namespace siofraEngine::core
 {
@@ -38,7 +39,21 @@ namespace siofraEngine::core
          *
          * @returns The game scene
          */
-        Scene & getScene() noexcept;
+        Scene * getScene() noexcept;
+
+        /**
+         * @brief Get game scene controller
+         *
+         * @returns The game scene controller
+         */
+        ISceneController * getSceneController() noexcept;
+
+        /**
+         * @brief Set game scene controller
+         *
+         * @param The game scene controller
+         */
+        void setSceneController(std::unique_ptr<ISceneController> sceneController) noexcept;
 
         /**
          * @brief Initialize the game state

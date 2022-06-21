@@ -14,22 +14,32 @@ namespace siofraEngine::systems
 
     void RendererSystem::draw(core::Scene* scene)
     {
-
         rendererBackend->beginFrame();
 
-        auto entities = scene->getEntities<core::Model, core::Transform>();
+        auto cameras = scene->getEntities<core::Camera, core::Transform>();
+        if (cameras.size())
+        {
+            auto camera = cameras.front();
+            auto cameraComponent = scene->getComponent<core::Camera>(camera);
+            auto transformComponent = scene->getComponent<core::Transform>(camera);
+            Matrix4 viewMatrix = glm::lookAt(transformComponent->position, transformComponent->position + cameraComponent->front, Vector3(0.0f, 1.0f, 0.0f));
+            rendererBackend->setViewMatrix(viewMatrix);
+        }
+
+        auto entities = scene->getEntities<core::Model, core::Transform, core::Rotation>();
         for (auto const & entity : entities)
         {
             auto modelComponent = scene->getComponent<core::Model>(entity);
             auto materialComponent = scene->getComponent<core::Material>(entity);
             auto transformComponent = scene->getComponent<core::Transform>(entity);
+            auto rotationComponent = scene->getComponent<core::Rotation>(entity);
 
             std::string material{ materialComponent ? materialComponent->filename : "" };
             std::string model{ modelComponent ? modelComponent->filename : "" };
-            Matrix4 modelMatrix = glm::translate(Matrix4(1.0f), Vector3(transformComponent->x, transformComponent->y, transformComponent->z));
-            modelMatrix = glm::rotate(modelMatrix, glm::radians(transformComponent->angle), glm::vec3(0.0f, 1.0f, 0.0f));
+            
+            Matrix4 modelMatrix = glm::translate(Matrix4(1.0f), transformComponent->position);
+            modelMatrix = glm::rotate(modelMatrix, glm::radians(rotationComponent->angle), glm::vec3(0.0f, 1.0f, 0.0f));
 
-            rendererBackend->setViewProjection({});
             rendererBackend->draw(material, model, modelMatrix);
         }
 

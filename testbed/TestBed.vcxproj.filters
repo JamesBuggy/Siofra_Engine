@@ -21,9 +21,15 @@
     <ClCompile Include="testGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="testSceneController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="testGame.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testSceneController.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

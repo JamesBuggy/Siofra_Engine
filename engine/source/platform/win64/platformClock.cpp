@@ -5,9 +5,14 @@
 
 namespace siofraEngine::platform
 {
-    float PlatformClock::getAbsoluteTime()
+    float PlatformClock::getAbsoluteTime() const
     {
         return (float)SDL_GetPerformanceCounter() / SDL_GetPerformanceFrequency();
+    }
+
+    void PlatformClock::sleep(std::uint32_t ms) const
+    {
+        SDL_Delay(ms);
     }
 }
 

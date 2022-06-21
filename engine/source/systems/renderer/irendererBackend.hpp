@@ -28,11 +28,11 @@ namespace siofraEngine::systems
         virtual void beginFrame() = 0;
 
         /**
-         * @brief Set view projection for the current frame
-         * 
-         * @param viewProjection The view projection to set
+         * @brief Set view matrix for the current frame
+         *
+         * @param view The view matrix to set
          */
-        virtual void setViewProjection(ViewProjection viewProjection) = 0;
+        virtual void setViewMatrix(Matrix4 view) = 0;
 
         /**
          * @brief Render a model with the specified material

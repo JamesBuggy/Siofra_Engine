@@ -15,7 +15,7 @@ namespace siofraEngine::systems
         SE_LOG_INFO("Initialized input system");
     }
 
-    void InputSystem::update()
+    void InputSystem::update(core::ISceneController * sceneController, core::Scene * scene, float deltaTime)
     {
         platformInput->pumpEvents();
 
@@ -24,6 +24,11 @@ namespace siofraEngine::systems
 
         previousMouseState = currentMouseState;
         currentMouseState.buttonState = platformInput->getMouseState(currentMouseState.x, currentMouseState.y);
+
+        if (sceneController)
+        {
+            sceneController->update(this, scene, deltaTime);
+        }
     }
 
     bool InputSystem::isPressed(siofraEngine::core::KeyCode keyCode) const noexcept
@@ -70,5 +75,15 @@ namespace siofraEngine::systems
     int InputSystem::getMouseY() const noexcept
     {
         return currentMouseState.y;
+    }
+
+    int InputSystem::getMouseXChange() const noexcept
+    {
+        return currentMouseState.x - previousMouseState.x;
+    }
+
+    int InputSystem::getMouseYChange() const noexcept
+    {
+        return currentMouseState.y - previousMouseState.y;
     }
 }

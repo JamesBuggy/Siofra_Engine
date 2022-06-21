@@ -35,6 +35,8 @@
 /bin
 /x64
 */x64
+/Debug
+*/Debug
 
 # Third party libraries
 /engine/libs

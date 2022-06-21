@@ -54,11 +54,11 @@ namespace siofraEngine::systems
         void beginFrame() override;
 
         /**
-         * @brief Set view projection for the current frame
+         * @brief Set view matrix for the current frame
          * 
-         * @param viewProjection The view projection to set
+         * @param view The view matrix to set
          */
-        void setViewProjection(ViewProjection viewProjection) override;
+        void setViewMatrix(Matrix4 view) override;
 
         /**
          * @brief Render a model with the specified material
@@ -229,5 +229,10 @@ namespace siofraEngine::systems
          * @brief Contains vertex and index buffers of loaded models
          */
         std::map<std::string, Model> models{ };
+
+        /**
+         * @brief Default view projection
+         */
+        ViewProjection defaultViewProjection{ };
     };
 }

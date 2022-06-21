@@ -20,4 +20,9 @@ namespace siofraEngine::core
     {
         return elapsedTime;
     }
+
+    void Clock::sleep(std::uint32_t ms) const
+    {
+        platformClock->sleep(ms);
+    }
 }

@@ -17,29 +17,42 @@ namespace siofraEngine::core
 
     void Application::Impl::execute()
     {
-        float lastTime{ };
+        float targetFrameSeconds = 1.0f / 60;
+        float lastFrameStartTime{ };
 
         game->init();
 
         while(true)
         {
             clock.update();
-            float currentTime = clock.getElapsedTime();
-            float deltaTime = currentTime - lastTime;
+            float frameStartTime = clock.getElapsedTime();
+            float deltaTime = frameStartTime - lastFrameStartTime;
 
-            inputSystem.update();
+            auto scene = game->getScene();
 
-            auto& scene = game->getScene();
-            resourceSystem.updateResources(&scene);
+            inputSystem.update(game->getSceneController(), scene, 0.001);
 
-            rendererSystem.draw(&scene);
+            resourceSystem.updateResources(scene);
+
+            rendererSystem.draw(scene);
 
             if(inputSystem.isReleased(core::KeyCode::KEY_ESC))
             {
                 break;
             }
 
-            lastTime = currentTime;
+            /*float frameElapsedTime = clock.getElapsedTime() - frameStartTime;
+            float remainingSeconds = targetFrameSeconds - frameElapsedTime;
+            if (remainingSeconds > 0)
+            {
+                std::uint32_t remainingMs = remainingSeconds * 1000;
+                if (remainingMs > 0)
+                {
+                    clock.sleep(remainingMs - 1);
+                }
+            }*/
+
+            lastFrameStartTime = frameStartTime;
         }
     }
 }

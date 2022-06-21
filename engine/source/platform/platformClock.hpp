@@ -15,7 +15,13 @@ namespace siofraEngine::platform
          * 
          * @returns Absolute time in seconds
          */
-        float getAbsoluteTime() override;
+        float getAbsoluteTime() const override;
 
+        /**
+         * @brief Wait a specified number of milliseconds before returning
+         *
+         * @param ms Time to wait in milliseconds
+         */
+        void sleep(std::uint32_t ms) const override;
     };
 }
