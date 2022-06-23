@@ -10,21 +10,19 @@ void TestSceneController::init(siofraEngine::core::Scene * scene)
 
 void TestSceneController::update(siofraEngine::core::IInputState const * inputState, siofraEngine::core::Scene * scene, float deltaTime)
 {
-	auto turnSpeed = 0.5f;
+	auto turnSpeed = 0.05f;
 	auto movementSpeed = 5.0f;
 	auto minPitch = -89.0f;
 	auto maxPitch = 89.0f;
-	auto invertY = true;
 
-	auto xChange = inputState->getMouseXChange() * turnSpeed;
-	auto yChange = inputState->getMouseYChange() * turnSpeed;
-	yChange = invertY
-		? yChange * -1
-		: yChange;
+	auto mousePos = inputState->getMouseCoordCartesian();
+	mousePos.x *= turnSpeed;
+	mousePos.y *= turnSpeed;
+	SE_LOG_INFO(mousePos.y);
 
-	camerCamera->yaw += xChange;
+	camerCamera->yaw += mousePos.x;
 
-	camerCamera->pitch += yChange;
+	camerCamera->pitch += mousePos.y;
 	camerCamera->pitch = std::min(camerCamera->pitch, maxPitch);
 	camerCamera->pitch = std::max(camerCamera->pitch, minPitch);
 

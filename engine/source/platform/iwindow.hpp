@@ -51,6 +51,14 @@ namespace siofraEngine::platform
         virtual std::uint32_t getHeight() const noexcept = 0;
 
         /**
+         * @brief Set the mouse cursor position within the window
+         *
+         * @param x The mouse cursor X coordinate
+         * @param y The mouse cursor Y coordinate
+         */
+        virtual void setCursorPosition(std::uint32_t x, std::uint32_t y) const = 0;
+
+        /**
          * @brief Get the names of the Vulkan instance extensions needed to create a surface
          * 
          * @returns Required instance extension names

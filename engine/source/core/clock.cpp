@@ -21,6 +21,11 @@ namespace siofraEngine::core
         return elapsedTime;
     }
 
+    float Clock::getAbsoluteTime() const noexcept
+    {
+        return platformClock->getAbsoluteTime();
+    }
+
     void Clock::sleep(std::uint32_t ms) const
     {
         platformClock->sleep(ms);

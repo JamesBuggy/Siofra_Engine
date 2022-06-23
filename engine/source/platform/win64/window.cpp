@@ -40,6 +40,11 @@ public:
         return height;
     }
 
+    void setCursorPosition(std::uint32_t x, std::uint32_t y) const
+    {
+        SDL_WarpMouseInWindow(winPtr, x, y);
+    }
+
     Uint32 mapFlags(WindowFlags flags) const
     {
         Uint32 sdlFlags = 0;
@@ -121,6 +126,11 @@ namespace siofraEngine::platform
     std::uint32_t Window::getHeight() const noexcept
     {
         return _internalWindow->getHeight();
+    }
+
+    void Window::setCursorPosition(std::uint32_t x, std::uint32_t y) const
+    {
+        _internalWindow->setCursorPosition(x, y);
     }
 
     std::vector<const char*> Window::getRequiredVulkanInstanceExtensions() const
