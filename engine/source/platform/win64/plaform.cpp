@@ -8,6 +8,7 @@ namespace siofraEngine::platform
     void initialize()
     {
         SDL_Init(SDL_INIT_VIDEO);
+        SDL_SetRelativeMouseMode(SDL_TRUE);
     }
 
     void cleanUp()

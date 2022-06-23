@@ -2,11 +2,13 @@
 
 #include <vector>
 #include <memory>
+#include <cstdint>
 #include "core/logging.hpp"
 #include "core/input/keyCodes.hpp"
 #include "core/input/mouseCodes.hpp"
 #include "core/input/iinputState.hpp"
 #include "core/ecs/isceneController.hpp"
+#include "platform/iwindow.hpp"
 #include "platform/iplatformInput.hpp"
 
 namespace siofraEngine::systems
@@ -22,8 +24,9 @@ namespace siofraEngine::systems
          * @brief Input system constructor
          * 
          * @param platformInput Access to platform specific input logic
+         * @param window Access to the application window
          */
-        InputSystem(std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput);
+        InputSystem(std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput, platform::IWindow & window);
 
         /**
          * @brief Updates the current and previous keyboard state
@@ -83,32 +86,25 @@ namespace siofraEngine::systems
         bool isDown(siofraEngine::core::MouseButtonCode mouseButtonCode) const noexcept override;
 
         /**
-         * @brief Get current mouse x position
-         * 
-         * @returns current mouse x position
-         */
-        int getMouseX() const noexcept override;
-
-        /**
-         * @brief Get current mouse y position
-         * 
-         * @returns current mouse y position
-         */
-        int getMouseY() const noexcept override;
-
-        /**
-         * @brief Get change in mouse x position
+         * @brief Get current mouse position within the window
          *
-         * @returns Change in mouse x position
+         * @returns current mouse position within the window
          */
-        int getMouseXChange() const noexcept override;
+        Vector2 getMouseCoordWindow() const noexcept override;
 
         /**
-         * @brief Get change in mouse y position
+         * @brief Get change in mouse position within the window
          *
-         * @returns Change in mouse y position
+         * @returns Change in mouse position within the window
          */
-        int getMouseYChange() const noexcept override;
+        Vector2 getMouseCoordChangeWindow() const noexcept override;
+
+        /**
+         * @brief Get current mouse position in cartesian format
+         *
+         * @returns current mouse in cartesian format
+         */
+        Vector2 getMouseCoordCartesian() const noexcept override;
     
     private:
         /**
@@ -136,5 +132,9 @@ namespace siofraEngine::systems
          */
         MouseState currentMouseState;
 
+        /**
+         * @brief Access to the application window
+         */
+        platform::IWindow & window;
     };
 }

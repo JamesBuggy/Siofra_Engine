@@ -5,8 +5,8 @@ namespace siofraEngine::core
     Application::Impl::Impl(std::unique_ptr<core::Game> game) :
         ApplicationBase(),
         clock{std::make_unique<platform::PlatformClock>()},
-        window{platform::Window(game->getTitle(), 100, 100, 800, 600, platform::WindowFlags::WINDOW_VULKAN)},
-        inputSystem{std::make_unique<platform::PlatformInput>()},
+        window{platform::Window(game->getTitle(), 100, 100, 1920, 1080, platform::WindowFlags::WINDOW_VULKAN)},
+        inputSystem{std::make_unique<platform::PlatformInput>(), window },
         rendererSystem{window, ServiceLocator::get<systems::EventSystem>()},
         resourceSystem{std::make_unique<platform::PlatformFileSystem>(), ServiceLocator::get<systems::EventSystem>() },
         entityComponentSystem{ },
@@ -27,6 +27,7 @@ namespace siofraEngine::core
             clock.update();
             float frameStartTime = clock.getElapsedTime();
             float deltaTime = frameStartTime - lastFrameStartTime;
+            lastFrameStartTime = frameStartTime;
 
             auto scene = game->getScene();
 
@@ -51,8 +52,6 @@ namespace siofraEngine::core
                     clock.sleep(remainingMs - 1);
                 }
             }*/
-
-            lastFrameStartTime = frameStartTime;
         }
     }
 }

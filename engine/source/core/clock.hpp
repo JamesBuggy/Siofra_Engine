@@ -31,6 +31,13 @@ namespace siofraEngine::core
             float getElapsedTime() const noexcept;
 
             /**
+             * @brief Get absolute time
+             *
+             * @returns Absolute time in seconds
+             */
+            float getAbsoluteTime() const noexcept;
+
+            /**
              * @brief Wait a specified number of milliseconds before returning
              *
              * @param ms Time to wait in milliseconds

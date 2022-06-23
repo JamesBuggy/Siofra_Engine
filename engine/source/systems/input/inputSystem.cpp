@@ -2,12 +2,13 @@
 
 namespace siofraEngine::systems
 {
-    InputSystem::InputSystem(std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput) :
+    InputSystem::InputSystem(std::unique_ptr<siofraEngine::platform::IPlatformInput> platformInput, platform::IWindow & window) :
         platformInput{std::move(platformInput)},
         previousKeyboardState(static_cast<int>(siofraEngine::core::KeyCode::MAX_CODES), false),
         currentKeyboardState(static_cast<int>(siofraEngine::core::KeyCode::MAX_CODES), false),
         previousMouseState{},
-        currentMouseState{}
+        currentMouseState{},
+        window{ window }
     {
         previousMouseState.buttonState.resize(static_cast<int>(siofraEngine::core::MouseButtonCode::MAX_CODES), false);
         currentMouseState.buttonState.resize(static_cast<int>(siofraEngine::core::MouseButtonCode::MAX_CODES), false);
@@ -29,6 +30,8 @@ namespace siofraEngine::systems
         {
             sceneController->update(this, scene, deltaTime);
         }
+
+        window.setCursorPosition(window.getWidth() / 2, window.getHeight() / 2);
     }
 
     bool InputSystem::isPressed(siofraEngine::core::KeyCode keyCode) const noexcept
@@ -67,23 +70,24 @@ namespace siofraEngine::systems
         return previousMouseState.buttonState[mouseButtonIndex] && currentMouseState.buttonState[mouseButtonIndex];
     }
 
-    int InputSystem::getMouseX() const noexcept
+    Vector2 InputSystem::getMouseCoordWindow() const noexcept
     {
-        return currentMouseState.x;
+        return Vector2{ currentMouseState.x, currentMouseState.y };
     }
 
-    int InputSystem::getMouseY() const noexcept
+    Vector2 InputSystem::getMouseCoordChangeWindow() const noexcept
     {
-        return currentMouseState.y;
+        return Vector2{
+            currentMouseState.x - previousMouseState.x,
+            currentMouseState.y - previousMouseState.y
+        };
     }
 
-    int InputSystem::getMouseXChange() const noexcept
+    Vector2 InputSystem::getMouseCoordCartesian() const noexcept
     {
-        return currentMouseState.x - previousMouseState.x;
-    }
-
-    int InputSystem::getMouseYChange() const noexcept
-    {
-        return currentMouseState.y - previousMouseState.y;
+        return Vector2{
+            currentMouseState.x - (std::int32_t)window.getWidth() / 2,
+            (currentMouseState.y - (std::int32_t)window.getHeight() / 2) * -1
+        };
     }
 }

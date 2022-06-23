@@ -3,6 +3,7 @@
 #include "defines.hpp"
 #include "core/input/keyCodes.hpp"
 #include "core/input/mouseCodes.hpp"
+#include "math/math.hpp"
 
 namespace siofraEngine::core
 {
@@ -59,32 +60,25 @@ namespace siofraEngine::core
         virtual bool isDown(siofraEngine::core::MouseButtonCode mouseButtonCode) const noexcept = 0;
 
         /**
-         * @brief Get current mouse x position
+         * @brief Get current mouse position within the window
          *
-         * @returns current mouse x position
+         * @returns current mouse position within the window
          */
-        virtual int getMouseX() const noexcept = 0;
+        virtual Vector2 getMouseCoordWindow() const noexcept = 0;
 
         /**
-         * @brief Get current mouse y position
+         * @brief Get change in mouse position within the window
          *
-         * @returns current mouse y position
+         * @returns Change in mouse position within the window
          */
-        virtual int getMouseY() const noexcept = 0;
+        virtual Vector2 getMouseCoordChangeWindow() const noexcept = 0;
 
         /**
-         * @brief Get change in mouse x position
+         * @brief Get current mouse position in cartesian format
          *
-         * @returns Change in mouse x position
+         * @returns current mouse in cartesian format
          */
-        virtual int getMouseXChange() const noexcept = 0;
-
-        /**
-         * @brief Get change in mouse y position
-         *
-         * @returns Change in mouse y position
-         */
-        virtual int getMouseYChange() const noexcept = 0;
+        virtual Vector2 getMouseCoordCartesian() const noexcept = 0;
 
         /**
          * @brief Interface destructor
