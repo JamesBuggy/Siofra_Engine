@@ -86,8 +86,8 @@ namespace siofraEngine::systems
     Vector2 InputSystem::getMouseCoordCartesian() const noexcept
     {
         return Vector2{
-            currentMouseState.x - (std::int32_t)window.getWidth() / 2,
-            (currentMouseState.y - (std::int32_t)window.getHeight() / 2) * -1
+            currentMouseState.x - static_cast<std::int32_t>(window.getWidth()) / 2,
+            (currentMouseState.y - static_cast<std::int32_t>(window.getHeight()) / 2) * -1
         };
     }
 }

@@ -4,6 +4,7 @@
 #include <string>
 #include <algorithm>
 #include <cstdint>
+#include <unordered_set>
 #include "core/logging.hpp"
 #include "core/ecs/scene.hpp"
 #include "core/ecs/components.hpp"
@@ -70,5 +71,10 @@ namespace siofraEngine::systems
          * @brief Base path of the assets directory
          */
         std::string assetBasePath{ ".\\assets\\" };
+
+        /**
+         * @brief Set of all loaded resources
+         */
+        std::unordered_set<std::string> loadedResources{ };
     };
 }

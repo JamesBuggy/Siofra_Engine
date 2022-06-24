@@ -112,16 +112,24 @@ namespace siofraEngine::systems
         for (auto const & entity : modelUpdates)
         {
             auto modelComponent = scene->getComponent<core::Model>(entity);
-            loadModel(modelComponent->filename);
-            scene->removeComponent<core::ModelUpdated>(entity);
+            if (loadedResources.find(modelComponent->filename) == loadedResources.end())
+            {
+                loadModel(modelComponent->filename);
+                scene->removeComponent<core::ModelUpdated>(entity);
+                loadedResources.insert(modelComponent->filename);
+            }
         }
 
         auto materialUpdates = scene->getEntities<core::MaterialUpdated>();
         for (auto const& entity : materialUpdates)
         {
             auto materialComponent = scene->getComponent<core::Material>(entity);
-            loadMaterial(materialComponent->filename);
-            scene->removeComponent<core::MaterialUpdated>(entity);
+            if (loadedResources.find(materialComponent->filename) == loadedResources.end())
+            {
+                loadMaterial(materialComponent->filename);
+                scene->removeComponent<core::MaterialUpdated>(entity);
+                loadedResources.insert(materialComponent->filename);
+            }
         }
     }
 }
