@@ -33,7 +33,7 @@ namespace siofraEngine::core
     };
 }
 
-#ifdef DEBUG
+#ifdef _DEBUG
     #define SE_ASSERT_TRUE(condition, message) \
         siofraEngine::core::Assertions::assertTrue(condition, __FILE__, __LINE__, message)
 #else

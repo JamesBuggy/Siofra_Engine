@@ -4,7 +4,7 @@ namespace siofraEngine::systems
 {
     VulkanRenderer::VulkanRenderer(siofraEngine::platform::IWindow &window)
     {
-#ifdef DEBUG
+#ifdef _DEBUG
         std::vector<const char*> validationLayers = { "VK_LAYER_KHRONOS_validation" };
 #else
         std::vector<const char*> validationLayers = {};
@@ -14,7 +14,7 @@ namespace siofraEngine::systems
             .withApiVersion(1, 3)
             .withInstanceExtensions(window.getRequiredVulkanInstanceExtensions())
             .withValidationLayers(validationLayers)
-#ifdef DEBUG
+#ifdef _DEBUG
             .withDebugUtilities()
 #endif
             .build();

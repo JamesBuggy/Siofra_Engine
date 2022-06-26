@@ -136,7 +136,7 @@ namespace siofraEngine::core
     };
 }
 
-#ifdef DEBUG
+#ifdef _DEBUG
     #define SE_LOG_TRACE(message) \
         siofraEngine::core::Logger::logTrace(__FILE__, __LINE__, message)
 
