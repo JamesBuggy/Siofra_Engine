@@ -165,6 +165,7 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="include\defines.hpp" />
     <ClInclude Include="include\engineMain.hpp" />
     <ClInclude Include="include\math\math.hpp" />
+    <ClInclude Include="include\math\vector3.hpp" />
     <ClInclude Include="source\core\application\applicationBase.hpp" />
     <ClInclude Include="source\core\application\applicationImpl.hpp" />
     <ClInclude Include="source\core\clock.hpp" />
