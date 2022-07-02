@@ -18,7 +18,6 @@ void TestSceneController::update(siofraEngine::core::IInputState const * inputSt
 	auto mousePos = inputState->getMouseCoordCartesian();
 	mousePos.x *= turnSpeed;
 	mousePos.y *= turnSpeed;
-	SE_LOG_INFO(mousePos.y);
 
 	camerCamera->yaw += mousePos.x;
 
