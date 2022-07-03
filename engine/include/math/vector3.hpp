@@ -20,6 +20,8 @@ namespace siofraEngine::math
 		void operator *= (float scalar) noexcept { x *= scalar; y *= scalar; z *= scalar; }
 		void operator /= (float scalar) { x /= scalar; y /= scalar; z /= scalar; }
 
+		static float dotProduct(const Vector3& a, const Vector3& b) noexcept { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z); }
+
 		float x{ 0 };
 		float y{ 0 };
 		float z{ 0 };
