@@ -230,10 +230,10 @@ namespace siofraEngine::systems
             .withVertexStage(std::move(vertexShaderModule))
             .withFragmentStage(std::move(fragmenthaderModule))
             .withPushConstantRange(VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(ModelMatrix))
-            .withVertexInputAttributeDescription(0, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex3, position))
-            .withVertexInputAttributeDescription(0, 1, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex3, normal))
-            .withVertexInputAttributeDescription(0, 2, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex3, textureCoordinate))
-            .withVertexInputBindingDescription(0, sizeof(Vertex3), VK_VERTEX_INPUT_RATE_VERTEX)
+            .withVertexInputAttributeDescription(0, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(math::Vertex3, position))
+            .withVertexInputAttributeDescription(0, 1, VK_FORMAT_R32G32B32_SFLOAT, offsetof(math::Vertex3, normal))
+            .withVertexInputAttributeDescription(0, 2, VK_FORMAT_R32G32_SFLOAT, offsetof(math::Vertex3, textureCoordinate))
+            .withVertexInputBindingDescription(0, sizeof(math::Vertex3), VK_VERTEX_INPUT_RATE_VERTEX)
             .withRenderPass(renderPass.get())
             .withViewportExtents(swapchain->getExtents())
             .build();
@@ -289,7 +289,7 @@ namespace siofraEngine::systems
         objectShaderSamplerDescriptorSets[materialName] = std::move(samplerDescriptorSet);
     }
 
-    void VulkanRenderer::createModel(std::string modelName, std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers)
+    void VulkanRenderer::createModel(std::string modelName, std::vector<math::Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers)
     {
         auto commandBuffer = VulkanCommandBuffer::Builder()
             .withDevice(device.get())
@@ -324,7 +324,7 @@ namespace siofraEngine::systems
             vulkanIndexBufferCounts.push_back(indexBuffer.size());
         }
 
-        VkDeviceSize bufferSize = sizeof(Vertex3) * vertexBuffer.size();
+        VkDeviceSize bufferSize = sizeof(math::Vertex3) * vertexBuffer.size();
         auto stagingBuffer = VulkanBuffer::Builder()
             .withDevice(device.get())
             .withBufferSize(bufferSize)

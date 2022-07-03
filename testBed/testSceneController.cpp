@@ -25,14 +25,14 @@ void TestSceneController::update(siofraEngine::core::IInputState const * inputSt
 	camerCamera->pitch = std::min(camerCamera->pitch, maxPitch);
 	camerCamera->pitch = std::max(camerCamera->pitch, minPitch);
 
-	camerCamera->front.x = cos(glm::radians(camerCamera->yaw)) * cos(glm::radians(camerCamera->pitch));
-	camerCamera->front.y = sin(glm::radians(camerCamera->pitch));
-	camerCamera->front.z = sin(glm::radians(camerCamera->yaw)) * cos(glm::radians(camerCamera->pitch));
-	camerCamera->front = glm::normalize(camerCamera->front);
+	camerCamera->front.x = cos(siofraEngine::math::radians(camerCamera->yaw)) * cos(siofraEngine::math::radians(camerCamera->pitch));
+	camerCamera->front.y = sin(siofraEngine::math::radians(camerCamera->pitch));
+	camerCamera->front.z = sin(siofraEngine::math::radians(camerCamera->yaw)) * cos(siofraEngine::math::radians(camerCamera->pitch));
+	camerCamera->front.normalize();
 
-	camerCamera->right = glm::normalize(glm::cross(camerCamera->front, camerCamera->worldUp));
+	camerCamera->right = siofraEngine::math::Vector3::crossProduct(camerCamera->front, camerCamera->worldUp).normalized();
 
-	camerCamera->up = glm::normalize(glm::cross(camerCamera->right, camerCamera->front));
+	camerCamera->up = siofraEngine::math::Vector3::crossProduct(camerCamera->right, camerCamera->front).normalized();
 
 	if (inputState->isDown(siofraEngine::core::KeyCode::KEY_W))
 	{

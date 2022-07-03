@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include "math/math.hpp"
+#include "math/vector3.hpp"
 #include "core/logging.hpp"
 #include "core/assertions.hpp"
 #include "core/ecs/scene.hpp"

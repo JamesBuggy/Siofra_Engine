@@ -4,6 +4,7 @@
 #include "core/input/keyCodes.hpp"
 #include "core/input/mouseCodes.hpp"
 #include "math/math.hpp"
+#include "math/vector2.hpp"
 
 namespace siofraEngine::core
 {
@@ -64,21 +65,21 @@ namespace siofraEngine::core
          *
          * @returns current mouse position within the window
          */
-        virtual Vector2 getMouseCoordWindow() const noexcept = 0;
+        virtual math::Vector2 getMouseCoordWindow() const noexcept = 0;
 
         /**
          * @brief Get change in mouse position within the window
          *
          * @returns Change in mouse position within the window
          */
-        virtual Vector2 getMouseCoordChangeWindow() const noexcept = 0;
+        virtual math::Vector2 getMouseCoordChangeWindow() const noexcept = 0;
 
         /**
          * @brief Get current mouse position in cartesian format
          *
          * @returns current mouse in cartesian format
          */
-        virtual Vector2 getMouseCoordCartesian() const noexcept = 0;
+        virtual math::Vector2 getMouseCoordCartesian() const noexcept = 0;
 
         /**
          * @brief Interface destructor
