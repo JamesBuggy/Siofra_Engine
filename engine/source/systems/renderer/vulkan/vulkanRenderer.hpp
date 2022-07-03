@@ -107,7 +107,7 @@ namespace siofraEngine::systems
          * @param vertexBuffer Model vertices
          * @param indexBuffers Model vertex indices
          */
-        void createModel(std::string modelName, std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers) override;
+        void createModel(std::string modelName, std::vector<math::Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers) override;
 
     private:
         /**

@@ -62,7 +62,7 @@ struct CreateMaterialEvent
 struct CreateModelEvent
 {
     std::string modelName;
-    std::vector<Vertex3> vertexBuffer;
+    std::vector<siofraEngine::math::Vertex3> vertexBuffer;
     std::vector<std::vector<std::uint32_t>> indexBuffers;
 };
 

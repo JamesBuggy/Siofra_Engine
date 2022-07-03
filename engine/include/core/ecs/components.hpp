@@ -2,13 +2,13 @@
 
 #include <cstdint>
 #include <string>
-#include "math/math.hpp"
+#include "math/vector3.hpp"
 
 namespace siofraEngine::core
 {
 	struct Transform
 	{
-		Vector3 position{ };
+		math::Vector3 position{ 0.0f, 0.0f, 0.0f };
 	};
 
 	struct Rotation
@@ -30,10 +30,10 @@ namespace siofraEngine::core
 
 	struct Camera
 	{
-		Vector3 front{ 0.0f, 0.0f, 1.0f };
-		Vector3 up{ 0.0f, 1.0f, 0.0f };
-		Vector3 right{ -1.0f, 0.0f, 0.0f };
-		Vector3 worldUp{ 0.0f, 1.0f, 0.0f };
+		math::Vector3 front{ 0.0f, 0.0f, 1.0f };
+		math::Vector3 up{ 0.0f, 1.0f, 0.0f };
+		math::Vector3 right{ -1.0f, 0.0f, 0.0f };
+		math::Vector3 worldUp{ 0.0f, 1.0f, 0.0f };
 		float yaw{ 90.0f };
 		float pitch{ 0.0f };
 	};

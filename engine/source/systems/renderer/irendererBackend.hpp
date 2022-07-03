@@ -81,7 +81,7 @@ namespace siofraEngine::systems
          * @param vertexBuffer Model vertices
          * @param indexBuffers Model vertex indices
          */
-        virtual void createModel(std::string modelName, std::vector<Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers) = 0;
+        virtual void createModel(std::string modelName, std::vector<math::Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers) = 0;
 
         /**
          * @brief Interface destructor

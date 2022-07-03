@@ -27,7 +27,7 @@ void TestGame::update()
 
 }
 
-void TestGame::createEntity(std::string modelName, std::string materialName, Vector3 position, float angle)
+void TestGame::createEntity(std::string modelName, std::string materialName, siofraEngine::math::Vector3 position, float angle)
 {
     auto scene = getScene();
     auto entity = scene->addEntity();

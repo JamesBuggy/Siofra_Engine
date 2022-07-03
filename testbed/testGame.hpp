@@ -3,7 +3,7 @@
 #include <string>
 #include <core/game.hpp>
 #include <core/logging.hpp>
-#include <math/math.hpp>
+#include <math/vector3.hpp>
 #include "testSceneController.hpp"
 
 class TestGame : public siofraEngine::core::Game
@@ -15,5 +15,5 @@ public:
 
     void update() override;
 
-    void createEntity(std::string modelName, std::string materialName, Vector3 position, float angle);
+    void createEntity(std::string modelName, std::string materialName, siofraEngine::math::Vector3 position, float angle);
 };

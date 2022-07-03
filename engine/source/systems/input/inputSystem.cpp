@@ -70,24 +70,27 @@ namespace siofraEngine::systems
         return previousMouseState.buttonState[mouseButtonIndex] && currentMouseState.buttonState[mouseButtonIndex];
     }
 
-    Vector2 InputSystem::getMouseCoordWindow() const noexcept
+    math::Vector2 InputSystem::getMouseCoordWindow() const noexcept
     {
-        return Vector2{ currentMouseState.x, currentMouseState.y };
-    }
-
-    Vector2 InputSystem::getMouseCoordChangeWindow() const noexcept
-    {
-        return Vector2{
-            currentMouseState.x - previousMouseState.x,
-            currentMouseState.y - previousMouseState.y
+        return math::Vector2 {
+            static_cast<float>(currentMouseState.x),
+            static_cast<float>(currentMouseState.y)
         };
     }
 
-    Vector2 InputSystem::getMouseCoordCartesian() const noexcept
+    math::Vector2 InputSystem::getMouseCoordChangeWindow() const noexcept
     {
-        return Vector2{
-            currentMouseState.x - static_cast<std::int32_t>(window.getWidth()) / 2,
-            (currentMouseState.y - static_cast<std::int32_t>(window.getHeight()) / 2) * -1
+        return math::Vector2 {
+            static_cast<float>(currentMouseState.x - previousMouseState.x),
+            static_cast<float>(currentMouseState.y - previousMouseState.y)
+        };
+    }
+
+    math::Vector2 InputSystem::getMouseCoordCartesian() const noexcept
+    {
+        return math::Vector2 {
+            static_cast<float>(currentMouseState.x - static_cast<std::int32_t>(window.getWidth()) / 2),
+            static_cast<float>((currentMouseState.y - static_cast<std::int32_t>(window.getHeight()) / 2) * -1)
         };
     }
 }

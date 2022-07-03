@@ -90,21 +90,21 @@ namespace siofraEngine::systems
          *
          * @returns current mouse position within the window
          */
-        Vector2 getMouseCoordWindow() const noexcept override;
+        math::Vector2 getMouseCoordWindow() const noexcept override;
 
         /**
          * @brief Get change in mouse position within the window
          *
          * @returns Change in mouse position within the window
          */
-        Vector2 getMouseCoordChangeWindow() const noexcept override;
+        math::Vector2 getMouseCoordChangeWindow() const noexcept override;
 
         /**
          * @brief Get current mouse position in cartesian format
          *
          * @returns current mouse in cartesian format
          */
-        Vector2 getMouseCoordCartesian() const noexcept override;
+        math::Vector2 getMouseCoordCartesian() const noexcept override;
     
     private:
         /**

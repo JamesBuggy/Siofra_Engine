@@ -22,7 +22,10 @@ namespace siofraEngine::systems
             auto camera = cameras.front();
             auto cameraComponent = scene->getComponent<core::Camera>(camera);
             auto transformComponent = scene->getComponent<core::Transform>(camera);
-            Matrix4 viewMatrix = glm::lookAt(transformComponent->position, transformComponent->position + cameraComponent->front, Vector3(0.0f, 1.0f, 0.0f));
+
+            auto p = transformComponent->position;
+            auto e = transformComponent->position + cameraComponent->front;
+            Matrix4 viewMatrix = glm::lookAt(Vector3{ p.x, p.y, p.z }, Vector3{ e.x, e.y, e.z }, Vector3(0.0f, 1.0f, 0.0f));
             rendererBackend->setViewMatrix(viewMatrix);
         }
 
@@ -37,7 +40,8 @@ namespace siofraEngine::systems
             std::string material{ materialComponent ? materialComponent->filename : "" };
             std::string model{ modelComponent ? modelComponent->filename : "" };
             
-            Matrix4 modelMatrix = glm::translate(Matrix4(1.0f), transformComponent->position);
+            auto p = transformComponent->position;
+            Matrix4 modelMatrix = glm::translate(Matrix4(1.0f), Vector3{ p.x, p.y, p.z });
             modelMatrix = glm::rotate(modelMatrix, glm::radians(rotationComponent->angle), glm::vec3(0.0f, 1.0f, 0.0f));
 
             rendererBackend->draw(material, model, modelMatrix);

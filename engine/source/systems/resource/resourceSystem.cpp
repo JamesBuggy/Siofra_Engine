@@ -70,7 +70,7 @@ namespace siofraEngine::systems
         }
 
         std::vector<std::vector<std::uint32_t>> indexBuffers{ };
-        std::vector<Vertex3> vertexBuffer(attrib.vertices.size());
+        std::vector<math::Vertex3> vertexBuffer(attrib.vertices.size());
         for (size_t i = 0; i < shapes.size(); i++)
         {
             tinyobj::mesh_t mesh = shapes[i].mesh;
