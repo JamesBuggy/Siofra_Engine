@@ -168,6 +168,7 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="include\math\matrix4x4.hpp" />
     <ClInclude Include="include\math\vector2.hpp" />
     <ClInclude Include="include\math\vector3.hpp" />
+    <ClInclude Include="include\math\vector4.hpp" />
     <ClInclude Include="source\core\application\applicationBase.hpp" />
     <ClInclude Include="source\core\application\applicationImpl.hpp" />
     <ClInclude Include="source\core\clock.hpp" />
