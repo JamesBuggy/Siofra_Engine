@@ -42,9 +42,8 @@ namespace siofraEngine::systems
             std::string material{ materialComponent ? materialComponent->filename : "" };
             std::string model{ modelComponent ? modelComponent->filename : "" };
             
-            auto p = transformComponent->position;
-            Matrix4 modelMatrix = glm::translate(Matrix4(1.0f), Vector3{ p.x, p.y, p.z });
-            modelMatrix = glm::rotate(modelMatrix, glm::radians(rotationComponent->angle), glm::vec3(0.0f, 1.0f, 0.0f));
+            math::Matrix4x4 modelMatrix = math::Matrix4x4::translation(transformComponent->position);
+            modelMatrix = modelMatrix * math::Matrix4x4::rotationY(math::radians(rotationComponent->angle));
 
             rendererBackend->draw(material, model, modelMatrix);
         }

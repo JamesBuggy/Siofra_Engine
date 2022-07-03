@@ -96,13 +96,7 @@ namespace siofraEngine::math
 
 			if (fov <= 0.0f || aspect == 0.0f || frustumDepth <= 0.0f || near <= 0.0f || far <= 0.0f)
 			{
-				return Matrix4x4
-				{{
-					1, 0, 0, 0,
-					0, 1, 0, 0,
-					0, 0, 1, 0,
-					0, 0, 0, 1
-				}};
+				return Matrix4x4::identity();
 			}
 
 			Matrix4x4 perpectiveMatrix{ };
@@ -137,6 +131,94 @@ namespace siofraEngine::math
 			}};
 
 			return viewMatrix;
+		}
+
+		/**
+		 * @brief Create a translation matrix
+		 *
+		 * @param vector The translation vector
+		 * @returns The translation matrix
+		 */
+		static Matrix4x4 translation(Vector3 vector)
+		{
+			Matrix4x4 translationMatrix = Matrix4x4::identity();
+			translationMatrix.elements[12] = vector.x;
+			translationMatrix.elements[13] = vector.y;
+			translationMatrix.elements[14] = vector.z;
+			return translationMatrix;
+		}
+
+		/**
+		 * @brief Create a rotation matrix for the X axis
+		 *
+		 * @param angle The rotation angle in radians
+		 * @returns The rotation matrix
+		 */
+		static Matrix4x4 rotationX(float angle)
+		{
+			Matrix4x4 rotationMatrix = Matrix4x4::identity();
+			float cosAngle = cos(angle);
+			float sinAngle = sin(angle);
+
+			rotationMatrix.elements[5] = cosAngle;
+			rotationMatrix.elements[6] = sinAngle;
+			rotationMatrix.elements[9] = -sinAngle;
+			rotationMatrix.elements[10] = cosAngle;
+			return rotationMatrix;
+		}
+
+		/**
+		 * @brief Create a rotation matrix for the Y axis
+		 *
+		 * @param angle The rotation angle in radians
+		 * @returns The rotation matrix
+		 */
+		static Matrix4x4 rotationY(float angle)
+		{
+			Matrix4x4 rotationMatrix = Matrix4x4::identity();
+			float cosAngle = cos(angle);
+			float sinAngle = sin(angle);
+
+			rotationMatrix.elements[0] = cosAngle;
+			rotationMatrix.elements[2] = -sinAngle;
+			rotationMatrix.elements[8] = sinAngle;
+			rotationMatrix.elements[10] = cosAngle;
+			return rotationMatrix;
+		}
+
+		/**
+		 * @brief Create a rotation matrix for the Z axis
+		 *
+		 * @param angle The rotation angle in radians
+		 * @returns The rotation matrix
+		 */
+		static Matrix4x4 rotationZ(float angle)
+		{
+			Matrix4x4 rotationMatrix = Matrix4x4::identity();
+			float cosAngle = cos(angle);
+			float sinAngle = sin(angle);
+
+			rotationMatrix.elements[0] = cosAngle;
+			rotationMatrix.elements[1] = sinAngle;
+			rotationMatrix.elements[4] = -sinAngle;
+			rotationMatrix.elements[5] = cosAngle;
+			return rotationMatrix;
+		}
+
+		/**
+		 * @brief Create a 4x4 identity matrix
+		 *
+		 * @returns The 4x4 identity matrix
+		 */
+		static Matrix4x4 identity() noexcept
+		{
+			return Matrix4x4
+			{{
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1
+			}};
 		}
 
 		std::array<float, 16> elements{ };

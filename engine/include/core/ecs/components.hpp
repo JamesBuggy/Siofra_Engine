@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include <string>
-#include "math/vector3.hpp"
+#include "math/math.hpp"
 
 namespace siofraEngine::core
 {
