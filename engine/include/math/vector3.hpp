@@ -21,6 +21,7 @@ namespace siofraEngine::math
 		void operator /= (float scalar) { x /= scalar; y /= scalar; z /= scalar; }
 
 		static float dotProduct(const Vector3& a, const Vector3& b) noexcept { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z); }
+		Vector3 crossProduct(const Vector3& a, const Vector3& b) noexcept { return Vector3{ a.y * b.z - a.z * b.y, -(a.x * b.z - a.z * b.x), a.x * b.y - a.y * b.x }; }
 
 		float x{ 0 };
 		float y{ 0 };
