@@ -3,6 +3,7 @@
 #include <math.h>
 #include <algorithm>
 #include <array>
+#include "math/vector3.hpp"
 
 namespace siofraEngine::math
 {
@@ -111,6 +112,31 @@ namespace siofraEngine::math
 			perpectiveMatrix.elements[11] = -1.0f;
 			perpectiveMatrix.elements[14] = -((2.0f * far * near) / frustumDepth);
 			return perpectiveMatrix;
+		}
+
+		/**
+		 * @brief Create a view matrix
+		 *
+		 * @param eye The camera position
+		 * @param target The position to which the camera is orientated to look at
+		 * @param up Normalized up vector
+		 * @returns The view matrix
+		 */
+		static Matrix4x4 lookAt(Vector3 eye, Vector3 target, Vector3 up) noexcept
+		{
+			Vector3 zAxis = (eye - target).normalized();
+			Vector3 xAxis = Vector3::crossProduct(up, zAxis).normalized();
+			Vector3 yAxis = Vector3::crossProduct(zAxis, xAxis);
+
+			Matrix4x4 viewMatrix
+			{{
+				xAxis.x, yAxis.x, zAxis.x, 0,
+				xAxis.y, yAxis.y, zAxis.y, 0,
+				xAxis.z, yAxis.z, zAxis.z, 0,
+				-Vector3::dotProduct(xAxis, eye), -Vector3::dotProduct(yAxis, eye), -Vector3::dotProduct(zAxis, eye), 1
+			}};
+
+			return viewMatrix;
 		}
 
 		std::array<float, 16> elements{ };
