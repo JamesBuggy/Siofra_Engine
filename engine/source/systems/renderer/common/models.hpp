@@ -1,6 +1,7 @@
 #pragma once
 
 #include "math/math.hpp"
+#include "math/matrix4x4.hpp"
 
 namespace siofraEngine::systems
 {
@@ -9,7 +10,7 @@ namespace siofraEngine::systems
     };
 
     struct ViewProjection {
-        Matrix4 projection;
-        Matrix4 view;
+        math::Matrix4x4 projection;
+        math::Matrix4x4 view;
     };
 }

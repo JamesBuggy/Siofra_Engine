@@ -3,15 +3,17 @@
 #include <memory>
 #include <string>
 #include "math/math.hpp"
+#include "math/matrix4x4.hpp"
 #include "math/vector3.hpp"
 #include "core/logging.hpp"
 #include "core/assertions.hpp"
 #include "core/ecs/scene.hpp"
 #include "core/ecs/components.hpp"
+#include "platform/iwindow.hpp"
 #include "systems/events/ieventSystem.hpp"
 #include "systems/renderer/irendererBackend.hpp"
 #include "systems/renderer/vulkan/vulkanRenderer.hpp"
-#include "platform/iwindow.hpp"
+#include "systems/renderer/common/models.hpp"
 
 namespace siofraEngine::systems
 {
@@ -41,6 +43,11 @@ namespace siofraEngine::systems
          * @brief Renderer backend
          */
         std::unique_ptr<IRendererBackend> rendererBackend{ };
+
+        /**
+         * @brief View projection matrices
+         */
+        ViewProjection viewProjection{ };
 
         /**
          * @brief Create correct renderer backend based on the given window flags

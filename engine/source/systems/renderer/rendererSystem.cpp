@@ -9,6 +9,10 @@ namespace siofraEngine::systems
         eventSystem->subscribe(EventTypes::CREATE_MATERIAL, std::bind(&RendererSystem::createMaterial, this, std::placeholders::_1));
         eventSystem->subscribe(EventTypes::CREATE_MODEL, std::bind(&RendererSystem::createModel, this, std::placeholders::_1));
 
+        viewProjection.projection = math::Matrix4x4::perspective(math::radians(45.0f), (float)window.getWidth() / (float)window.getHeight(), 0.1f, 400.0f);
+        viewProjection.projection.elements[5] *= -1;
+        viewProjection.view = math::Matrix4x4::lookAt(math::Vector3(0.0f, 1.0f, 0.0f), math::Vector3(0.0f, 1.0f, 0.0f) + math::Vector3(0.0f, 0.0f, 1.0f), math::Vector3(0.0f, 1.0f, 0.0f));
+
         SE_LOG_INFO("Initialized renderer system");
     }
 
@@ -23,10 +27,8 @@ namespace siofraEngine::systems
             auto cameraComponent = scene->getComponent<core::Camera>(camera);
             auto transformComponent = scene->getComponent<core::Transform>(camera);
 
-            auto p = transformComponent->position;
-            auto e = transformComponent->position + cameraComponent->front;
-            Matrix4 viewMatrix = glm::lookAt(Vector3{ p.x, p.y, p.z }, Vector3{ e.x, e.y, e.z }, Vector3(0.0f, 1.0f, 0.0f));
-            rendererBackend->setViewMatrix(viewMatrix);
+            viewProjection.view = math::Matrix4x4::lookAt(transformComponent->position, transformComponent->position + cameraComponent->front, math::Vector3(0.0f, 1.0f, 0.0f));
+            rendererBackend->setViewProjection(viewProjection);
         }
 
         auto entities = scene->getEntities<core::Model, core::Transform, core::Rotation>();

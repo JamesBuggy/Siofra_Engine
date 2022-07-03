@@ -5,6 +5,8 @@
 #include <string>
 #include "core/logging.hpp"
 #include "platform/iwindow.hpp"
+#include "math/matrix4x4.hpp"
+#include "math/vector3.hpp"
 #include "systems/renderer/irendererBackend.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanInstanceBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSurfaceBuilder.hpp"
@@ -26,7 +28,6 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanPipelineBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSamplerBuilder.hpp"
 #include "systems/renderer/vulkan/resources/model.hpp"
-#include "systems/renderer/common/models.hpp"
 
 namespace siofraEngine::systems
 {
@@ -54,11 +55,11 @@ namespace siofraEngine::systems
         void beginFrame() override;
 
         /**
-         * @brief Set view matrix for the current frame
-         * 
-         * @param view The view matrix to set
+         * @brief Set view projection matrices for the current frame
+         *
+         * @param view The view projection matrices to set
          */
-        void setViewMatrix(Matrix4 view) override;
+        void setViewProjection(ViewProjection viewProjection) override;
 
         /**
          * @brief Render a model with the specified material
@@ -229,10 +230,5 @@ namespace siofraEngine::systems
          * @brief Contains vertex and index buffers of loaded models
          */
         std::map<std::string, Model> models{ };
-
-        /**
-         * @brief Default view projection
-         */
-        ViewProjection defaultViewProjection{ };
     };
 }

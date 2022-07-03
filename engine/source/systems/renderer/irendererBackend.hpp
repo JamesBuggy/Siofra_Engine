@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 #include "math/math.hpp"
+#include "math/matrix4x4.hpp"
 #include "systems/renderer/common/models.hpp"
 
 namespace siofraEngine::systems
@@ -28,11 +29,11 @@ namespace siofraEngine::systems
         virtual void beginFrame() = 0;
 
         /**
-         * @brief Set view matrix for the current frame
+         * @brief Set view projection matrices for the current frame
          *
-         * @param view The view matrix to set
+         * @param view The view projection matrices to set
          */
-        virtual void setViewMatrix(Matrix4 view) = 0;
+        virtual void setViewProjection(ViewProjection viewProjection) = 0;
 
         /**
          * @brief Render a model with the specified material
