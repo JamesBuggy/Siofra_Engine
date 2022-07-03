@@ -4,7 +4,6 @@
 #include "core/input/keyCodes.hpp"
 #include "core/input/mouseCodes.hpp"
 #include "math/math.hpp"
-#include "math/vector2.hpp"
 
 namespace siofraEngine::core
 {

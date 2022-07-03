@@ -3,7 +3,7 @@
 #include <string>
 #include <core/game.hpp>
 #include <core/logging.hpp>
-#include <math/vector3.hpp>
+#include <math/math.hpp>
 #include "testSceneController.hpp"
 
 class TestGame : public siofraEngine::core::Game

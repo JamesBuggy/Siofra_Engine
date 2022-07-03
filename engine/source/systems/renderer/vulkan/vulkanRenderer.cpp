@@ -108,14 +108,14 @@ namespace siofraEngine::systems
         viewProjectionUniformBuffers[currentImageIndex]->update(&viewProjection, sizeof(viewProjection));
     }
 
-    void VulkanRenderer::draw(std::string material, std::string model, Matrix4 modelMatrix)
+    void VulkanRenderer::draw(std::string material, std::string model, math::Matrix4x4 modelMatrix)
     {
         if (!models.count(model))
         {
             return;
         }
 
-        vkCmdPushConstants(graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(), objectShaderPipeline->getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(ModelMatrix), &modelMatrix);
+        vkCmdPushConstants(graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(), objectShaderPipeline->getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(math::Matrix4x4), &modelMatrix);
 
         std::vector<VkDescriptorSet> descriptorSetGroup = {
            objectShaderDescriptorSets[currentImageIndex]->getDescriptorSet(),
@@ -220,7 +220,7 @@ namespace siofraEngine::systems
             .withDescriptorSetLayouts({ objectShaderDescriptorSetLayout.get(), objectShaderSamplerDescriptorSetLayout.get() })
             .withVertexStage(std::move(vertexShaderModule))
             .withFragmentStage(std::move(fragmenthaderModule))
-            .withPushConstantRange(VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(ModelMatrix))
+            .withPushConstantRange(VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(math::Matrix4x4))
             .withVertexInputAttributeDescription(0, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(math::Vertex3, position))
             .withVertexInputAttributeDescription(0, 1, VK_FORMAT_R32G32B32_SFLOAT, offsetof(math::Vertex3, normal))
             .withVertexInputAttributeDescription(0, 2, VK_FORMAT_R32G32_SFLOAT, offsetof(math::Vertex3, textureCoordinate))

@@ -5,8 +5,7 @@
 #include <string>
 #include "core/logging.hpp"
 #include "platform/iwindow.hpp"
-#include "math/matrix4x4.hpp"
-#include "math/vector3.hpp"
+#include "math/math.hpp"
 #include "systems/renderer/irendererBackend.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanInstanceBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSurfaceBuilder.hpp"
@@ -68,7 +67,7 @@ namespace siofraEngine::systems
          * @param model The model to render
          * @param modelMatrix The models model matrix
          */
-        void draw(std::string material, std::string model, Matrix4 modelMatrix) override;
+        void draw(std::string material, std::string model, math::Matrix4x4 modelMatrix) override;
 
         /**
          * @brief End rendering a frame

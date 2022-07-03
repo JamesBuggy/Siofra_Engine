@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <string>
 #include "math/math.hpp"
-#include "math/matrix4x4.hpp"
 #include "systems/renderer/common/models.hpp"
 
 namespace siofraEngine::systems
@@ -42,7 +41,7 @@ namespace siofraEngine::systems
          * @param model The model to render
          * @param modelMatrix The models model matrix
          */
-        virtual void draw(std::string material, std::string model, Matrix4 modelMatrix) = 0;
+        virtual void draw(std::string material, std::string model, math::Matrix4x4 modelMatrix) = 0;
 
         /**
          * @brief End rendering a frame
