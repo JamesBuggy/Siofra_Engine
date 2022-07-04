@@ -110,12 +110,12 @@ namespace siofraEngine::systems
 
     void VulkanRenderer::draw(std::string material, std::string model, math::Matrix4x4 modelMatrix)
     {
-        material = objectShaderSamplerDescriptorSets.count(material) ? material : "placeholder_material";
+        material = objectShaderSamplerDescriptorSets.count(material) ? material : utilities::ResourceConstants::PlaceholderMaterialId;
 
         if (!models.count(model))
         {
-            model = "placeholder_model";
-            material = "placeholder_material";
+            model = utilities::ResourceConstants::PlaceholderModelId;
+            material = utilities::ResourceConstants::PlaceholderMaterialId;
         }
 
         vkCmdPushConstants(graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(), objectShaderPipeline->getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(math::Matrix4x4), &modelMatrix);

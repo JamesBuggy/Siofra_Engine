@@ -13,8 +13,8 @@ namespace siofraEngine::systems
         eventSystem{eventSystem}
     {
         loadShader("object_shader");
-        loadMaterial("placeholder_material");
-        loadModel("placeholder_model");
+        loadMaterial(utilities::ResourceConstants::PlaceholderMaterialId);
+        loadModel(utilities::ResourceConstants::PlaceholderModelId);
     }
 
     void ResourceSystem::loadShader(std::string shaderName)

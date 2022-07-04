@@ -11,6 +11,7 @@
 #include "math/math.hpp"
 #include "platform/iplatformFileSystem.hpp"
 #include "systems/events/ieventSystem.hpp"
+#include "utilities/constants.hpp"
 
 namespace siofraEngine::systems
 {

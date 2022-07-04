@@ -27,6 +27,7 @@
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanPipelineBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSamplerBuilder.hpp"
 #include "systems/renderer/vulkan/resources/model.hpp"
+#include "utilities/constants.hpp"
 
 namespace siofraEngine::systems
 {

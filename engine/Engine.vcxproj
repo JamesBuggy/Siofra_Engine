@@ -276,6 +276,7 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="source\systems\renderer\vulkan\vulkanComponents\vulkanSwapchain.hpp" />
     <ClInclude Include="source\systems\renderer\vulkan\vulkanRenderer.hpp" />
     <ClInclude Include="source\systems\resource\resourceSystem.hpp" />
+    <ClInclude Include="source\utilities\constants.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core\application\application.cpp" />
