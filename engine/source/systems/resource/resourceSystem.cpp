@@ -13,7 +13,8 @@ namespace siofraEngine::systems
         eventSystem{eventSystem}
     {
         loadShader("object_shader");
-        loadMaterial("default_material");
+        loadMaterial("placeholder_material");
+        loadModel("placeholder_model");
     }
 
     void ResourceSystem::loadShader(std::string shaderName)
@@ -34,7 +35,8 @@ namespace siofraEngine::systems
         stbi_uc * image = stbi_load(fileLocation.c_str(), &width, &height, &channels, STBI_rgb_alpha);
         if (!image)
         {
-            throw std::runtime_error("Failed to load material: " + fileLocation);
+            SE_LOG_WARNING("Failed to load material: " + fileLocation);
+            return;
         }
 
         size = width * height * 4;
@@ -65,8 +67,8 @@ namespace siofraEngine::systems
         bool result = tinyobj::LoadObj(&attrib, &shapes, &materials, &warning, &error, fileLocation.c_str(), modelDirectory.c_str());
         if (!result)
         {
-            SE_LOG_ERROR(error);
-            throw std::runtime_error("Failed to load model: " + fileLocation);
+            SE_LOG_WARNING("Failed to load model: " + fileLocation + ". Error: " + error);
+            return;
         }
 
         std::vector<std::vector<std::uint32_t>> indexBuffers{ };

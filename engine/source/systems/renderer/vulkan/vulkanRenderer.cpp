@@ -110,18 +110,19 @@ namespace siofraEngine::systems
 
     void VulkanRenderer::draw(std::string material, std::string model, math::Matrix4x4 modelMatrix)
     {
+        material = objectShaderSamplerDescriptorSets.count(material) ? material : "placeholder_material";
+
         if (!models.count(model))
         {
-            return;
+            model = "placeholder_model";
+            material = "placeholder_material";
         }
 
         vkCmdPushConstants(graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(), objectShaderPipeline->getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(math::Matrix4x4), &modelMatrix);
 
         std::vector<VkDescriptorSet> descriptorSetGroup = {
            objectShaderDescriptorSets[currentImageIndex]->getDescriptorSet(),
-           objectShaderSamplerDescriptorSets.count(material)
-            ? objectShaderSamplerDescriptorSets[material]->getDescriptorSet()
-            : objectShaderSamplerDescriptorSets["default_material"]->getDescriptorSet()
+           objectShaderSamplerDescriptorSets[material]->getDescriptorSet()
         };
         vkCmdBindDescriptorSets(
             graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(),
