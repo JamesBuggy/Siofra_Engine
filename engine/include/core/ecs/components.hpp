@@ -13,7 +13,7 @@ namespace siofraEngine::core
 
 	struct Rotation
 	{
-		float angle{ };
+		math::Vector3 angles{ 0.0f, 0.0f, 0.0f };
 	};
 
 	struct ModelUpdated { };

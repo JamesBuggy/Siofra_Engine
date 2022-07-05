@@ -43,7 +43,9 @@ namespace siofraEngine::systems
             std::string model{ modelComponent ? modelComponent->filename : "" };
             
             math::Matrix4x4 modelMatrix = math::Matrix4x4::translation(transformComponent->position);
-            modelMatrix = modelMatrix * math::Matrix4x4::rotationY(math::radians(rotationComponent->angle));
+            modelMatrix = modelMatrix * math::Matrix4x4::rotationX(math::radians(rotationComponent->angles.x));
+            modelMatrix = modelMatrix * math::Matrix4x4::rotationY(math::radians(rotationComponent->angles.y));
+            modelMatrix = modelMatrix * math::Matrix4x4::rotationZ(math::radians(rotationComponent->angles.z));
 
             rendererBackend->draw(material, model, modelMatrix);
         }

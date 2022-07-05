@@ -15,5 +15,5 @@ public:
 
     void update() override;
 
-    void createEntity(std::string modelName, std::string materialName, siofraEngine::math::Vector3 position, float angle);
+    void createEntity(std::string modelName, std::string materialName, siofraEngine::math::Vector3 position, siofraEngine::math::Vector3 rotation);
 };
