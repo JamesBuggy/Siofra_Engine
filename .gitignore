@@ -30,6 +30,9 @@
 *.out
 *.app
 
+# User files
+*.user
+
 # Build output directories
 /bin
 /x64

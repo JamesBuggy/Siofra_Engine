@@ -1,14 +1,18 @@
-#include "systems/resource/resourceSystem.hpp"
-
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb/stb_image.h"
-
 #define TINYOBJLOADER_IMPLEMENTATION
-#include "tinyobjloader/tinyobjloader.h"
+#include <algorithm>
+#include <cstdint>
+#include <stb/stb_image.h>
+#include <tinyobjloader/tinyobjloader.h>
+#include "systems/resource/resourceSystem.hpp"
+#include "core/logging.hpp"
+#include "core/ecs/components.hpp"
+#include "math/math.hpp"
+#include "utilities/constants.hpp"
 
 namespace siofraEngine::systems
 {
-    ResourceSystem::ResourceSystem(std::unique_ptr<platform::IPlatformFileSystem> fileSystem, systems::IEventSystem * const eventSystem) :
+    ResourceSystem::ResourceSystem(std::unique_ptr<platform::IPlatformFileSystem> fileSystem, IEventSystem * const eventSystem) :
         fileSystem{std::move(fileSystem)},
         eventSystem{eventSystem}
     {
@@ -17,7 +21,7 @@ namespace siofraEngine::systems
         loadModel(utilities::ResourceConstants::PlaceholderModelId);
     }
 
-    void ResourceSystem::loadShader(std::string shaderName)
+    void ResourceSystem::loadShader(std::string const shaderName)
     {
         CreateShaderEvent createShaderEvent;
         createShaderEvent.vertexStageGlsl = fileSystem->readFile(assetBasePath + "shaders\\" + shaderName + ".vert.glsl");
@@ -27,10 +31,10 @@ namespace siofraEngine::systems
         eventSystem->broadcast(EventTypes::CREATE_SHADER, createShaderEvent);
     }
 
-    void ResourceSystem::loadMaterial(std::string materialName)
+    void ResourceSystem::loadMaterial(std::string const materialName)
     {
-        int width, height, channels, size;
-        std::string fileLocation = assetBasePath + "materials\\" + materialName + ".png";
+        int width, height, channels;
+        std::string const fileLocation = assetBasePath + "materials\\" + materialName + ".png";
 
         stbi_uc * image = stbi_load(fileLocation.c_str(), &width, &height, &channels, STBI_rgb_alpha);
         if (!image)
@@ -39,8 +43,8 @@ namespace siofraEngine::systems
             return;
         }
 
-        size = width * height * 4;
-        std::vector<char> imageData(image, image + size);
+        int const size = width * height * 4;
+        std::vector<char> const imageData(image, image + size);
 
         stbi_image_free(image);
 
@@ -53,7 +57,7 @@ namespace siofraEngine::systems
         eventSystem->broadcast(EventTypes::CREATE_MATERIAL, createMaterialEvent);
     }
 
-    void ResourceSystem::loadModel(std::string modelName)
+    void ResourceSystem::loadModel(std::string const modelName)
     {
         std::string modelDirectory = assetBasePath + "models\\";
         std::string fileLocation = modelDirectory + modelName + ".obj";
@@ -73,26 +77,26 @@ namespace siofraEngine::systems
 
         std::vector<std::vector<std::uint32_t>> indexBuffers{ };
         std::vector<math::Vertex3> vertexBuffer(attrib.vertices.size());
-        for (size_t i = 0; i < shapes.size(); i++)
+        for (auto const & shape : shapes)
         {
-            tinyobj::mesh_t mesh = shapes[i].mesh;
+            tinyobj::mesh_t mesh = shape.mesh;
             std::vector<std::uint32_t> indices(mesh.indices.size());
             for (size_t j = 0; j < indices.size(); j++)
             {
                 tinyobj::index_t index = mesh.indices[j];
                 vertexBuffer[index.vertex_index].position = {
-                    attrib.vertices[3 * size_t(index.vertex_index) + 0],
-                    attrib.vertices[3 * size_t(index.vertex_index) + 1],
-                    attrib.vertices[3 * size_t(index.vertex_index) + 2]
+                    attrib.vertices[3 * static_cast<size_t>(index.vertex_index) + 0],
+                    attrib.vertices[3 * static_cast<size_t>(index.vertex_index) + 1],
+                    attrib.vertices[3 * static_cast<size_t>(index.vertex_index) + 2]
                 };
                 vertexBuffer[index.vertex_index].textureCoordinate = {
-                    attrib.texcoords[2 * size_t(index.texcoord_index) + 0],
-                    attrib.texcoords[2 * size_t(index.texcoord_index) + 1]
+                    attrib.texcoords[2 * static_cast<size_t>(index.texcoord_index) + 0],
+                    attrib.texcoords[2 * static_cast<size_t>(index.texcoord_index) + 1]
                 };
                 vertexBuffer[index.vertex_index].normal = { 
-                    attrib.normals[3 * size_t(index.normal_index) + 0],
-                    attrib.normals[3 * size_t(index.normal_index) + 1],
-                    attrib.normals[3 * size_t(index.normal_index) + 2]
+                    attrib.normals[3 * static_cast<size_t>(index.normal_index) + 0],
+                    attrib.normals[3 * static_cast<size_t>(index.normal_index) + 1],
+                    attrib.normals[3 * static_cast<size_t>(index.normal_index) + 2]
                 };
 
                 indices[j] = index.vertex_index;
@@ -110,11 +114,11 @@ namespace siofraEngine::systems
 
     void ResourceSystem::updateResources(core::Scene * scene)
     {
-        auto modelUpdates = scene->getEntities<core::ModelUpdated>();
+        auto const modelUpdates = scene->getEntities<core::ModelUpdated>();
         for (auto const & entity : modelUpdates)
         {
-            auto modelComponent = scene->getComponent<core::Model>(entity);
-            if (loadedResources.find(modelComponent->filename) == loadedResources.end())
+        	auto const modelComponent = scene->getComponent<core::Model>(entity);
+            if (!loadedResources.contains(modelComponent->filename))
             {
                 loadModel(modelComponent->filename);
                 scene->removeComponent<core::ModelUpdated>(entity);
@@ -122,11 +126,11 @@ namespace siofraEngine::systems
             }
         }
 
-        auto materialUpdates = scene->getEntities<core::MaterialUpdated>();
+        auto const materialUpdates = scene->getEntities<core::MaterialUpdated>();
         for (auto const& entity : materialUpdates)
         {
-            auto materialComponent = scene->getComponent<core::Material>(entity);
-            if (loadedResources.find(materialComponent->filename) == loadedResources.end())
+            auto const materialComponent = scene->getComponent<core::Material>(entity);
+            if (!loadedResources.contains(materialComponent->filename))
             {
                 loadMaterial(materialComponent->filename);
                 scene->removeComponent<core::MaterialUpdated>(entity);

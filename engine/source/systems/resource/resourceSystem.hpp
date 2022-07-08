@@ -2,16 +2,10 @@
 
 #include <memory>
 #include <string>
-#include <algorithm>
-#include <cstdint>
 #include <unordered_set>
-#include "core/logging.hpp"
 #include "core/ecs/scene.hpp"
-#include "core/ecs/components.hpp"
-#include "math/math.hpp"
 #include "platform/iplatformFileSystem.hpp"
 #include "systems/events/ieventSystem.hpp"
-#include "utilities/constants.hpp"
 
 namespace siofraEngine::systems
 {
@@ -24,10 +18,10 @@ namespace siofraEngine::systems
         /**
          * @brief ResourceSystem constructor
          * 
-         * @param platformInput Access to platform file system logic
+         * @param fileSystem Access to platform file system logic
          * @param eventSystem Event system
          */
-        ResourceSystem(std::unique_ptr<platform::IPlatformFileSystem> fileSystem, systems::IEventSystem * const eventSystem);
+        ResourceSystem(std::unique_ptr<platform::IPlatformFileSystem> fileSystem, IEventSystem * eventSystem);
 
         /**
          * @brief Load a shader
