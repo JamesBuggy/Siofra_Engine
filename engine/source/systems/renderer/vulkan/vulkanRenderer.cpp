@@ -1,8 +1,16 @@
 #include "systems/renderer/vulkan/vulkanRenderer.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanQueueBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanImageBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanRenderPassBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFramebufferBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanBufferBuilder.hpp"
+#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanShaderModuleBuilder.hpp"
+#include "utilities/constants.hpp"
+#include "core/logging.hpp"
 
 namespace siofraEngine::systems
 {
-    VulkanRenderer::VulkanRenderer(siofraEngine::platform::IWindow &window)
+    VulkanRenderer::VulkanRenderer(platform::IWindow const & window)
     {
 #ifdef _DEBUG
         std::vector<const char*> validationLayers = { "VK_LAYER_KHRONOS_validation" };
@@ -66,7 +74,7 @@ namespace siofraEngine::systems
             .withQueueFamilyIndex(device->getTransferQueue()->getFamilyIndex())
             .build();
 
-        uint32_t maxFramesInFlight = swapchain->getMaxFramesInFlight();
+        uint32_t const maxFramesInFlight = swapchain->getMaxFramesInFlight();
         imageAvailable.resize(maxFramesInFlight);
         renderFinished.resize(maxFramesInFlight);
         drawFences.resize(maxFramesInFlight);
@@ -90,7 +98,7 @@ namespace siofraEngine::systems
 
     void VulkanRenderer::beginFrame()
     {
-        VkFence fenceHandle = drawFences[currentFrame]->getFence();
+        VkFence const fenceHandle = drawFences[currentFrame]->getFence();
 
         vkWaitForFences(device->getLogicalDevice(), 1, &fenceHandle, VK_TRUE, std::numeric_limits<uint64_t>::max());
         vkResetFences(device->getLogicalDevice(), 1, &fenceHandle);
@@ -110,9 +118,9 @@ namespace siofraEngine::systems
 
     void VulkanRenderer::draw(std::string material, std::string model, math::Matrix4x4 modelMatrix)
     {
-        material = objectShaderSamplerDescriptorSets.count(material) ? material : utilities::ResourceConstants::PlaceholderMaterialId;
+        material = objectShaderSamplerDescriptorSets.contains(material) ? material : utilities::ResourceConstants::PlaceholderMaterialId;
 
-        if (!models.count(model))
+        if (!models.contains(model))
         {
             model = utilities::ResourceConstants::PlaceholderModelId;
             material = utilities::ResourceConstants::PlaceholderMaterialId;
@@ -120,7 +128,7 @@ namespace siofraEngine::systems
 
         vkCmdPushConstants(graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(), objectShaderPipeline->getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(math::Matrix4x4), &modelMatrix);
 
-        std::vector<VkDescriptorSet> descriptorSetGroup = {
+        std::vector<VkDescriptorSet> const descriptorSetGroup = {
            objectShaderDescriptorSets[currentImageIndex]->getDescriptorSet(),
            objectShaderSamplerDescriptorSets[material]->getDescriptorSet()
         };
@@ -129,13 +137,13 @@ namespace siofraEngine::systems
             VK_PIPELINE_BIND_POINT_GRAPHICS,
             objectShaderPipeline->getPipelineLayout(),
             0,
-            static_cast<uint32_t>(descriptorSetGroup.size()),
+            descriptorSetGroup.size(),
             descriptorSetGroup.data(),
             0,
             nullptr);
 
-        VkDeviceSize bufferOffset = 0;
-        VkBuffer vertexBuffers[] = { models[model].vertexBuffer->getBuffer() };
+        VkDeviceSize const bufferOffset = 0;
+        VkBuffer const vertexBuffers[] = { models[model].vertexBuffer->getBuffer() };
         vkCmdBindVertexBuffers(graphicsCommandBuffers[currentImageIndex]->getCommandBuffer(), 0, 1, vertexBuffers, &bufferOffset);
         for (size_t i = 0; i < models[model].indexBuffers.size(); i++)
         {
@@ -147,7 +155,7 @@ namespace siofraEngine::systems
     void VulkanRenderer::endFrame()
     {
         renderPass->end(graphicsCommandBuffers[currentImageIndex].get());
-        graphicsCommandBuffers[currentImageIndex].get()->end();
+        graphicsCommandBuffers[currentImageIndex]->end();
 
         device->getGraphicsQueue()->submit(imageAvailable[currentFrame].get(), renderFinished[currentFrame].get(), drawFences[currentFrame].get(), graphicsCommandBuffers[currentImageIndex].get());
         device->getPresentationQueue()->present(renderFinished[currentFrame].get(), swapchain.get(), currentImageIndex);
@@ -160,15 +168,15 @@ namespace siofraEngine::systems
         return RendererBackends::VULKAN;
     }
 
-    void VulkanRenderer::createShader(std::vector<char> vertexShaderCode, std::vector<char> fragmentShaderCode)
+    void VulkanRenderer::createShader(std::vector<char> const vertexShaderCode, std::vector<char> const fragmentShaderCode)
     {
         viewProjectionUniformBuffers.resize(swapchain->getSwapchainImages().size());
         objectShaderDescriptorSets.resize(swapchain->getSwapchainImages().size());
 
         objectShaderDescriptorPool = VulkanDescriptorPool::Builder()
             .withDevice(device.get())
-            .withMaxSets(static_cast<uint32_t>(viewProjectionUniformBuffers.size()))
-            .withPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, static_cast<uint32_t>(viewProjectionUniformBuffers.size()))
+            .withMaxSets(viewProjectionUniformBuffers.size())
+            .withPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, viewProjectionUniformBuffers.size())
             .build();
 
         objectShaderDescriptorSetLayout = VulkanDescriptorSetLayout::Builder()
@@ -179,8 +187,8 @@ namespace siofraEngine::systems
         uint32_t const MAX_SAMPLER_DESCRIPTORS = 20;
         objectShaderSamplerDescriptorPool = VulkanDescriptorPool::Builder()
             .withDevice(device.get())
-            .withMaxSets(static_cast<uint32_t>(MAX_SAMPLER_DESCRIPTORS))
-            .withPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, static_cast<uint32_t>(MAX_SAMPLER_DESCRIPTORS))
+            .withMaxSets(MAX_SAMPLER_DESCRIPTORS)
+            .withPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, MAX_SAMPLER_DESCRIPTORS)
             .build();
 
         objectShaderSamplerDescriptorSetLayout = VulkanDescriptorSetLayout::Builder()
@@ -235,9 +243,9 @@ namespace siofraEngine::systems
             .build();
     }
 
-    void VulkanRenderer::createMaterial(std::string materialName, std::vector<char> imageData, std::uint32_t width, std::uint32_t height, std::uint32_t channels)
+    void VulkanRenderer::createMaterial(std::string const materialName, std::vector<char> const imageData, std::uint32_t const width, std::uint32_t const height, std::uint32_t const channels)
     {
-        auto stagingBuffer = VulkanBuffer::Builder()
+        auto const stagingBuffer = VulkanBuffer::Builder()
             .withDevice(device.get())
             .withBufferSize(imageData.size())
             .withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
@@ -256,7 +264,7 @@ namespace siofraEngine::systems
             .withAspectFlags(VK_IMAGE_ASPECT_COLOR_BIT)
             .build();
 
-        auto commandBuffer = VulkanCommandBuffer::Builder()
+        auto const commandBuffer = VulkanCommandBuffer::Builder()
             .withDevice(device.get())
             .withCommandPool(graphicsCommandPool.get())
             .withLevel(VK_COMMAND_BUFFER_LEVEL_PRIMARY)
@@ -281,9 +289,9 @@ namespace siofraEngine::systems
         objectShaderSamplerDescriptorSets[materialName] = std::move(samplerDescriptorSet);
     }
 
-    void VulkanRenderer::createModel(std::string modelName, std::vector<math::Vertex3> vertexBuffer, std::vector<std::vector<std::uint32_t>> indexBuffers)
+    void VulkanRenderer::createModel(std::string const modelName, std::vector<math::Vertex3> const vertexBuffer, std::vector<std::vector<std::uint32_t>> const indexBuffers)
     {
-        auto commandBuffer = VulkanCommandBuffer::Builder()
+        auto const commandBuffer = VulkanCommandBuffer::Builder()
             .withDevice(device.get())
             .withCommandPool(graphicsCommandPool.get())
             .withLevel(VK_COMMAND_BUFFER_LEVEL_PRIMARY)
@@ -293,8 +301,8 @@ namespace siofraEngine::systems
         std::vector<std::uint32_t> vulkanIndexBufferCounts{ };
         for(auto const & indexBuffer : indexBuffers)
         {
-            VkDeviceSize bufferSize = sizeof(uint32_t) * indexBuffer.size();
-            auto stagingBuffer = VulkanBuffer::Builder()
+            VkDeviceSize const bufferSize = static_cast<VkDeviceSize>(sizeof(uint32_t)) * indexBuffer.size();
+            auto const stagingBuffer = VulkanBuffer::Builder()
                 .withDevice(device.get())
                 .withBufferSize(bufferSize)
                 .withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
@@ -316,8 +324,8 @@ namespace siofraEngine::systems
             vulkanIndexBufferCounts.push_back(indexBuffer.size());
         }
 
-        VkDeviceSize bufferSize = sizeof(math::Vertex3) * vertexBuffer.size();
-        auto stagingBuffer = VulkanBuffer::Builder()
+        VkDeviceSize const bufferSize = static_cast<VkDeviceSize>(sizeof(math::Vertex3)) * vertexBuffer.size();
+        auto const stagingBuffer = VulkanBuffer::Builder()
             .withDevice(device.get())
             .withBufferSize(bufferSize)
             .withBufferUsageFlags(VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
@@ -341,7 +349,7 @@ namespace siofraEngine::systems
         model.indexBufferCounts = std::move(vulkanIndexBufferCounts);
         models[modelName] = std::move(model);
 
-        VkCommandBuffer commandBufferHandle = commandBuffer->getCommandBuffer();
+        VkCommandBuffer const commandBufferHandle = commandBuffer->getCommandBuffer();
         vkFreeCommandBuffers(device->getLogicalDevice(), graphicsCommandPool->getCommandPool(), 1, &commandBufferHandle);
     }
 }

@@ -3,31 +3,23 @@
 #include <map>
 #include <vector>
 #include <string>
-#include "core/logging.hpp"
 #include "platform/iwindow.hpp"
 #include "math/math.hpp"
 #include "systems/renderer/irendererBackend.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanInstanceBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSurfaceBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDeviceBuilder.hpp"
-#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanQueueBuilder.hpp"
-#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanImageBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSwapchainBuilder.hpp"
-#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanRenderPassBuilder.hpp"
-#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFramebufferBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanCommandPoolBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanCommandBufferBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSemaphoreBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanFenceBuilder.hpp"
-#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanBufferBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorPoolBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorSetLayoutBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanDescriptorSetBuilder.hpp"
-#include "systems/renderer/vulkan/vulkanComponents/builders/vulkanShaderModuleBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanPipelineBuilder.hpp"
 #include "systems/renderer/vulkan/vulkanComponents/builders/vulkanSamplerBuilder.hpp"
 #include "systems/renderer/vulkan/resources/model.hpp"
-#include "utilities/constants.hpp"
 
 namespace siofraEngine::systems
 {
@@ -42,7 +34,7 @@ namespace siofraEngine::systems
          * 
          * @param window Window to be rendered to
          */
-        VulkanRenderer(siofraEngine::platform::IWindow &window);
+        VulkanRenderer(platform::IWindow const & window);
 
         /**
          * @brief VulkanRenderer destructor
@@ -57,7 +49,7 @@ namespace siofraEngine::systems
         /**
          * @brief Set view projection matrices for the current frame
          *
-         * @param view The view projection matrices to set
+         * @param viewProjection The view projection matrices to set
          */
         void setViewProjection(ViewProjection viewProjection) override;
 

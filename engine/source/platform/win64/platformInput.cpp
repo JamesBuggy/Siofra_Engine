@@ -14,12 +14,12 @@ namespace siofraEngine::platform
 
     KeyboardState PlatformInput::getKeyboardState()
     {
-        Uint8 const * sdlKeyState = SDL_GetKeyboardState(NULL);
+        Uint8 const * sdlKeyState = SDL_GetKeyboardState(nullptr);
 
-        KeyboardState keyState(static_cast<int>(siofraEngine::core::KeyCode::MAX_CODES), false);
+        KeyboardState keyState(static_cast<int>(core::KeyCode::MAX_CODES), false);
         for (size_t i = 0; i < keyState.size(); ++i)
         {
-            auto siofraKeyCode = static_cast<siofraEngine::core::KeyCode>(i);
+            auto siofraKeyCode = static_cast<core::KeyCode>(i);
             auto sdlKeyCode = siofraToSdlKeyCodeMappings[siofraKeyCode];
             auto sdlScanCode = SDL_GetScancodeFromKey(sdlKeyCode);
             keyState[i] = sdlKeyState[sdlScanCode] == 1;
@@ -32,10 +32,10 @@ namespace siofraEngine::platform
     {
         Uint32 sdlButtons = SDL_GetMouseState(&x, &y);
 
-        MouseButtonState mouseButtonState(static_cast<int>(siofraEngine::core::MouseButtonCode::MAX_CODES), false);
+        MouseButtonState mouseButtonState(static_cast<int>(core::MouseButtonCode::MAX_CODES), false);
         for (size_t i = 0; i < mouseButtonState.size(); ++i)
         {
-            auto siofraMouseButtonCode = static_cast<siofraEngine::core::MouseButtonCode>(i);
+            auto siofraMouseButtonCode = static_cast<core::MouseButtonCode>(i);
             auto sdlButtonMask = siofraToSdlmousButtonMappings[siofraMouseButtonCode];
             mouseButtonState[i] = (sdlButtons & sdlButtonMask) != 0;
         }
