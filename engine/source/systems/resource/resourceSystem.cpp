@@ -50,10 +50,10 @@ namespace siofraEngine::systems
 
         CreateMaterialEvent createMaterialEvent;
         createMaterialEvent.materialName = materialName;
-        createMaterialEvent.imageData = imageData;
-        createMaterialEvent.width = width;
-        createMaterialEvent.height = height;
-        createMaterialEvent.channels = channels;
+        createMaterialEvent.diffuse.imageData = imageData;
+        createMaterialEvent.diffuse.width = width;
+        createMaterialEvent.diffuse.height = height;
+        createMaterialEvent.diffuse.channels = channels;
         eventSystem->broadcast(EventTypes::CREATE_MATERIAL, createMaterialEvent);
     }
 

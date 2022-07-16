@@ -1,16 +1,10 @@
 #pragma once
 
 #include <memory>
-#include <string>
-#include "math/math.hpp"
-#include "core/logging.hpp"
-#include "core/assertions.hpp"
 #include "core/ecs/scene.hpp"
-#include "core/ecs/components.hpp"
 #include "platform/iwindow.hpp"
 #include "systems/events/ieventSystem.hpp"
 #include "systems/renderer/irendererBackend.hpp"
-#include "systems/renderer/vulkan/vulkanRenderer.hpp"
 #include "systems/renderer/common/models.hpp"
 
 namespace siofraEngine::systems
@@ -27,7 +21,7 @@ namespace siofraEngine::systems
          * @param window Window to be rendered to
          * @param eventSystem Event system
          */
-        RendererSystem(siofraEngine::platform::IWindow &window, systems::IEventSystem * const eventSystem);
+        RendererSystem(platform::IWindow &window, IEventSystem * const eventSystem);
 
         /**
          * @brief Draw current frame
@@ -53,27 +47,27 @@ namespace siofraEngine::systems
          * @param window Window to be rendered to
          * @returns Renderer backend
          */
-        static std::unique_ptr<IRendererBackend> createRendererBackend(siofraEngine::platform::IWindow &window);
+        static std::unique_ptr<IRendererBackend> createRendererBackend(platform::IWindow &window);
 
         /**
          * @brief Create a shader pipeline. Triggered by a CREATE_SHADER event broadcast
          * 
          * @param payload Payload describing the shader pipeline to create
          */
-        void createShader(EventPayload payload);
+        void createShader(EventPayload payload) const;
 
         /**
          * @brief Create a material. Triggered by a CREATE_MATERIAL event broadcast
          * 
          * @param payload Payload describing the material to create
          */
-        void createMaterial(EventPayload payload);
+        void createMaterial(EventPayload payload) const;
 
         /**
          * @brief Create a model. Triggered by a CREATE_MODEL event broadcast
          * 
          * @param payload Payload describing the model to create
          */
-        void createModel(EventPayload payload);
+        void createModel(EventPayload payload) const;
     };
 }

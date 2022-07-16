@@ -49,11 +49,16 @@ struct CreateShaderEvent
  */
 struct CreateMaterialEvent
 {
-    std::string materialName;
-    std::vector<char> imageData;
-    std::uint32_t width;
-    std::uint32_t height;
-    std::uint32_t channels;
+    struct Image
+    {
+        std::vector<char> imageData{ };
+        std::uint32_t width{ };
+        std::uint32_t height{ };
+        std::uint32_t channels{ };
+    };
+
+    std::string materialName{ };
+    Image diffuse{ };
 };
 
 /**

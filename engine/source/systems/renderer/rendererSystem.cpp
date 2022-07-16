@@ -1,15 +1,21 @@
+#include <string>
 #include "systems/renderer/rendererSystem.hpp"
+#include "systems/renderer/vulkan/vulkanRenderer.hpp"
+#include "core/ecs/components.hpp"
+#include "math/math.hpp"
+#include "core/logging.hpp"
+#include "core/assertions.hpp"
 
 namespace siofraEngine::systems
 {
-    RendererSystem::RendererSystem(siofraEngine::platform::IWindow &window, systems::IEventSystem * const eventSystem) :
+    RendererSystem::RendererSystem(platform::IWindow &window, IEventSystem * const eventSystem) :
         rendererBackend{createRendererBackend(window)}
     {
-        eventSystem->subscribe(EventTypes::CREATE_SHADER, std::bind(&RendererSystem::createShader, this, std::placeholders::_1));
-        eventSystem->subscribe(EventTypes::CREATE_MATERIAL, std::bind(&RendererSystem::createMaterial, this, std::placeholders::_1));
-        eventSystem->subscribe(EventTypes::CREATE_MODEL, std::bind(&RendererSystem::createModel, this, std::placeholders::_1));
+        eventSystem->subscribe(EventTypes::CREATE_SHADER, [this](EventPayload && payload) { createShader(payload); });
+        eventSystem->subscribe(EventTypes::CREATE_MATERIAL, [this](EventPayload && payload) { createMaterial(payload); });
+        eventSystem->subscribe(EventTypes::CREATE_MODEL, [this](EventPayload && payload) { createModel(payload); });
 
-        viewProjection.projection = math::Matrix4x4::perspective(math::radians(45.0f), (float)window.getWidth() / (float)window.getHeight(), 0.1f, 400.0f);
+        viewProjection.projection = math::Matrix4x4::perspective(math::radians(45.0f), static_cast<float>(window.getWidth()) / static_cast<float>(window.getHeight()), 0.1f, 400.0f);
         viewProjection.projection.elements[5] *= -1;
         viewProjection.view = math::Matrix4x4::lookAt(math::Vector3(0.0f, 1.0f, 0.0f), math::Vector3(0.0f, 1.0f, 0.0f) + math::Vector3(0.0f, 0.0f, 1.0f), math::Vector3(0.0f, 1.0f, 0.0f));
 
@@ -20,27 +26,27 @@ namespace siofraEngine::systems
     {
         rendererBackend->beginFrame();
 
-        auto cameras = scene->getEntities<core::Camera, core::Transform>();
-        if (cameras.size())
+        auto const cameras = scene->getEntities<core::Camera, core::Transform>();
+        if (!cameras.empty())
         {
-            auto camera = cameras.front();
-            auto cameraComponent = scene->getComponent<core::Camera>(camera);
-            auto transformComponent = scene->getComponent<core::Transform>(camera);
+            auto const camera = cameras.front();
+            auto const cameraComponent = scene->getComponent<core::Camera>(camera);
+            auto const transformComponent = scene->getComponent<core::Transform>(camera);
 
             viewProjection.view = math::Matrix4x4::lookAt(transformComponent->position, transformComponent->position + cameraComponent->front, math::Vector3(0.0f, 1.0f, 0.0f));
             rendererBackend->setViewProjection(viewProjection);
         }
 
-        auto entities = scene->getEntities<core::Model, core::Transform, core::Rotation>();
+        auto const entities = scene->getEntities<core::Model, core::Transform, core::Rotation>();
         for (auto const & entity : entities)
         {
-            auto modelComponent = scene->getComponent<core::Model>(entity);
-            auto materialComponent = scene->getComponent<core::Material>(entity);
-            auto transformComponent = scene->getComponent<core::Transform>(entity);
-            auto rotationComponent = scene->getComponent<core::Rotation>(entity);
+            auto const modelComponent = scene->getComponent<core::Model>(entity);
+            auto const materialComponent = scene->getComponent<core::Material>(entity);
+            auto const transformComponent = scene->getComponent<core::Transform>(entity);
+            auto const rotationComponent = scene->getComponent<core::Rotation>(entity);
 
-            std::string material{ materialComponent ? materialComponent->filename : "" };
-            std::string model{ modelComponent ? modelComponent->filename : "" };
+            std::string const material{ materialComponent ? materialComponent->filename : "" };
+            std::string const model{ modelComponent ? modelComponent->filename : "" };
             
             math::Matrix4x4 modelMatrix = math::Matrix4x4::translation(transformComponent->position);
             modelMatrix = modelMatrix * math::Matrix4x4::rotationX(math::radians(rotationComponent->angles.x));
@@ -53,12 +59,12 @@ namespace siofraEngine::systems
         rendererBackend->endFrame();
     }
 
-    std::unique_ptr<IRendererBackend> RendererSystem::createRendererBackend(siofraEngine::platform::IWindow &window)
+    std::unique_ptr<IRendererBackend> RendererSystem::createRendererBackend(platform::IWindow &window)
     {
         std::unique_ptr<IRendererBackend> rendererBackend(nullptr);
-        siofraEngine::platform::WindowFlags windowFlags = window.getFlags();
+        platform::WindowFlags const windowFlags = window.getFlags();
 
-        if((windowFlags & siofraEngine::platform::WindowFlags::WINDOW_VULKAN) == siofraEngine::platform::WindowFlags::WINDOW_VULKAN)
+        if((windowFlags & platform::WindowFlags::WINDOW_VULKAN) == platform::WindowFlags::WINDOW_VULKAN)
         {
             rendererBackend = std::make_unique<VulkanRenderer>(window);
         }
@@ -67,9 +73,9 @@ namespace siofraEngine::systems
         return rendererBackend;
     }
 
-    void RendererSystem::createShader(EventPayload payload)
+    void RendererSystem::createShader(EventPayload payload) const
     {
-        auto shaderData = std::get<CreateShaderEvent>(payload);
+        auto const shaderData = std::get<CreateShaderEvent>(payload);
         switch (rendererBackend->getRendererBackendType())
         {
         case RendererBackends::VULKAN :
@@ -81,18 +87,18 @@ namespace siofraEngine::systems
         }
     }
 
-    void RendererSystem::createMaterial(EventPayload payload)
+    void RendererSystem::createMaterial(EventPayload payload) const
     {
-        auto createMaterialEvent = std::get<CreateMaterialEvent>(payload);
+        auto const & createMaterialEvent = std::get<CreateMaterialEvent>(payload);
         rendererBackend->createMaterial(
             createMaterialEvent.materialName,
-            createMaterialEvent.imageData,
-            createMaterialEvent.width,
-            createMaterialEvent.height,
-            createMaterialEvent.channels);
+            createMaterialEvent.diffuse.imageData,
+            createMaterialEvent.diffuse.width,
+            createMaterialEvent.diffuse.height,
+            createMaterialEvent.diffuse.channels);
     }
 
-    void RendererSystem::createModel(EventPayload payload)
+    void RendererSystem::createModel(EventPayload payload) const
     {
         auto createModelEvent = std::get<CreateModelEvent>(payload);
         rendererBackend->createModel(createModelEvent.modelName, std::move(createModelEvent.vertexBuffer), std::move(createModelEvent.indexBuffers));
