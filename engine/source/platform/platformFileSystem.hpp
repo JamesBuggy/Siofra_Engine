@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdexcept>
 #include "platform/iplatformFileSystem.hpp"
 
 namespace siofraEngine::platform
@@ -18,5 +17,13 @@ namespace siofraEngine::platform
          * @returns File content bytes
          */
         std::vector<char> readFile(const std::string & filePath) const override;
+
+        /**
+         * @brief Read data from a config file
+         *
+         * @param filePath Path to the config file
+         * @returns Config file entries as key value pairs
+         */
+        std::map<std::string, std::string> readConfigFile(const std::string& filePath) const override;
     };
 }

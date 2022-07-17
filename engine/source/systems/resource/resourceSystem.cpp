@@ -33,13 +33,15 @@ namespace siofraEngine::systems
 
     void ResourceSystem::loadMaterial(std::string const materialName)
     {
-        int width, height, channels;
-        std::string const fileLocation = assetBasePath + "materials\\" + materialName + ".png";
+        auto const configFile = assetBasePath + "materials\\" + materialName + ".matcfg";
+        auto config = fileSystem->readConfigFile(configFile);
 
-        stbi_uc * image = stbi_load(fileLocation.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+		int width, height, channels;
+        auto const diffuseFile = assetBasePath + "materials\\" + config["diffuse"];
+        stbi_uc * image = stbi_load(diffuseFile.c_str(), &width, &height, &channels, STBI_rgb_alpha);
         if (!image)
         {
-            SE_LOG_WARNING("Failed to load material: " + fileLocation);
+            SE_LOG_WARNING("Failed to load material: " + diffuseFile);
             return;
         }
 
