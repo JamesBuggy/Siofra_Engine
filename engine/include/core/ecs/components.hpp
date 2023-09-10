@@ -37,4 +37,10 @@ namespace siofraEngine::core
 		float yaw{ 90.0f };
 		float pitch{ 0.0f };
 	};
+
+	struct AudioSource
+	{
+		std::string filename{ };
+		bool play{ };
+	};
 }

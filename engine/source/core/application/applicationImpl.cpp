@@ -10,6 +10,7 @@ namespace siofraEngine::core
         rendererSystem{window, ServiceLocator::get<systems::EventSystem>()},
         resourceSystem{std::make_unique<platform::PlatformFileSystem>(), ServiceLocator::get<systems::EventSystem>() },
         entityComponentSystem{ },
+        audioSystem{ ServiceLocator::get<systems::EventSystem>() },
         game{std::move(game)}
     {
         
@@ -34,6 +35,8 @@ namespace siofraEngine::core
             inputSystem.update(game->getSceneController(), scene, 0.001);
 
             resourceSystem.updateResources(scene);
+
+            audioSystem.update(scene);
 
             rendererSystem.draw(scene);
 

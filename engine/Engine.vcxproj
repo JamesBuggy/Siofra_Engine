@@ -189,6 +189,7 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClInclude Include="include\systems\ecs\componentManager\componentManager.hpp" />
     <ClInclude Include="include\systems\ecs\entityComponent.hpp" />
     <ClInclude Include="include\systems\ecs\entityManager\entityManager.hpp" />
+    <ClInclude Include="source\systems\audio\audioSystem.hpp" />
     <ClInclude Include="source\systems\events\events.hpp" />
     <ClInclude Include="source\systems\events\eventSystem.hpp" />
     <ClInclude Include="source\systems\events\ieventSystem.hpp" />
@@ -289,6 +290,7 @@ XCOPY "$(SolutionDir)assets" "$(OutputPath)assets\" /j /s /z /Y
     <ClCompile Include="source\platform\win64\platformFileSystem.cpp" />
     <ClCompile Include="source\platform\win64\platformInput.cpp" />
     <ClCompile Include="source\platform\win64\window.cpp" />
+    <ClCompile Include="source\systems\audio\audioSystem.cpp" />
     <ClCompile Include="source\systems\ecs\entityManager\entityManager.cpp" />
     <ClCompile Include="source\systems\events\eventSystem.cpp" />
     <ClCompile Include="source\systems\input\inputSystem.cpp" />
